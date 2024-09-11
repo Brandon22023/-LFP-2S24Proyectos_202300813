@@ -1,0 +1,10 @@
+grafica: {
+        nombre:"nombre de grafico";
+        continente {
+        nombre: "Asia";
+                país: {
+                        nombre: "Japón";
+                        población: 2352342;
+                        saturacion:80%;
+                        bandera: "C:\imagen.jpg";
+                }
