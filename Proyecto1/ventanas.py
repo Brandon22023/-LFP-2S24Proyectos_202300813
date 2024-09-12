@@ -4,19 +4,19 @@ from tkinter import messagebox
 import os 
 import subprocess
 def Abrir():
-    Abrir = filedialog.askopenfilename(initialdir = "C:\\Users\\Marro\\Documents\\yon\CUARTO SEMESTRE\\LAB LENGUAJES FORMALES\\-LFP-2S24Proyectos_202300813",title = "Elige un archivo",filetypes = (("archvios org","*.org"),("todos los archivos","*.*")))
+    Abrir = filedialog.askopenfilename(initialdir = "C:\\Users\\Marro\\Documents\\yon\\CUARTO SEMESTRE\\LAB LENGUAJES FORMALES\\-LFP-2S24Proyectos_202300813",title = "Elige un archivo",filetypes = (("archvios org","*.org"),("todos los archivos","*.*")))
     if Abrir: #lugar donde se guardo el directorio
         try:
             with open(Abrir, "r") as archivo:
                 leer = archivo.read()
-                entrada.delete(1.0, END)  #se limpia previo al cargar al 
-                entrada.insert(END, leer)    # Insertamos el contenido del archivo en el TEXT
-        except:
+                entrada.delete(0, END)  #se limpia previo al cargar al 
+                entrada.insert(0, leer)    # Insertamos el contenido del archivo en el TEXT
+        except Exception as e:
             print("Error al abrir el archivo")
 
 def enviar_datos():
     
-    data = entrada.get("1.0", END).strip()
+    data = entrada.get().strip()  # Se elimina el uso de índices en Entry
     resultado = subprocess.run(
         ["./Proyecto1.exe"], #RUTA DEL EJECTUBLE DE FORTRAN
         input = data, #la data que se manda a fortran
@@ -24,7 +24,8 @@ def enviar_datos():
         stderr=subprocess.PIPE,  # Capturar también los errores   
         text= True # que la salida se maneje como texto 
     )
-    LUGAR_GRAFICA.insert(END, resultado.stdout)
+    LUGAR_GRAFICA.delete(1.0, END)  #se limpia previo al cargar el texto
+    LUGAR_GRAFICA.insert(END, resultado.stdout)    # Insertamos el contenido del archivo en el TEXT
     
 
 def Guardar():
@@ -78,10 +79,10 @@ ventana.resizable(False, False)#definir el tamaño de la ventana pero fija para 
 boton1= Button(ventana, text="Analisis",command=enviar_datos, relief="groove", borderwidth=5,cursor="hand2")
 boton1.place(x=630, y=300, width=100, height=50) #define la posición del boton
 #label de texto
-entrada= Text(ventana, relief="groove", borderwidth=5) #lugar de texto
+entrada= Entry(ventana, relief="groove", borderwidth=5) #lugar de texto
 entrada.place(x=20, y=30, width=550, height=650) #define la posición del lugar de texto
 #label de grafica
-LUGAR_GRAFICA= Label(ventana, bg="white", relief="groove", borderwidth=5) #un label para la grafica
+LUGAR_GRAFICA= Text(ventana, bg="white", relief="groove", borderwidth=5) #un label para la grafica
 LUGAR_GRAFICA.place(x=800, y=30, width=500, height=400) #define la posición del lugar de texto
 #label de imagen del pais
 LUGAR_GRAFICA_pais= Label(ventana, bg="white", relief="groove", borderwidth=5) #lugar para la imagen
