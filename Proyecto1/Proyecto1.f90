@@ -12,6 +12,7 @@ program analizador_lexico
     character(len=1), dimension(3) :: R
     character(len=1), dimension(1) :: P
     character(len=1), dimension(11) :: N
+    character(len=20), dimension(7) :: diccionario = (/"grafica", "nombre", "continente", "poblacion", "saturacion", "bandera", "pais"/)
     character(len=1) :: char_error
     integer, dimension(100,4) :: errores 
     character(len=10000) :: entrada
@@ -340,4 +341,19 @@ program analizador_lexico
     else 
         print *, trim("No hubieron Errores")
     end if
+
+contains
+    logical function es_ortografia_correcta(token)
+        character(len=*), intent(in) :: token
+        integer :: i
+        
+        es_ortografia_correcta = .false.
+        
+        do i = 1, size(diccionario)
+            if (trim(token) == diccionario(i)) then
+                es_ortografia_correcta = .true.
+                return
+            end if
+        end do
+        end function es_ortografia_correcta
 end program analizador_lexico
