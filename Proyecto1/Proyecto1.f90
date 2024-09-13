@@ -7,8 +7,11 @@ program analizador_lexico
     character(len=100) :: tkn
     character(len=1), dimension(26) :: A 
     character(len=1), dimension(26) :: M
-    character(len=1), dimension(4) :: S 
+    character(len=1), dimension(3) :: S 
     character(len=1), dimension(1) :: C
+    character(len=1), dimension(3) :: R
+    character(len=1), dimension(1) :: P
+    character(len=1), dimension(11) :: N
     character(len=1) :: char_error
     integer, dimension(100,4) :: errores 
     character(len=10000) :: entrada
@@ -17,8 +20,11 @@ program analizador_lexico
     integer :: num_tokens
     A = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
     M = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
-    S = [':','{','}',';']
+    S = ['{','}',';']
     C = ['"']
+    R = [':','\','.']
+    P = [':']
+    N = ['0','1','2','3','4','5','6','7','8','9', '%']
     estado = 0
     num_tokens = 0
     puntero = 1
@@ -33,8 +39,8 @@ program analizador_lexico
         if (ios /= 0) exit  ! Sale del bucle si ya no hay más datos
         contenido = trim(contenido) // trim(buffer) // new_line("a")
     end do
-    print *, 'Contenido del archivo recibido desde Python:'
-    print *, trim(contenido)
+    !print *, 'Contenido del archivo recibido desde Python:'
+    !print *, trim(contenido)
     len = len_trim(contenido)
     do while(puntero <= len)
         char = contenido(puntero:puntero)
@@ -42,7 +48,7 @@ program analizador_lexico
         !print *, 'Código ASCII:', ichar(char), ' Línea:', linea, ' Columna:', columna
         !print *,  char, ' Linea:', linea, ' Columna:', columna
         !print *, char, ' Línea:', linea, ' Columna:', columna
-
+        !print *, char, " estado de contenido", estado
         !ichar es para el codigo ascii
         if (ichar(char) == 10) then
             ! Salto de línea (LF)
@@ -71,12 +77,16 @@ program analizador_lexico
                         !print *, 'Carácter añadido a tkn:', char
                         tkn =trim(tkn) // char !adjustl para evitar problemas de espacios en blanco que puedan interferir.
                         !print *, 'tkn hasta ahora:', trim(tkn)
+                    elseif(any(char == S)) then 
+                        estado = 1
+                        columna = columna + 1
                     else
                         ! Si el carácter no es una letra minuscula, se cuenta como error
                         numErrores = numErrores + 1
                         errores(numErrores,:) = (/ ichar(char),69, columna, linea /)
                         columna = columna + 1
                         estado = 1
+                    
                     
                     end if
                     puntero = puntero + 1 ! Avanza un carácter
@@ -88,10 +98,39 @@ program analizador_lexico
                         !print *, 'Carácter añadido a tkn:', char
                         tkn = trim(tkn) // char
                         !print *, 'tkn hasta ahora:', trim(tkn)
-                    elseif (any(char == S)) then
+                    elseif(any(char == A)) then
+                        estado = 1
+                        columna = columna + 1
+                        !print *, 'Carácter añadido a tkn:', char
+                        tkn = trim(tkn) // char
+                        !print *, 'tkn hasta ahora:', trim(tkn)
+                    elseif(any(char == C)) then
+                        estado = 4
+                        columna = columna + 1
+
+                    elseif (any(char == P)) then
                      ! Encontramos un símbolo, cambiamos al estado 2
                         columna = columna + 1
                         estado = 2
+                        ! Agregar el token actual si no está vacío
+                        if (len_trim(tkn) > 0) then
+                            num_tokens = num_tokens + 1
+                            if (num_tokens <= max_tokens) then
+                                !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
+                                token_list(num_tokens) = trim(tkn)
+                                !print *, 'Token añadido a la lista:', token_list(num_tokens)
+                            else
+                                print *, "Error: Se ha alcanzado el límite máximo de tokens."
+                            end if
+                            tkn = " "  ! Reiniciar token después de agregar
+                            print *, 'Token reseteado'
+                        else
+                            print *, 'No se agregó el token ya que estaba vacío.'
+                        end if
+                    elseif (any(char == S)) then
+                     ! Encontramos un símbolo, cambiamos al estado 2
+                        columna = columna + 1
+                        estado = 3
                         ! Agregar el token actual si no está vacío
                         if (len_trim(tkn) > 0) then
                             num_tokens = num_tokens + 1
@@ -122,6 +161,23 @@ program analizador_lexico
                         columna = columna + 1
                         estado = 3
                         ! agregar el char
+                    
+                    elseif (any(char == M)) then
+                        estado = 2
+                        columna = columna + 1
+                        !print *, 'Carácter añadido a tkn:', char
+                        tkn = trim(tkn) // char
+                        !print *, 'tkn hasta ahora:', trim(tkn)
+                    elseif (any(char == N)) then
+                        estado = 5
+                        columna = columna + 1
+                        !print *, 'Carácter añadido a tkn:', char
+                        tkn = trim(tkn) // char
+                        !print *, 'tkn hasta ahora:', trim(tkn)
+                    elseif(any(char == C)) then
+                        estado = 4
+                        columna = columna + 1
+                    
                     else
                     ! Error de token
                         numErrores = numErrores + 1
@@ -144,9 +200,28 @@ program analizador_lexico
                     elseif (any(char == S)) then
                     ! Encontramos otro símbolo, cambiamos al estado 4
                         columna = columna + 1
-                        estado = 4
+                        estado = 1
                         !agregar a tabla de tokens el tkn y el char
                         num_tokens = num_tokens + 1
+                        ! Agregar el token actual si no está vacío
+                        if (len_trim(tkn) > 0) then
+                            num_tokens = num_tokens + 1
+                            if (num_tokens <= max_tokens) then
+                                !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
+                                token_list(num_tokens) = trim(tkn)
+                                !print *, 'Token añadido a la lista:', token_list(num_tokens)
+                            else
+                                print *, "Error: Se ha alcanzado el límite máximo de tokens."
+                            end if
+                            tkn = " "  ! Reiniciar token después de agregar
+                            print *, 'Token reseteado'
+                        else
+                            print *, 'No se agregó el token ya que estaba vacío.'
+                        end if
+                    elseif (any(char == P)) then
+                     ! Encontramos un símbolo, cambiamos al estado 2
+                        columna = columna + 1
+                        estado = 2
                         ! Agregar el token actual si no está vacío
                         if (len_trim(tkn) > 0) then
                             num_tokens = num_tokens + 1
@@ -170,7 +245,7 @@ program analizador_lexico
                         estado = 4
                         columna = columna + 1
 
-                    elseif (any(char == M) .or. any(char == A)) then
+                    elseif (any(char == M) .or. any(char == A) .or. any(char == R) .or. any(char == N) .or. any(char == P)) then
                         estado = 4
                         columna = columna + 1
                         tkn = trim(tkn) //char
@@ -178,6 +253,46 @@ program analizador_lexico
                      ! Encontramos un símbolo, cambiamos al estado 2
                         columna = columna + 1
                         estado = 0
+                        !agregar a tabla de tokens el tkn y el char
+                        num_tokens = num_tokens + 1
+                        ! Agregar el token actual si no está vacío
+                        if (len_trim(tkn) > 0) then
+                            num_tokens = num_tokens + 1
+                            if (num_tokens <= max_tokens) then
+                                !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
+                                token_list(num_tokens) = trim(tkn)
+                                !print *, 'Token añadido a la lista:', token_list(num_tokens)
+                            else
+                                print *, "Error: Se ha alcanzado el límite máximo de tokens."
+                            end if
+                            tkn = " "  ! Reiniciar token después de agregar
+                            print *, 'Token reseteado'
+                        else
+                            print *, 'No se agregó el token ya que estaba vacío.'
+                        end if
+                        puntero = puntero + 1
+                    else
+                    ! Error de token
+                        numErrores = numErrores + 1
+                        errores(numErrores,:) = (/ ichar(char),69, columna, linea /)
+                        columna = columna + 1
+                        estado = 1
+                    
+                    end if        
+                    puntero = puntero + 1 ! Avanza un carácter
+                case(5)
+                    ! Continuamos leyendo tokens (numeros)
+                    if (any(char == N)) then
+                        estado = 5
+                        columna = columna + 1
+                        !print *, 'Carácter añadido a tkn:', char
+                        tkn = trim(tkn) // char
+                        !print *, 'tkn hasta ahora:', trim(tkn)
+                    
+                    elseif (any(char == S)) then
+                     ! Encontramos un símbolo, cambiamos al estado 2
+                        columna = columna + 1
+                        estado = 3
                         !agregar a tabla de tokens el tkn y el char
                         num_tokens = num_tokens + 1
                         ! Agregar el token actual si no está vacío
@@ -213,7 +328,7 @@ program analizador_lexico
     ! Imprimir tabla de tokens
     print *, "Tokens extraidos:"
     do i = 1, num_tokens
-        print *, token_list(i)
+        print *, i, trim(token_list(i))
     end do
     ! Mostrar errores si hay alguno.
     if (numErrores > 0 ) then

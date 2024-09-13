@@ -2,43 +2,43 @@ grafica: {
         nombre:"nombre de grafico";
         continente {
         nombre: "Asia";
-                país: {
-                        nombre: "Japón";
-                        población: 2352342;
+                pais: {
+                        nombre: "Japon";
+                        poblacion: 2352342;
                         saturacion:80%;
                         bandera: "C:\imagen.jpg";
                 }
-                país: {
+                pais: {
                         bandera: "C:\imagen.jpg";
                         nombre: "China";
-                        población: 1350000000;
+                        poblacion: 1350000000;
                         saturacion:95%;
                 }
-                país: {
+                pais: {
                         saturacion:40%;
-                        población: 2352342;
+                        poblacion: 2352342;
                         nombre:"Korea";
                         bandera: "C:\imagen.jpg";
                 }
         }
         continente {
-        nombre: "América";
-                país: {
-                        nombre: "Canadá";
-                        población: 23423423;
+        nombre: "America";
+                pais: {
+                        nombre: "Canada";
+                        poblacion: 23423423;
                         saturacion:65%;
                         bandera: "C:\imagen.jpg";
                 }
-                país: {
-                        población: 17263239;
+                pais: {
+                        poblacion: 17263239;
                         nombre: "Guatemala";
                         saturacion:40%;
                         bandera: "C:\guate.jpg"
                 }
-                país: {
+                pais: {
                         saturacion:60%;
                         nombre:"Chile";
-                        población: 235234234;
+                        poblacion: 235234234;
                         bandera: "C:\imagen.jpg"
                 }
         }      
