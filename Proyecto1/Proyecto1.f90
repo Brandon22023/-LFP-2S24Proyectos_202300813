@@ -1,31 +1,44 @@
 program analizador_lexico
     implicit none
-    integer :: i, len, linea, columna, estado, puntero, numErrores,file_unit,ios
+    integer :: i, len,linea,columna, estado, puntero, numErrores,file_unit,ios
     integer :: espacio_texto, longitud
     character(len=10000) :: contenido, cadena, buffer
+    integer :: dist, j
     character(len=1) :: char 
     character(len=100) :: tkn
     character(len=1), dimension(26) :: A 
     character(len=1), dimension(26) :: M
     character(len=1), dimension(3) :: S 
     character(len=1), dimension(1) :: C
-    character(len=1), dimension(3) :: R
+    character(len=1), dimension(17) :: R
     character(len=1), dimension(1) :: P
     character(len=1), dimension(11) :: N
-    character(len=20), dimension(7) :: diccionario = (/"grafica", "nombre", "continente", "poblacion", "saturacion", "bandera", "pais"/)
+    character(len=12), dimension(7) :: diccionario
     character(len=1) :: char_error
-    integer, dimension(100,4) :: errores 
     character(len=10000) :: entrada
     integer, parameter :: max_tokens = 1000
     character(len=100), dimension(max_tokens) :: token_list
     integer :: num_tokens
+    logical :: solo_numeros, tiene_porcentaje
+    integer :: t, ascii_val
+    
+    
+    type :: ErrorInfo
+        character(len=10) :: caracter  ! caracter
+        character(len=100) :: descripcion  ! Descripción del error
+        integer :: columna      ! Columna donde ocurrió el error
+        integer :: linea        ! Línea donde ocurrió el error
+    end type ErrorInfo
+    type(ErrorInfo), dimension(100) :: errores
+
     A = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
     M = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
     S = ['{','}',';']
     C = ['"']
-    R = [':','\','.']
+    R = [':','\','.','!','_','-',',','#','$','&','/','(',')','?','~','@','^']
     P = [':']
     N = ['0','1','2','3','4','5','6','7','8','9', '%']
+    diccionario = ['grafica     ', 'nombre      ', 'continente  ', 'poblacion   ', 'saturacion  ', 'bandera     ', 'pais        ']
     estado = 0
     num_tokens = 0
     puntero = 1
@@ -34,6 +47,7 @@ program analizador_lexico
     numErrores = 0
     contenido = ""
     tkn = " "
+   
     ! Lee el contenido desde la entrada estándar
     do
         read(*, '(A)', IOSTAT=ios) buffer
@@ -84,7 +98,7 @@ program analizador_lexico
                     else
                         ! Si el carácter no es una letra minuscula, se cuenta como error
                         numErrores = numErrores + 1
-                        errores(numErrores,:) = (/ ichar(char),69, columna, linea /)
+                        errores(numErrores) = ErrorInfo(char, "Error no pertenece al lenguaje M", columna, linea)
                         columna = columna + 1
                         estado = 1
                     
@@ -116,12 +130,29 @@ program analizador_lexico
                         ! Agregar el token actual si no está vacío
                         if (len_trim(tkn) > 0) then
                             num_tokens = num_tokens + 1
-                            if (num_tokens <= max_tokens) then
-                                !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
-                                token_list(num_tokens) = trim(tkn)
-                                !print *, 'Token añadido a la lista:', token_list(num_tokens)
+                            if (tkn == "grafica" .or. tkn == "continente" .or. tkn == "pais" .or. &
+                               tkn == "nombre" .or. tkn == "bandera" .or. tkn == "poblacion" .or. &
+                               tkn == "saturacion") then
+                               
+                                if (num_tokens <= max_tokens) then
+                                    !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
+                                    token_list(num_tokens) = trim(tkn)
+                                    !print *, 'Token añadido a la lista:', token_list(num_tokens)
+                                else
+                                    print *, "Error: Se ha alcanzado el límite máximo de tokens."
+                                end if
+
                             else
-                                print *, "Error: Se ha alcanzado el límite máximo de tokens."
+                                ! Error de token
+                                numErrores = numErrores + 1
+                                errores(numErrores) = ErrorInfo(tkn, "Error de token", columna, linea)
+                                if (num_tokens <= max_tokens) then
+                                    !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
+                                    token_list(num_tokens) = trim(tkn)
+                                    !print *, 'Token añadido a la lista:', token_list(num_tokens)
+                                else
+                                    print *, "Error: Se ha alcanzado el límite máximo de tokens."
+                                end if
                             end if
                             tkn = " "  ! Reiniciar token después de agregar
                             print *, 'Token reseteado'
@@ -135,12 +166,29 @@ program analizador_lexico
                         ! Agregar el token actual si no está vacío
                         if (len_trim(tkn) > 0) then
                             num_tokens = num_tokens + 1
-                            if (num_tokens <= max_tokens) then
-                                !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
-                                token_list(num_tokens) = trim(tkn)
-                                !print *, 'Token añadido a la lista:', token_list(num_tokens)
+                            if (tkn == "grafica" .or. tkn == "continente" .or. tkn == "pais" .or. &
+                               tkn == "nombre" .or. tkn == "bandera" .or. tkn == "poblacion" .or. &
+                               tkn == "saturacion") then
+                               
+                                if (num_tokens <= max_tokens) then
+                                    !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
+                                    token_list(num_tokens) = trim(tkn)
+                                    !print *, 'Token añadido a la lista:', token_list(num_tokens)
+                                else
+                                    print *, "Error: Se ha alcanzado el límite máximo de tokens."
+                                end if
+
                             else
-                                print *, "Error: Se ha alcanzado el límite máximo de tokens."
+                                ! Error de token
+                                numErrores = numErrores + 1
+                                errores(numErrores) = ErrorInfo(tkn, "Error de token", columna, linea)
+                                if (num_tokens <= max_tokens) then
+                                    !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
+                                    token_list(num_tokens) = trim(tkn)
+                                    !print *, 'Token añadido a la lista:', token_list(num_tokens)
+                                else
+                                    print *, "Error: Se ha alcanzado el límite máximo de tokens."
+                                end if
                             end if
                             tkn = " "  ! Reiniciar token después de agregar
                             print *, 'Token reseteado'
@@ -150,7 +198,7 @@ program analizador_lexico
                     else
                     ! Error de token
                         numErrores = numErrores + 1
-                        errores(numErrores,:) = (/ ichar(char),69, columna, linea /)
+                        errores(numErrores) = ErrorInfo(char, "caracter no pertecene", columna, linea)
                         columna = columna + 1
                         estado = 1
                     
@@ -158,7 +206,7 @@ program analizador_lexico
                     puntero = puntero + 1 ! Avanza un carácter
                 case (2)
                 ! Estado para manejar símbolos
-                    if (any(char == S)) then
+                    if (any(char == S)) then    
                         columna = columna + 1
                         estado = 3
                         ! agregar el char
@@ -182,7 +230,7 @@ program analizador_lexico
                     else
                     ! Error de token
                         numErrores = numErrores + 1
-                        errores(numErrores,:) = (/ ichar(char),69, columna, linea /)
+                        errores(numErrores) = ErrorInfo(char, "caracter no pertecene", columna, linea)
                         columna = columna + 1
                         estado = 1
                     
@@ -207,12 +255,29 @@ program analizador_lexico
                         ! Agregar el token actual si no está vacío
                         if (len_trim(tkn) > 0) then
                             num_tokens = num_tokens + 1
-                            if (num_tokens <= max_tokens) then
-                                !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
-                                token_list(num_tokens) = trim(tkn)
-                                !print *, 'Token añadido a la lista:', token_list(num_tokens)
+                            if (tkn == "grafica" .or. tkn == "continente" .or. tkn == "pais" .or. &
+                               tkn == "nombre" .or. tkn == "bandera" .or. tkn == "poblacion" .or. &
+                               tkn == "saturacion") then
+                               
+                                if (num_tokens <= max_tokens) then
+                                    !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
+                                    token_list(num_tokens) = trim(tkn)
+                                    !print *, 'Token añadido a la lista:', token_list(num_tokens)
+                                else
+                                    print *, "Error: Se ha alcanzado el límite máximo de tokens."
+                                end if
+
                             else
-                                print *, "Error: Se ha alcanzado el límite máximo de tokens."
+                                ! Error de token
+                                numErrores = numErrores + 1
+                                errores(numErrores) = ErrorInfo(tkn, "Error de token", columna, linea)
+                                if (num_tokens <= max_tokens) then
+                                    !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
+                                    token_list(num_tokens) = trim(tkn)
+                                    !print *, 'Token añadido a la lista:', token_list(num_tokens)
+                                else
+                                    print *, "Error: Se ha alcanzado el límite máximo de tokens."
+                                end if
                             end if
                             tkn = " "  ! Reiniciar token después de agregar
                             print *, 'Token reseteado'
@@ -226,20 +291,44 @@ program analizador_lexico
                         ! Agregar el token actual si no está vacío
                         if (len_trim(tkn) > 0) then
                             num_tokens = num_tokens + 1
-                            if (num_tokens <= max_tokens) then
-                                !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
-                                token_list(num_tokens) = trim(tkn)
-                                !print *, 'Token añadido a la lista:', token_list(num_tokens)
+                            if (tkn == "grafica" .or. tkn == "continente" .or. tkn == "pais" .or. &
+                               tkn == "nombre" .or. tkn == "bandera" .or. tkn == "poblacion" .or. &
+                               tkn == "saturacion") then
+                               
+                                if (num_tokens <= max_tokens) then
+                                    !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
+                                    token_list(num_tokens) = trim(tkn)
+                                    !print *, 'Token añadido a la lista:', token_list(num_tokens)
+                                else
+                                    print *, "Error: Se ha alcanzado el límite máximo de tokens."
+                                end if
+
                             else
-                                print *, "Error: Se ha alcanzado el límite máximo de tokens."
+                                ! Error de token
+                                numErrores = numErrores + 1
+                                errores(numErrores) = ErrorInfo(tkn, "Error de token", columna, linea)
+                                if (num_tokens <= max_tokens) then
+                                    !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
+                                    token_list(num_tokens) = trim(tkn)
+                                    !print *, 'Token añadido a la lista:', token_list(num_tokens)
+                                else
+                                    print *, "Error: Se ha alcanzado el límite máximo de tokens."
+                                end if
                             end if
                             tkn = " "  ! Reiniciar token después de agregar
                             print *, 'Token reseteado'
                         else
                             print *, 'No se agregó el token ya que estaba vacío.'
                         end if
-                    end if
-                    puntero = puntero + 1
+                    else
+                    ! Error de token
+                        numErrores = numErrores + 1
+                        errores(numErrores) = ErrorInfo(char, "caracter no pertecene", columna, linea)
+                        columna = columna + 1
+                        estado = 1
+                    
+                    end if        
+                    puntero = puntero + 1 ! Avanza un carácter
                 case (4)
                     ! Continuamos leyendo tokens (letras minúsculas)
                     if (any(char == C)) then
@@ -271,11 +360,10 @@ program analizador_lexico
                         else
                             print *, 'No se agregó el token ya que estaba vacío.'
                         end if
-                        puntero = puntero + 1
                     else
                     ! Error de token
                         numErrores = numErrores + 1
-                        errores(numErrores,:) = (/ ichar(char),69, columna, linea /)
+                        errores(numErrores) = ErrorInfo(char, "caracter no pertecene", columna, linea)
                         columna = columna + 1
                         estado = 1
                     
@@ -295,65 +383,156 @@ program analizador_lexico
                         columna = columna + 1
                         estado = 3
                         !agregar a tabla de tokens el tkn y el char
-                        num_tokens = num_tokens + 1
                         ! Agregar el token actual si no está vacío
                         if (len_trim(tkn) > 0) then
                             num_tokens = num_tokens + 1
-                            if (num_tokens <= max_tokens) then
-                                !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
-                                token_list(num_tokens) = trim(tkn)
-                                !print *, 'Token añadido a la lista:', token_list(num_tokens)
-                            else
-                                print *, "Error: Se ha alcanzado el límite máximo de tokens."
+                            
+                            ! Inicializamos la variable para verificar si es solo números
+                            solo_numeros = .true.
+
+                            ! Inicializamos la variable para verificar si el token termina con '%'
+                            tiene_porcentaje = .false.
+
+                            ! Verificar si el token termina con '%'
+                            if (tkn(len_trim(tkn):len_trim(tkn)) == '%') then
+                                tiene_porcentaje = .true.
+                                ! Quitar el '%' temporalmente para verificar si el resto son números
+                                tkn = tkn(1:len_trim(tkn) - 1)
                             end if
+
+                            ! Recorrer cada carácter de tkn(ya sin contener el %)
+                            do t = 1, len_trim(tkn)
+                                ! Obtener el valor ASCII del carácter actual
+                                ascii_val = ichar(tkn(t:t))
+                                
+                                ! Verificar si el carácter no es un número (ASCII 48-57 corresponden a '0'-'9')
+                                if (ascii_val < 48 .or. ascii_val > 57) then
+                                    solo_numeros = .false.
+                                    exit  ! Salir del bucle, ya que encontramos un carácter no numérico
+                                end if
+                            end do
+                            if (solo_numeros) then
+                                if (tiene_porcentaje) then
+                                    tkn= trim(tkn)//'%'
+                                    if (num_tokens <= max_tokens) then
+                                        !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
+                                        token_list(num_tokens) = trim(tkn)
+                                        !print *, 'Token añadido a la lista:', token_list(num_tokens)
+                                    else
+                                        print *, "Error: Se ha alcanzado el límite máximo de tokens."
+                                    end if
+
+
+                                else
+                                    if (num_tokens <= max_tokens) then
+                                        !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
+                                        token_list(num_tokens) = trim(tkn)
+                                        !print *, 'Token añadido a la lista:', token_list(num_tokens)
+                                    else
+                                        print *, "Error: Se ha alcanzado el límite máximo de tokens."
+                                    end if
+                                end if
+                            else
+                                if (tiene_porcentaje) then 
+                                    tkn= trim(tkn)//'%'
+                                    numErrores = numErrores + 1
+                                    errores(numErrores) = ErrorInfo(tkn, "Error de token", columna, linea)
+                                else
+                                    numErrores = numErrores + 1
+                                    errores(numErrores) = ErrorInfo(tkn, "Error de token", columna, linea)
+                                end if
+                            end if
+
                             tkn = " "  ! Reiniciar token después de agregar
                             print *, 'Token reseteado'
                         else
                             print *, 'No se agregó el token ya que estaba vacío.'
                         end if
-                        puntero = puntero + 1
                     else
                     ! Error de token
                         numErrores = numErrores + 1
-                        errores(numErrores,:) = (/ ichar(char),69, columna, linea /)
+                        errores(numErrores) = ErrorInfo(char, "caracter no pertecene", columna, linea)
                         columna = columna + 1
-                        estado = 1
+                        estado = 5
                     
                     end if        
                     puntero = puntero + 1 ! Avanza un carácter
             end select
         end if
-        
     end do
-     
-    ! Imprimir tabla de tokens
+    ! Si hay errores, se crea el archivo HTML
+    if (numErrores > 0) then
+      call generar_html_errores(numErrores, errores)
+    else
+        print *, "No hay errores en el código."
+    end if
+   
+   
+
+     ! Imprimir tabla de tokens
     print *, "Tokens extraidos:"
     do i = 1, num_tokens
         print *, i, trim(token_list(i))
     end do
-    ! Mostrar errores si hay alguno.
-    if (numErrores > 0 ) then
-   
-       do i=1, numErrores 
-            char_error = achar(errores(i,1))
-            print *, "Error en caracter: ", char_error, " Linea: ", errores(i,4), "Columna: ", errores(i,3)
-        end do
-    else 
-        print *, trim("No hubieron Errores")
-    end if
+    
+    contains
 
-contains
-    logical function es_ortografia_correcta(token)
-        character(len=*), intent(in) :: token
-        integer :: i
-        
-        es_ortografia_correcta = .false.
-        
-        do i = 1, size(diccionario)
-            if (trim(token) == diccionario(i)) then
-                es_ortografia_correcta = .true.
-                return
+        subroutine generar_html_errores(numErrores, errores)
+            integer, intent(in) :: numErrores
+            type(ErrorInfo), intent(in) :: errores(:)
+            character(len=100000) :: html_content
+            character(len=100) :: str_descripcion, str_columna, str_linea,char_error
+
+            integer :: file_unit, ios, i
+
+                ! Si hay errores, se crea el archivo HTML
+            if (numErrores > 0) then
+            ! Abrir el archivo para escribir
+                open(unit=file_unit, file="errores.html", status="replace", action="write", iostat=ios)
+                if (ios /= 0) then
+                    print *, "Error al crear el archivo HTML."
+                else
+                    ! Escribir la cabecera del HTML directamente al archivo
+                    write(file_unit, '(A)') '<!DOCTYPE html>' // new_line('a')
+                    write(file_unit, '(A)') '<html><head><style>' // new_line('a')
+                    write(file_unit, '(A)') 'table { font-family: Arial, sans-serif;'
+                    write(file_unit, '(A)') 'border-collapse: collapse; width: 100%; }' // new_line('a')
+                    write(file_unit, '(A)') 'td, th { border: 1px solid #dddddd; text-align: left; padding: 8px; }' // new_line('a')
+                        write(file_unit, '(A)') 'tr:nth-child(even) { background-color: #f2f2f2; }' // new_line('a')
+                    write(file_unit, '(A)') '</style></head><body><h2>Tabla de Errores</h2>' // new_line('a')
+                    write(file_unit, '(A)') '<table><tr><th>Carácter</th><th>Descripcion' 
+                    write(file_unit, '(A)') '</th><th>Columna</th><th>Línea</th></tr>' // new_line('a')
+
+                        ! Bucle para formatear cada código ASCII y cada columna
+
+                        ! Bucle para agregar filas a la tabla
+                    do i = 1, numErrores
+                        write(str_descripcion, '(A)') trim(errores(i)%descripcion)
+                        write(str_columna, '(I0)') errores(i)%columna
+                        write(str_linea, '(I0)')  errores(i)%linea
+                        write(char_error, '(A)') trim(errores(i)%caracter)
+                
+                            ! Escribir cada fila directamente al archivo
+
+                         write(file_unit, '(A)') '<tr><td>' // char_error // '</td><td>' // trim(str_descripcion) // & 
+                        '</td><td>' // trim(str_columna) // '</td><td>'&
+                        // trim(str_linea) // '</td></tr>' // new_line('a')
+                    end do
+
+                        ! Cerrar la tabla y el HTML
+                    write(file_unit, '(A)') '</table></body></html>'
+                    close(file_unit)
+                end if
+            else
+                print *, "No hay errores en el código."
             end if
-        end do
-        end function es_ortografia_correcta
+        end subroutine generar_html_errores
+
+        function itoa(num) result(str)
+            implicit none
+            integer, intent(in) :: num
+            character(len=20) :: str
+
+            write(str, '(I0)') num  ! Convierte el entero 'num' a cadena
+        end function itoa
 end program analizador_lexico

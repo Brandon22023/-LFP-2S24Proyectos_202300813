@@ -1,0 +1,12 @@
+Grafica:{
+	Nombre:"Modelo Continental Beta";
+	Continente:{
+	Nombre: "Asia";
+		Pais:{
+			Nombre:"Japon";
+			Poblacion: 2352342;
+			Saturacion:60%;
+			Bandera: "C:\ImagenesBanderas\bandera_Japon.jpg";
+		}
+	}
+}
