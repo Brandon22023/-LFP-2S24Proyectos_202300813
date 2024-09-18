@@ -1,11 +1,14 @@
 program analizador_lexico
     implicit none
-    integer :: i, len,linea,columna, estado, puntero, numErrores,file_unit,ios
+    integer :: i, len,linea,columna, estado, puntero, numErrores,file_unit,ios,numtkn
     integer :: espacio_texto, longitud
     character(len=10000) :: contenido, cadena, buffer
     integer :: dist, j
     character(len=1) :: char 
     character(len=100) :: tkn
+    character(len=1) :: tknpunto
+    character(len=1) :: tknllaves
+    character(len=1) :: tknpuntocoma
     character(len=1), dimension(26) :: A 
     character(len=1), dimension(26) :: M
     character(len=1), dimension(3) :: S 
@@ -14,7 +17,7 @@ program analizador_lexico
     character(len=1), dimension(1) :: P
     character(len=1), dimension(11) :: N
     character(len=12), dimension(7) :: diccionario
-    character(len=1) :: char_error
+    character(len=1) :: char_error, char_token
     character(len=10000) :: entrada
     integer, parameter :: max_tokens = 1000
     character(len=100), dimension(max_tokens) :: token_list
@@ -29,7 +32,14 @@ program analizador_lexico
         integer :: columna      ! Columna donde ocurrió el error
         integer :: linea        ! Línea donde ocurrió el error
     end type ErrorInfo
-    type(ErrorInfo), dimension(100) :: errores
+    type :: tokenInfo
+        character(len=100) :: caracter  ! caracter
+        character(len=100) :: descripcion  ! Descripción del error
+        integer :: columna      ! Columna donde ocurrió el error
+        integer :: linea        ! Línea donde ocurrió el error
+    end type tokenInfo
+    type(ErrorInfo), dimension(1000) :: errores
+    type(tokenInfo), dimension(10000) :: tokens
 
     A = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
     M = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
@@ -41,6 +51,7 @@ program analizador_lexico
     diccionario = ['grafica     ', 'nombre      ', 'continente  ', 'poblacion   ', 'saturacion  ', 'bandera     ', 'pais        ']
     estado = 0
     num_tokens = 0
+    numtkn= 0
     puntero = 1
     columna = 1
     linea = 1
@@ -95,6 +106,21 @@ program analizador_lexico
                     elseif(any(char == S)) then 
                         estado = 1
                         columna = columna + 1
+
+                        if (char == "{") then
+                            tknllaves = "{"
+                            numtkn = numtkn + 1
+                            tokens(numtkn) = tokenInfo(tknllaves, "llaves abiertas", columna, linea)
+                        elseif (char == "}") then
+                            tknllaves = "}"
+                            numtkn = numtkn + 1
+                            tokens(numtkn) = tokenInfo(tknllaves, "llaves cerradas", columna, linea)
+                        elseif (char == ";") then
+                            tknpuntocoma = ";"
+                            numtkn = numtkn + 1
+                            tokens(numtkn) = tokenInfo(tknpuntocoma, "punto y coma", columna, linea)
+                        else
+                        end if
                     else
                         ! Si el carácter no es una letra minuscula, se cuenta como error
                         numErrores = numErrores + 1
@@ -127,13 +153,16 @@ program analizador_lexico
                      ! Encontramos un símbolo, cambiamos al estado 2
                         columna = columna + 1
                         estado = 2
+                        
                         ! Agregar el token actual si no está vacío
                         if (len_trim(tkn) > 0) then
                             num_tokens = num_tokens + 1
                             if (tkn == "grafica" .or. tkn == "continente" .or. tkn == "pais" .or. &
                                tkn == "nombre" .or. tkn == "bandera" .or. tkn == "poblacion" .or. &
                                tkn == "saturacion") then
-                               
+
+                                numtkn = numtkn + 1
+                                tokens(numtkn) = tokenInfo(tkn, "Palabra reservada", columna, linea)
                                 if (num_tokens <= max_tokens) then
                                     !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
                                     token_list(num_tokens) = trim(tkn)
@@ -159,6 +188,9 @@ program analizador_lexico
                         else
                             print *, 'No se agregó el token ya que estaba vacío.'
                         end if
+                        tknpunto = ":"
+                        numtkn = numtkn + 1
+                        tokens(numtkn) = tokenInfo(tknpunto, "dos puntos", columna, linea)
                     elseif (any(char == S)) then
                      ! Encontramos un símbolo, cambiamos al estado 2
                         columna = columna + 1
@@ -169,7 +201,9 @@ program analizador_lexico
                             if (tkn == "grafica" .or. tkn == "continente" .or. tkn == "pais" .or. &
                                tkn == "nombre" .or. tkn == "bandera" .or. tkn == "poblacion" .or. &
                                tkn == "saturacion") then
-                               
+
+                                numtkn = numtkn + 1
+                                tokens(numtkn) = tokenInfo(tkn, "Palabra reservada", columna, linea)
                                 if (num_tokens <= max_tokens) then
                                     !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
                                     token_list(num_tokens) = trim(tkn)
@@ -195,6 +229,22 @@ program analizador_lexico
                         else
                             print *, 'No se agregó el token ya que estaba vacío.'
                         end if
+
+                        if (char == "{") then
+                            tknllaves = "{"
+                            numtkn = numtkn + 1
+                            tokens(numtkn) = tokenInfo(tknllaves, "llaves abiertas", columna, linea)
+                        elseif (char == "}") then
+                            tknllaves = "}"
+                            numtkn = numtkn + 1
+                            tokens(numtkn) = tokenInfo(tknllaves, "llaves cerradas", columna, linea)
+                        elseif (char == ";") then
+                            tknpuntocoma = ";"
+                            numtkn = numtkn + 1
+                            tokens(numtkn) = tokenInfo(tknpuntocoma, "punto y coma", columna, linea)
+                        else
+                        end if
+                        
                     else
                     ! Error de token
                         numErrores = numErrores + 1
@@ -210,6 +260,20 @@ program analizador_lexico
                         columna = columna + 1
                         estado = 3
                         ! agregar el char
+                        if (char == "{") then
+                            tknllaves = "{"
+                            numtkn = numtkn + 1
+                            tokens(numtkn) = tokenInfo(tknllaves, "llaves abiertas", columna, linea)
+                        elseif (char == "}") then
+                            tknllaves = "}"
+                            numtkn = numtkn + 1
+                            tokens(numtkn) = tokenInfo(tknllaves, "llaves cerradas", columna, linea)
+                        elseif (char == ";") then
+                            tknpuntocoma = ";"
+                            numtkn = numtkn + 1
+                            tokens(numtkn) = tokenInfo(tknpuntocoma, "punto y coma", columna, linea)
+                        else
+                        end if
                     
                     elseif (any(char == M)) then
                         estado = 2
@@ -258,6 +322,8 @@ program analizador_lexico
                             if (tkn == "grafica" .or. tkn == "continente" .or. tkn == "pais" .or. &
                                tkn == "nombre" .or. tkn == "bandera" .or. tkn == "poblacion" .or. &
                                tkn == "saturacion") then
+                                numtkn = numtkn + 1
+                                tokens(numtkn) = tokenInfo(tkn, "Palabra reservada", columna, linea)
                                
                                 if (num_tokens <= max_tokens) then
                                     !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
@@ -283,6 +349,20 @@ program analizador_lexico
                             print *, 'Token reseteado'
                         else
                             print *, 'No se agregó el token ya que estaba vacío.'
+                        end if
+                        if (char == "{") then
+                            tknllaves = "{"
+                            numtkn = numtkn + 1
+                            tokens(numtkn) = tokenInfo(tknllaves, "llaves abiertas", columna, linea)
+                        elseif (char == "}") then
+                            tknllaves = "}"
+                            numtkn = numtkn + 1
+                            tokens(numtkn) = tokenInfo(tknllaves, "llaves cerradas", columna, linea)
+                        elseif (char == ";") then
+                            tknpuntocoma = ";"
+                            numtkn = numtkn + 1
+                            tokens(numtkn) = tokenInfo(tknpuntocoma, "punto y coma", columna, linea)
+                        else
                         end if
                     elseif (any(char == P)) then
                      ! Encontramos un símbolo, cambiamos al estado 2
@@ -294,7 +374,9 @@ program analizador_lexico
                             if (tkn == "grafica" .or. tkn == "continente" .or. tkn == "pais" .or. &
                                tkn == "nombre" .or. tkn == "bandera" .or. tkn == "poblacion" .or. &
                                tkn == "saturacion") then
-                               
+
+                                numtkn = numtkn + 1
+                                tokens(numtkn) = tokenInfo(tkn, "Palabra reservada", columna, linea)
                                 if (num_tokens <= max_tokens) then
                                     !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
                                     token_list(num_tokens) = trim(tkn)
@@ -320,6 +402,10 @@ program analizador_lexico
                         else
                             print *, 'No se agregó el token ya que estaba vacío.'
                         end if
+                        
+                        tknpunto = ":"
+                        numtkn = numtkn + 1
+                        tokens(numtkn) = tokenInfo(tknpunto, "dos puntos", columna, linea)
                     else
                     ! Error de token
                         numErrores = numErrores + 1
@@ -348,6 +434,8 @@ program analizador_lexico
                         ! Agregar el token actual si no está vacío
                         if (len_trim(tkn) > 0) then
                             num_tokens = num_tokens + 1
+                            numtkn = numtkn + 1
+                            tokens(numtkn) = tokenInfo('"'//trim(tkn)//'"', "Cadena", columna, linea)
                             if (num_tokens <= max_tokens) then
                                 !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
                                 token_list(num_tokens) = trim(tkn)
@@ -359,6 +447,20 @@ program analizador_lexico
                             print *, 'Token reseteado'
                         else
                             print *, 'No se agregó el token ya que estaba vacío.'
+                        end if
+                        if (char == "{") then
+                            tknllaves = "{"
+                            numtkn = numtkn + 1
+                            tokens(numtkn) = tokenInfo(tknllaves, "llaves abiertas", columna, linea)
+                        elseif (char == "}") then
+                            tknllaves = "}"
+                            numtkn = numtkn + 1
+                            tokens(numtkn) = tokenInfo(tknllaves, "llaves cerradas", columna, linea)
+                        elseif (char == ";") then
+                            tknpuntocoma = ";"
+                            numtkn = numtkn + 1
+                            tokens(numtkn) = tokenInfo(tknpuntocoma, "punto y coma", columna, linea)
+                        else
                         end if
                     else
                     ! Error de token
@@ -414,6 +516,8 @@ program analizador_lexico
                             if (solo_numeros) then
                                 if (tiene_porcentaje) then
                                     tkn= trim(tkn)//'%'
+                                    numtkn = numtkn + 1
+                                    tokens(numtkn) = tokenInfo(tkn, "porcentaje", columna, linea)
                                     if (num_tokens <= max_tokens) then
                                         !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
                                         token_list(num_tokens) = trim(tkn)
@@ -424,6 +528,8 @@ program analizador_lexico
 
 
                                 else
+                                    numtkn = numtkn + 1
+                                    tokens(numtkn) = tokenInfo(tkn, "numeros", columna, linea)
                                     if (num_tokens <= max_tokens) then
                                         !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
                                         token_list(num_tokens) = trim(tkn)
@@ -448,6 +554,21 @@ program analizador_lexico
                         else
                             print *, 'No se agregó el token ya que estaba vacío.'
                         end if
+                        
+                        if (char == "{") then
+                            tknllaves = "{"
+                            numtkn = numtkn + 1
+                            tokens(numtkn) = tokenInfo(tknllaves, "llaves abiertas", columna, linea)
+                        elseif (char == "}") then
+                            tknllaves = "}"
+                            numtkn = numtkn + 1
+                            tokens(numtkn) = tokenInfo(tknllaves, "llaves cerradas", columna, linea)
+                        elseif (char == ";") then
+                            tknpuntocoma = ";"
+                            numtkn = numtkn + 1
+                            tokens(numtkn) = tokenInfo(tknpuntocoma, "punto y coma", columna, linea)
+                        else
+                        end if
                     else
                     ! Error de token
                         numErrores = numErrores + 1
@@ -465,6 +586,12 @@ program analizador_lexico
       call generar_html_errores(numErrores, errores)
     else
         print *, "No hay errores en el código."
+    end if
+
+    if (numtkn > 0) then
+      call generar_html_tokens(numtkn, tokens)
+    else
+        print *, "No hay errores en el código, por lo que no es posible generar el html de tokens."
     end if
    
    
@@ -527,6 +654,57 @@ program analizador_lexico
                 print *, "No hay errores en el código."
             end if
         end subroutine generar_html_errores
+
+        subroutine generar_html_tokens(numtkn, tokens)
+            integer, intent(in) :: numtkn
+            type(tokenInfo), intent(in) :: tokens(:)
+            character(len=100000) :: html_content
+            character(len=100) :: str_descripcion, str_columna, str_linea,char_token
+
+            integer :: file_unit, ios, i
+
+                ! Si hay errores, se crea el archivo HTML
+            if (numtkn > 0) then
+            ! Abrir el archivo para escribir
+                open(unit=file_unit, file="tokens.html", status="replace", action="write", iostat=ios)
+                if (ios /= 0) then
+                    print *, "Error al crear el archivo HTML."
+                else
+                    ! Escribir la cabecera del HTML directamente al archivo
+                    write(file_unit, '(A)') '<!DOCTYPE html>' // new_line('a')
+                    write(file_unit, '(A)') '<html><head><style>' // new_line('a')
+                    write(file_unit, '(A)') 'table { font-family: Arial, sans-serif;'
+                    write(file_unit, '(A)') 'border-collapse: collapse; width: 100%; }' // new_line('a')
+                    write(file_unit, '(A)') 'td, th { border: 1px solid #dddddd; text-align: left; padding: 8px; }' // new_line('a')
+                        write(file_unit, '(A)') 'tr:nth-child(even) { background-color: #f2f2f2; }' // new_line('a')
+                    write(file_unit, '(A)') '</style></head><body><h2>Tabla de Tokens Aceptables</h2>' // new_line('a')
+                    write(file_unit, '(A)') '<table><tr><th>Carácter</th><th>Descripcion' 
+                    write(file_unit, '(A)') '</th><th>Columna</th><th>Línea</th></tr>' // new_line('a')
+
+                        ! Bucle para formatear cada código ASCII y cada columna
+
+                        ! Bucle para agregar filas a la tabla
+                    do i = 1, numtkn
+                        write(str_descripcion, '(A)') trim(tokens(i)%descripcion)
+                        write(str_columna, '(I0)') tokens(i)%columna
+                        write(str_linea, '(I0)')  tokens(i)%linea
+                        write(char_token, '(A)') trim(tokens(i)%caracter)
+                
+                            ! Escribir cada fila directamente al archivo
+
+                         write(file_unit, '(A)') '<tr><td>' // char_token // '</td><td>' // trim(str_descripcion) // & 
+                        '</td><td>' // trim(str_columna) // '</td><td>'&
+                        // trim(str_linea) // '</td></tr>' // new_line('a')
+                    end do
+
+                        ! Cerrar la tabla y el HTML
+                    write(file_unit, '(A)') '</table></body></html>'
+                    close(file_unit)
+                end if
+            else
+                print *, "No hay errores en el código."
+            end if
+        end subroutine generar_html_tokens
 
         function itoa(num) result(str)
             implicit none
