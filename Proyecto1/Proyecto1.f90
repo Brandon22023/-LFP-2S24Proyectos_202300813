@@ -1,4 +1,16 @@
+module datos_globales
+    implicit none
+    integer :: num_continentes
+    integer :: num_paises
+    integer :: num_saturacion
+    integer :: contador_continente
+    integer :: contador_pais
+    character(len=20) :: continentes(20) ! Arreglo de 20 continentes con longitud de 20 caracteres
+    character(len=20) :: paises(100) ! Arreglo de 100 paises con longitud de 20 caracteres
+    character(len=20) :: saturacion(100)
+end module datos_globales
 program analizador_lexico
+    use datos_globales
     implicit none
     integer :: i, len,linea,columna, estado, puntero, numErrores,file_unit,ios,numtkn
     integer :: espacio_texto, longitud
@@ -21,9 +33,11 @@ program analizador_lexico
     character(len=10000) :: entrada
     integer, parameter :: max_tokens = 1000
     character(len=100), dimension(max_tokens) :: token_list
-    integer :: num_tokens
     logical :: solo_numeros, tiene_porcentaje
     integer :: t, ascii_val
+    
+    integer :: num_tokens
+
     
     
     type :: ErrorInfo
@@ -74,7 +88,7 @@ program analizador_lexico
         !print *, 'Código ASCII:', ichar(char), ' Línea:', linea, ' Columna:', columna
         !print *,  char, ' Linea:', linea, ' Columna:', columna
         !print *, char, ' Línea:', linea, ' Columna:', columna
-        !print *, char, " estado de contenido", estado
+        !print *,"TKN:", trim(tkn), "  ", estado
         !ichar es para el codigo ascii
         if (ichar(char) == 10) then
             ! Salto de línea (LF)
@@ -155,7 +169,7 @@ program analizador_lexico
                         estado = 2
                         
                         ! Agregar el token actual si no está vacío
-                        if (len_trim(tkn) > 0) then
+                        if (len_trim(tkn) > 0 .and. trim(tkn) /= " ") then
                             num_tokens = num_tokens + 1
                             if (tkn == "grafica" .or. tkn == "continente" .or. tkn == "pais" .or. &
                                tkn == "nombre" .or. tkn == "bandera" .or. tkn == "poblacion" .or. &
@@ -184,9 +198,9 @@ program analizador_lexico
                                 end if
                             end if
                             tkn = " "  ! Reiniciar token después de agregar
-                            print *, 'Token reseteado'
+                            !print *, 'Token reseteado'
                         else
-                            print *, 'No se agregó el token ya que estaba vacío.'
+                            !print *, 'No se agregó el token ya que estaba vacío.'
                         end if
                         tknpunto = ":"
                         numtkn = numtkn + 1
@@ -196,7 +210,7 @@ program analizador_lexico
                         columna = columna + 1
                         estado = 3
                         ! Agregar el token actual si no está vacío
-                        if (len_trim(tkn) > 0) then
+                        if (len_trim(tkn) > 0 .and. trim(tkn) /= " ") then
                             num_tokens = num_tokens + 1
                             if (tkn == "grafica" .or. tkn == "continente" .or. tkn == "pais" .or. &
                                tkn == "nombre" .or. tkn == "bandera" .or. tkn == "poblacion" .or. &
@@ -225,9 +239,9 @@ program analizador_lexico
                                 end if
                             end if
                             tkn = " "  ! Reiniciar token después de agregar
-                            print *, 'Token reseteado'
+                            !print *, 'Token reseteado'
                         else
-                            print *, 'No se agregó el token ya que estaba vacío.'
+                            !print *, 'No se agregó el token ya que estaba vacío.'
                         end if
 
                         if (char == "{") then
@@ -317,7 +331,7 @@ program analizador_lexico
                         !agregar a tabla de tokens el tkn y el char
                         num_tokens = num_tokens + 1
                         ! Agregar el token actual si no está vacío
-                        if (len_trim(tkn) > 0) then
+                        if (len_trim(tkn) > 0 .and. trim(tkn) /= " ") then
                             num_tokens = num_tokens + 1
                             if (tkn == "grafica" .or. tkn == "continente" .or. tkn == "pais" .or. &
                                tkn == "nombre" .or. tkn == "bandera" .or. tkn == "poblacion" .or. &
@@ -346,9 +360,9 @@ program analizador_lexico
                                 end if
                             end if
                             tkn = " "  ! Reiniciar token después de agregar
-                            print *, 'Token reseteado'
+                            !print *, 'Token reseteado'
                         else
-                            print *, 'No se agregó el token ya que estaba vacío.'
+                            !print *, 'No se agregó el token ya que estaba vacío.'
                         end if
                         if (char == "{") then
                             tknllaves = "{"
@@ -369,7 +383,7 @@ program analizador_lexico
                         columna = columna + 1
                         estado = 2
                         ! Agregar el token actual si no está vacío
-                        if (len_trim(tkn) > 0) then
+                        if (len_trim(tkn) > 0 .and. trim(tkn) /= " ") then
                             num_tokens = num_tokens + 1
                             if (tkn == "grafica" .or. tkn == "continente" .or. tkn == "pais" .or. &
                                tkn == "nombre" .or. tkn == "bandera" .or. tkn == "poblacion" .or. &
@@ -398,9 +412,9 @@ program analizador_lexico
                                 end if
                             end if
                             tkn = " "  ! Reiniciar token después de agregar
-                            print *, 'Token reseteado'
+                            !print *, 'Token reseteado'
                         else
-                            print *, 'No se agregó el token ya que estaba vacío.'
+                            !print *, 'No se agregó el token ya que estaba vacío.'
                         end if
                         
                         tknpunto = ":"
@@ -432,7 +446,7 @@ program analizador_lexico
                         !agregar a tabla de tokens el tkn y el char
                         num_tokens = num_tokens + 1
                         ! Agregar el token actual si no está vacío
-                        if (len_trim(tkn) > 0) then
+                        if (len_trim(tkn) > 0 .and. trim(tkn) /= " ") then
                             num_tokens = num_tokens + 1
                             numtkn = numtkn + 1
                             tokens(numtkn) = tokenInfo('"'//trim(tkn)//'"', "Cadena", columna, linea)
@@ -444,9 +458,9 @@ program analizador_lexico
                                 print *, "Error: Se ha alcanzado el límite máximo de tokens."
                             end if
                             tkn = " "  ! Reiniciar token después de agregar
-                            print *, 'Token reseteado'
+                            !print *, 'Token reseteado'
                         else
-                            print *, 'No se agregó el token ya que estaba vacío.'
+                            !print *, 'No se agregó el token ya que estaba vacío.'
                         end if
                         if (char == "{") then
                             tknllaves = "{"
@@ -486,7 +500,7 @@ program analizador_lexico
                         estado = 3
                         !agregar a tabla de tokens el tkn y el char
                         ! Agregar el token actual si no está vacío
-                        if (len_trim(tkn) > 0) then
+                        if (len_trim(tkn) > 0 .and. trim(tkn) /= " ") then
                             num_tokens = num_tokens + 1
                             
                             ! Inicializamos la variable para verificar si es solo números
@@ -515,9 +529,11 @@ program analizador_lexico
                             end do
                             if (solo_numeros) then
                                 if (tiene_porcentaje) then
+                                    numtkn = numtkn + 1
+                                    tokens(numtkn) = tokenInfo(tkn, "numeros", columna, linea)
                                     tkn= trim(tkn)//'%'
                                     numtkn = numtkn + 1
-                                    tokens(numtkn) = tokenInfo(tkn, "porcentaje", columna, linea)
+                                    tokens(numtkn) = tokenInfo("%", "porcentaje", columna, linea)
                                     if (num_tokens <= max_tokens) then
                                         !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
                                         token_list(num_tokens) = trim(tkn)
@@ -550,9 +566,9 @@ program analizador_lexico
                             end if
 
                             tkn = " "  ! Reiniciar token después de agregar
-                            print *, 'Token reseteado'
+                            !print *, 'Token reseteado'
                         else
-                            print *, 'No se agregó el token ya que estaba vacío.'
+                            !print *, 'No se agregó el token ya que estaba vacío.'
                         end if
                         
                         if (char == "{") then
@@ -585,22 +601,28 @@ program analizador_lexico
     if (numErrores > 0) then
       call generar_html_errores(numErrores, errores)
     else
-        print *, "No hay errores en el código."
+        !print *, "No hay errores en el código."
     end if
 
     if (numtkn > 0) then
       call generar_html_tokens(numtkn, tokens)
     else
-        print *, "No hay errores en el código, por lo que no es posible generar el html de tokens."
+        !print *, "No hay errores en el código, por lo que no es posible generar el html de tokens."
     end if
+
+    call generar_dot()
+
+
    
    
 
      ! Imprimir tabla de tokens
-    print *, "Tokens extraidos:"
+    !print *, "Tokens extraidos:"
     do i = 1, num_tokens
-        print *, i, trim(token_list(i))
+        !print *, i, trim(token_list(i))
     end do
+
+    
     
     contains
 
@@ -651,7 +673,7 @@ program analizador_lexico
                     close(file_unit)
                 end if
             else
-                print *, "No hay errores en el código."
+                !print *, "No hay errores en el código."
             end if
         end subroutine generar_html_errores
 
@@ -678,7 +700,7 @@ program analizador_lexico
                     write(file_unit, '(A)') 'td, th { border: 1px solid #dddddd; text-align: left; padding: 8px; }' // new_line('a')
                         write(file_unit, '(A)') 'tr:nth-child(even) { background-color: #f2f2f2; }' // new_line('a')
                     write(file_unit, '(A)') '</style></head><body><h2>Tabla de Tokens Aceptables</h2>' // new_line('a')
-                    write(file_unit, '(A)') '<table><tr><th>Carácter</th><th>Descripcion' 
+                    write(file_unit, '(A)') '<table><tr><th>Lexema</th><th>Tipo' 
                     write(file_unit, '(A)') '</th><th>Columna</th><th>Línea</th></tr>' // new_line('a')
 
                         ! Bucle para formatear cada código ASCII y cada columna
@@ -702,9 +724,159 @@ program analizador_lexico
                     close(file_unit)
                 end if
             else
-                print *, "No hay errores en el código."
+                !print *, "No hay errores en el código."
             end if
         end subroutine generar_html_tokens
+
+
+        subroutine generar_dot()
+            use datos_globales
+            implicit none
+            integer :: i,k,l, real_saturacion
+            character(len=100) :: i_string
+            character(len=100) :: j_string  ! Tamaño ajustable según sea necesario
+            character(len=100) :: C_string  ! Tamaño ajustable según sea necesario
+            character(len=100) :: Contador_continente_string  ! Tamaño ajustable según sea necesario
+            character(len=20) :: saturacion_sin_porcentaje
+            ! Abrimos el archivo para escribir el código DOT
+            open(unit=10, file='grafo.dot', status='replace')
+
+            ! Escribimos el encabezado del archivo DOT
+            write(10, '(A)') 'digraph Grafo {'
+            write(10, '(A)') 'node [shape=box, style=filled];'
+            
+            ! Nodo raíz
+            write(10, '(A)') 'n0 [label= "' // trim(token_list(4)) // '", shape=diamond];'
+            
+            num_continentes = 0
+            do i = 1, num_tokens - 3
+                if (trim(token_list(i)) == 'continente') then  ! Comparamos cadenas eliminando espacios en blanco
+                    if (num_continentes < 10) then  ! Aseguramos que no sobrepase el tamaño del arreglo continentes
+                        num_continentes = num_continentes + 1
+                        continentes(num_continentes) = token_list(i + 3)
+                        print *, num_continentes, 'Continente extraido:', trim(continentes(num_continentes))
+                    else
+                        print *, "Se ha alcanzado el máximo número de continentes."
+                        exit  ! Salimos del bucle si ya tenemos el máximo de continentes
+                    end if
+                end if
+            end do
+
+            do i = 1, num_continentes
+                print *, i, trim(continentes(i))
+            end do
+            num_paises = 0
+            do i = 1, num_tokens
+                if (trim(token_list(i)) == 'continente') then  ! Detectamos un continente
+                    num_paises = num_paises + 1
+                    paises(num_paises) = token_list(i)  ! Asumimos que token_list(i+2) es el nombre del continente
+                    print *, num_paises, ' Continente extraido:', trim(paises(num_paises))
+
+                    ! Procesamos los países dentro de este continente
+                    do j = i+3, num_tokens  ! Avanzamos para empezar a buscar países dentro del continente
+                        if (trim(token_list(j)) == 'pais') then
+                            ! Buscamos el nombre del país
+                            do k = j+1, num_tokens
+                                if (trim(token_list(k)) == 'nombre') then
+                                    num_paises = num_paises + 1
+                                    paises(num_paises) = token_list(k+2)  ! Asumimos que token_list(k+2) es el nombre del país
+                                    print *, num_paises, ' Pais extraido:', trim(paises(num_paises))
+                                    exit  ! Salimos del bucle interno al encontrar el nombre del país
+                                end if
+                            end do
+                        elseif (trim(token_list(j)) == 'continente') then
+                            exit  ! Si encontramos otro continente, salimos del bucle
+                        end if
+                    end do
+                end if
+            end do
+
+            do i = 1, num_paises
+                print *, i, trim(paises(i))
+            end do
+
+            num_saturacion = 0
+            do i = 1, num_tokens
+                if (trim(token_list(i)) == 'saturacion') then  ! Comparamos cadenas eliminando espacios en blanco
+                    if (num_saturacion < 100) then  ! Aseguramos que no sobrepase el tamaño del arreglo continentes
+                        num_saturacion = num_saturacion + 1
+                        saturacion(num_saturacion) = token_list(i + 1)
+                        print *, num_saturacion, 'Saturacion extraida:', trim(saturacion(num_saturacion))
+                    else
+                        print *, "Se ha alcanzado el máximo número de saturaciones."
+                        exit  ! Salimos del bucle si ya tenemos el máximo de continentes
+                    end if
+                end if
+            end do
+
+            do i = 1, num_saturacion
+                print *, i, trim(saturacion(i))
+            end do
+            !nodo continentes
+            do i = 1, num_continentes
+                write(i_string, '(I0)') i
+                write(10, '(A)') 'n' // trim(adjustl(i_string)) // ' [label="' // trim(continentes(i)) // '", fillcolor="#FF9900"];'
+            end do
+            ! Nodos hojas (países)
+            j=0
+            do i = 1, num_paises
+                if (trim(paises(i)) /= 'continente') then
+                    ! Determinamos el color basado en el valor de saturacion(j)
+                    j = j + 1
+                    ! Eliminar el símbolo de porcentaje y convertir el valor a real
+                    real_saturacion = 0  ! Inicializamos a un valor por defecto
+                    saturacion_sin_porcentaje = trim(adjustl(saturacion(j)))
+                    saturacion_sin_porcentaje = saturacion_sin_porcentaje(1:len_trim(saturacion_sin_porcentaje)-1)  ! Eliminar el último carácter (%)
+                    read(saturacion_sin_porcentaje, *) real_saturacion  ! Convertir a número real
+
+                    ! Determinamos el color basado en el valor de real_saturacion
+                    if (real_saturacion >= 0 .and. real_saturacion <= 15) then
+                        C_string = '#FFFFFF'  ! Blanco
+                    elseif (real_saturacion > 15 .and. real_saturacion <= 30) then
+                        C_string = '#0000FF'  ! Azul
+                    elseif (real_saturacion > 30 .and. real_saturacion <= 45) then
+                        C_string = '#00FF00'  ! Verde
+                    elseif (real_saturacion > 45 .and. real_saturacion <= 60) then
+                        C_string = '#FFFF00'  ! Amarillo
+                    elseif (real_saturacion > 60 .and. real_saturacion <= 75) then
+                        C_string = '#FF9900'  ! Anaranjado
+                    elseif (real_saturacion > 75 .and. real_saturacion <= 100) then
+                        C_string = '#FF0000'  ! Rojo
+                    end if
+
+                    write(j_string, '(I0)') j+num_continentes
+                    write(10, '(A)') 'n' // trim(adjustl(j_string))// ' [label="' // trim(paises(i)) // '\n' // trim(saturacion(j)) // '", fillcolor="' // trim(adjustl(C_string)) // '"];'
+                else 
+                    
+                end if    
+            end do
+            ! Enlaces entre nodos
+            do i = 1, num_continentes
+                write(i_string, '(I0)') i
+                write(10, '(A)') 'n0 -> n' // trim(i_string) // ';'
+            end do
+            !write(10, '(A)') 'n0 -> n2;'
+
+            j=0
+            contador_continente = 0
+            do i = 1, num_paises
+                if (trim(paises(i)) /= 'continente') then
+                    ! Determinamos el color basado en el valor de saturacion(j)
+                    j = j + 1
+                    write(j_string, '(I0)') j+num_continentes
+                    write(Contador_continente_string, '(I0)') contador_continente
+                    write(10, '(A)') 'n' // trim(Contador_continente_string) //  ' -> n' // trim(adjustl(j_string))// ';'
+                else 
+                    contador_continente = contador_continente + 1
+                end if    
+            end do
+            ! Cierre del archivo DOT
+            write(10, '(A)') '}'
+            
+            close(10)
+            
+            print *, 'Archivo DOT generado: grafo.dot'
+        end subroutine generar_dot
 
         function itoa(num) result(str)
             implicit none

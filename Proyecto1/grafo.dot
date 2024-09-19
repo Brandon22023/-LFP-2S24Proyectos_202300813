@@ -1,0 +1,20 @@
+digraph Grafo {
+node [shape=box, style=filled];
+n0 [label= "nombredegrafico", shape=diamond];
+n1 [label="Asia", fillcolor="#FF9900"];
+n2 [label="America", fillcolor="#FF9900"];
+n3 [label="Japon\n80%", fillcolor="#FF0000"];
+n4 [label="China\n95%", fillcolor="#FF0000"];
+n5 [label="Korea\n40%", fillcolor="#00FF00"];
+n6 [label="Canada\n65%", fillcolor="#FF9900"];
+n7 [label="Guatemala\n40%", fillcolor="#00FF00"];
+n8 [label="Chile\n60%", fillcolor="#FFFF00"];
+n0 -> n1;
+n0 -> n2;
+n1 -> n3;
+n1 -> n4;
+n1 -> n5;
+n2 -> n6;
+n2 -> n7;
+n2 -> n8;
+}

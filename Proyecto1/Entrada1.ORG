@@ -1,0 +1,60 @@
+Grafica:{
+	Nombre: "5rchiv0 d3 3ntr4d4 #1 ";
+	Continente:{
+		Nombre: "africa";
+			Pais:{
+				 Nombre: "Argelia"; 
+				 Poblacion: 38700000; 
+				 Saturacion: 32%; 
+				 Bandera: "C:\Bandera\dz.png";
+			}
+			Pais:{
+				 Nombre: "Zimbabue"; 
+				 Poblacion: 12973808; 
+				 Saturacion: 7%; 
+				 Bandera: "C:\Bandera\zw.png";
+			}
+			Pais:{
+				 Nombre: "Tunez"; 
+				 Poblacion: 10886500; 
+				 Saturacion: 50%; 
+				 Bandera: "C:\Bandera\tn.png";
+			}
+			Pais:{
+				 Nombre: "Egipto"; 
+				 Poblacion: 86127000; 
+				 Saturacion: 21%; 
+				 Bandera: "C:\Bandera\eg.png";
+			}
+	}
+	Continente:{
+		Nombre: "america del norte";
+			Pais:{
+				 Nombre: "Jamaica"; 
+				 Poblacion: 2711476; 
+				 Saturacion: 70%; 
+				 Bandera: "C:\Bandera\jm.png";
+			}
+			Pais:{
+				 Nombre: "Belice"; 
+				 Poblacion: 349728; 
+				 Saturacion: 13%; 
+				 Bandera: "C:\Bandera\bz.png";
+			}
+	}
+	Continente:{
+		Nombre: "America Del Sur";
+			Pais:{
+				 Nombre: "Brasil"; 
+				 Poblacion: 201032714; 
+				 Saturacion: 19%; 
+				 Bandera: "C:\Bandera\br.png";
+			}
+			Pais:{
+				 Nombre: "Paraguay"; 
+				 Poblacion: 6783374; 
+				 Saturacion: 83%; 
+				 Bandera: "C:\Bandera\py.png";
+			}
+	}
+}

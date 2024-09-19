@@ -1,45 +1,45 @@
-Grafica:{
-	Nombre:"Modelo Continental";
-	Continente:{
-	Nombre: "Asia";
-		Pais:{
-			Nombre:"Japon";
-			Poblacion: 2352342;
-			Saturacion:44%;
-			Bandera: "C:\ImagenesBanderas\bandera_Japon.jpg";
+grafica:{
+	nombre:"Modelo Continental";
+	continente:{
+	nombre: "Asia";
+		pais:{
+			nombre:"Japon";
+			poblacion: 2352342;
+			saturacion:44%;
+			bandera: "C:\ImagenesBanderas\bandera_Japon.jpg";
 		}
-		Pais:{
-			Bandera: "C:\ImagenesBanderas\bandera_China.png";
-			Nombre:"China";
-			Poblacion:1350000000 ;
-			Saturacion:13%;
+		pais:{
+			bandera: "C:\ImagenesBanderas\bandera_China.png";
+			nombre:"China";
+			poblacion:1350000000 ;
+			saturacion:13%;
 		}
-		Pais:{
-			Saturacion:21%;
-			Poblacion: 2352342;
-			Nombre:"Korea";
-			Bandera: "C:\ImagenesBanderas\bandera_Korea.jpg";
+		pais:{
+			saturacion:21%;
+			poblacion: 2352342;
+			nombre:"Korea";
+			bandera: "C:\ImagenesBanderas\bandera_Korea.jpg";
 		}
 	}
-	Continente:{
-	Nombre: "America";
-		Pais:{
-			Nombre:"Canada";
-			Poblacion: 23423423;
-			Saturacion:74%;
-			Bandera: "C:\ImagenesBanderas\bandera_Canada.png";
+	continente:{
+	nombre: "America";
+		pais:{
+			nombre:"Canada";
+			poblacion: 23423423;
+			saturacion:74%;
+			bandera: "C:\ImagenesBanderas\bandera_Canada.png";
 		}
-		Pais:{
-			Poblacion: 17263239;
-			Nombre:"Guatemala";
-			Saturacion:87%;
-			Bandera: "C:\ImagenesBanderas\bandera_Guatemala.jpg";
+		pais:{
+			poblacion: 17263239;
+			nombre:"Guatemala";
+			saturacion:87%;
+			bandera: "C:\ImagenesBanderas\bandera_Guatemala.jpg";
 		}
-		Pais:{
-			Saturacion:13%;
-			Nombre:"Chile";
-			Poblacion: 235234234;
-			Bandera: "C:\ImagenesBanderas\bandera_Chile.jpg";
+		pais:{
+			saturacion:13%;
+			nombre:"Chile";
+			poblacion: 235234234;
+			bandera: "C:\ImagenesBanderas\bandera_Chile.jpg";
 		}
 	}
 }

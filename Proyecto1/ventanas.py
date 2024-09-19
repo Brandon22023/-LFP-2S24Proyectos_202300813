@@ -3,6 +3,7 @@ from tkinter import filedialog
 from tkinter import messagebox
 import os 
 import subprocess
+from PIL import Image, ImageTk
 def Abrir():
     
     Abrir = filedialog.askopenfilename(initialdir = "C:\\Users\\Marro\\Documents\\yon\\CUARTO SEMESTRE\\LAB LENGUAJES FORMALES\\-LFP-2S24Proyectos_202300813",title = "Elige un archivo",filetypes = (("archvios org","*.org"),("todos los archivos","*.*")))
@@ -14,6 +15,38 @@ def Abrir():
                 entrada.insert(END, leer)    # Insertamos el contenido del archivo en el TEXT
         except:
             print("Error al abrir el archivo")
+
+def mostrar_grafica():
+    os.system('dot -Tpng grafo.dot -o grafo.png')
+    ruta_imagen = "grafo.png"  # Ruta de la imagen generada por el programa Fortran
+    if os.path.exists(ruta_imagen):
+        img = Image.open(ruta_imagen)
+        
+        # Tamaño del contenedor de la imagen
+        width_container, height_container = 400, 400
+        
+        # Obtener dimensiones originales de la imagen
+        img_width, img_height = img.size
+        
+        # Calcular la relación de aspecto de la imagen
+        aspect_ratio = img_width / img_height
+        
+        # Redimensionar manteniendo la relación de aspecto
+        if img_width > img_height:
+            new_width = width_container
+            new_height = int(new_width / aspect_ratio)
+        else:
+            new_height = height_container
+            new_width = int(new_height * aspect_ratio)
+        
+        # Redimensionar la imagen
+        img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
+        
+        img_tk = ImageTk.PhotoImage(img)
+        LUGAR_GRAFICA.config(image=img_tk)
+        LUGAR_GRAFICA.image = img_tk  # Mantener referencia de la imagen para evitar que se recoja por el garbage collector
+    else:
+        LUGAR_GRAFICA.config(text="No se ha encontrado la imagen de la gráfica.")
 
 def enviar_datos():
     
@@ -80,11 +113,14 @@ ventana.resizable(False, False)#definir el tamaño de la ventana pero fija para 
 
 boton1= Button(ventana, text="Analisis",command=enviar_datos, relief="groove", borderwidth=5,cursor="hand2")
 boton1.place(x=630, y=300, width=100, height=50) #define la posición del boton
+
+btn_mostrar = Button(ventana, text="Mostrar Gráfica", command=mostrar_grafica, relief="groove", borderwidth=5,cursor="hand2")
+btn_mostrar.place(x=630, y=420, width=100, height=50) #define la ubicación del boton()
 #label de texto
 entrada= Text(ventana, relief="groove", borderwidth=5) #lugar de texto
 entrada.place(x=20, y=30, width=550, height=650) #define la posición del lugar de texto
 #label de grafica
-LUGAR_GRAFICA= Text(ventana, bg="white", relief="groove", borderwidth=5) #un label para la grafica
+LUGAR_GRAFICA= Label(ventana, bg="white", relief="groove", borderwidth=5) #un label para la grafica
 LUGAR_GRAFICA.place(x=800, y=30, width=500, height=400) #define la posición del lugar de texto
 #label de imagen del pais
 LUGAR_GRAFICA_pais= Label(ventana, bg="white", relief="groove", borderwidth=5) #lugar para la imagen
