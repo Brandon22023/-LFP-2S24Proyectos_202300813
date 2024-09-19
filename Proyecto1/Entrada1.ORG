@@ -1,60 +1,60 @@
-Grafica:{
-	Nombre: "5rchiv0 d3 3ntr4d4 #1 ";
-	Continente:{
-		Nombre: "africa";
-			Pais:{
-				 Nombre: "Argelia"; 
-				 Poblacion: 38700000; 
-				 Saturacion: 32%; 
-				 Bandera: "C:\Bandera\dz.png";
+grafica:{
+	nombre: "5rchiv0 d3 3ntr4d4 #1 ";
+	continente:{
+		nombre: "africa";
+			pais:{
+				 nombre: "Argelia"; 
+				 poblacion: 38700000; 
+				 saturacion: 32%; 
+				 bandera: "C:\Bandera\dz.png";
+			}
+			pais:{
+				 nombre: "Zimbabue"; 
+				 poblacion: 12973808; 
+				 saturacion: 7%; 
+				 bandera: "C:\Bandera\zw.png";
 			}
 			Pais:{
-				 Nombre: "Zimbabue"; 
-				 Poblacion: 12973808; 
-				 Saturacion: 7%; 
-				 Bandera: "C:\Bandera\zw.png";
+				 nombre: "Tunez"; 
+				 poblacion: 10886500; 
+				 saturacion: 50%; 
+				 bandera: "C:\Bandera\tn.png";
 			}
-			Pais:{
-				 Nombre: "Tunez"; 
-				 Poblacion: 10886500; 
-				 Saturacion: 50%; 
-				 Bandera: "C:\Bandera\tn.png";
-			}
-			Pais:{
-				 Nombre: "Egipto"; 
-				 Poblacion: 86127000; 
-				 Saturacion: 21%; 
-				 Bandera: "C:\Bandera\eg.png";
-			}
-	}
-	Continente:{
-		Nombre: "america del norte";
-			Pais:{
-				 Nombre: "Jamaica"; 
-				 Poblacion: 2711476; 
-				 Saturacion: 70%; 
-				 Bandera: "C:\Bandera\jm.png";
-			}
-			Pais:{
-				 Nombre: "Belice"; 
-				 Poblacion: 349728; 
-				 Saturacion: 13%; 
-				 Bandera: "C:\Bandera\bz.png";
+			pais:{
+				 nombre: "Egipto"; 
+				 poblacion: 86127000; 
+				 saturacion: 21%; 
+				 bandera: "C:\Bandera\eg.png";
 			}
 	}
-	Continente:{
-		Nombre: "America Del Sur";
-			Pais:{
-				 Nombre: "Brasil"; 
-				 Poblacion: 201032714; 
-				 Saturacion: 19%; 
-				 Bandera: "C:\Bandera\br.png";
+	continente:{
+		nombre: "america del norte";
+			pais:{
+				 nombre: "Jamaica"; 
+				 poblacion: 2711476; 
+				 saturacion: 70%; 
+				 bandera: "C:\Bandera\jm.png";
 			}
-			Pais:{
-				 Nombre: "Paraguay"; 
-				 Poblacion: 6783374; 
-				 Saturacion: 83%; 
-				 Bandera: "C:\Bandera\py.png";
+			pais:{
+				 nombre: "Belice"; 
+				 poblacion: 349728; 
+				 saturacion: 13%; 
+				 bandera: "C:\Bandera\bz.png";
+			}
+	}
+	continente:{
+		nombre: "America Del Sur";
+			pais:{
+				 nombre: "Brasil"; 
+				 poblacion: 201032714; 
+				 saturacion: 19%; 
+				 bandera: "C:\Bandera\br.png";
+			}
+			pais:{
+				 nombre: "Paraguay"; 
+				 poblacion: 6783374; 
+				 saturacion: 83%; 
+				 bandera: "C:\Bandera\py.png";
 			}
 	}
 }

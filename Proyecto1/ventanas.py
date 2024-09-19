@@ -48,7 +48,7 @@ def mostrar_grafica():
         LUGAR_GRAFICA.config(image=img_tk)
         LUGAR_GRAFICA.image = img_tk  # Mantener referencia de la imagen para evitar que se recoja por el garbage collector
     else:
-        LUGAR_GRAFICA.config(text="No se ha encontrado la imagen de la gráfica.")
+        LUGAR_GRAFICA.config(text="no se puede generar la grafica debido a que se encontraron errores")
 
 def enviar_datos():
 

@@ -620,8 +620,11 @@ program analizador_lexico
     else
         !print *, "No hay errores en el código, por lo que no es posible generar el html de tokens."
     end if
-
-    call generar_dot()
+    if (numErrores > 0) then
+       print *, "no se puede generar la grafica porque hay errores en el texto"
+    else
+       call generar_dot()
+    end if
 
     
 
