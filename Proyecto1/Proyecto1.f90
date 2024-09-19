@@ -752,7 +752,8 @@ program analizador_lexico
             character(len=100) :: p_string  ! Tamaño ajustable según sea necesario
             character(len=100) :: Contador_continente_string  ! Tamaño ajustable según sea necesario
             character(len=20) :: saturacion_sin_porcentaje
-            real(kind=8) :: suma_saturacion, promedio_saturacion, promedio_menor
+            integer :: suma_saturacion, promedio_saturacion, promedio_menor
+            
             integer :: num_paises_continente,real_saturacion_menor
             integer :: posicion_menor, posicion_menor_paiscompleto
             
@@ -941,7 +942,7 @@ program analizador_lexico
                         C_string = '#FF0000'  ! Rojo
                     end if
 
-                    write(p_string, '(F8.2)') promedio_saturacion
+                    write(p_string, '(I8)') promedio_saturacion
                     contador_promedio_continente = contador_promedio_continente + 1
                     promedio_continente(contador_promedio_continente) = trim(continentes(contador_continente))
                     contador_promedio_cantidad = contador_promedio_cantidad + 1
