@@ -120,7 +120,7 @@ btn_mostrar.place(x=630, y=420, width=100, height=50) #define la ubicación del 
 entrada= Text(ventana, relief="groove", borderwidth=5) #lugar de texto
 entrada.place(x=20, y=30, width=550, height=650) #define la posición del lugar de texto
 #label de grafica
-LUGAR_GRAFICA= Label(ventana, bg="white", relief="groove", borderwidth=5) #un label para la grafica
+LUGAR_GRAFICA= Text(ventana, bg="white", relief="groove", borderwidth=5) #un label para la grafica
 LUGAR_GRAFICA.place(x=800, y=30, width=500, height=400) #define la posición del lugar de texto
 #label de imagen del pais
 LUGAR_GRAFICA_pais= Label(ventana, bg="white", relief="groove", borderwidth=5) #lugar para la imagen

@@ -612,6 +612,8 @@ program analizador_lexico
 
     call generar_dot()
 
+    
+
 
    
    
@@ -736,8 +738,11 @@ program analizador_lexico
             character(len=100) :: i_string
             character(len=100) :: j_string  ! Tamaño ajustable según sea necesario
             character(len=100) :: C_string  ! Tamaño ajustable según sea necesario
+            character(len=100) :: p_string  ! Tamaño ajustable según sea necesario
             character(len=100) :: Contador_continente_string  ! Tamaño ajustable según sea necesario
             character(len=20) :: saturacion_sin_porcentaje
+            real(kind=8) :: suma_saturacion, promedio_saturacion
+            integer :: num_paises_continente
             ! Abrimos el archivo para escribir el código DOT
             open(unit=10, file='grafo.dot', status='replace')
 
@@ -812,11 +817,71 @@ program analizador_lexico
             do i = 1, num_saturacion
                 print *, i, trim(saturacion(i))
             end do
-            !nodo continentes
-            do i = 1, num_continentes
-                write(i_string, '(I0)') i
-                write(10, '(A)') 'n' // trim(adjustl(i_string)) // ' [label="' // trim(continentes(i)) // '", fillcolor="#FF9900"];'
+
+
+
+            ! Nodo continentes
+            j = 0
+            contador_continente = 0
+            contador_pais = 0
+            do i = 1, num_paises
+                if (trim(paises(i)) == 'continente') then
+                    ! Procesamos el continente
+                    contador_continente = contador_continente + 1
+                    write(i_string, '(I0)') contador_continente
+                    
+                    ! Inicializamos suma de saturación y el contador de países del continente actual
+                    suma_saturacion = 0.0
+                    num_paises_continente = 0
+                    
+                    ! Sumamos la saturación de los países que pertenecen a este continente
+                    do k = i + 1, num_paises
+                        if (trim(paises(k)) == 'continente') exit  ! Salimos al encontrar otro continente
+                        if (trim(paises(k)) /= 'continente') then
+                            ! Convertimos el valor de saturación a real y sumamos
+                            j = j + 1  ! No reiniciamos 'j', sigue incrementando globalmente
+                            real_saturacion = 0  ! Inicializamos a un valor por defecto
+                            saturacion_sin_porcentaje = trim(adjustl(saturacion(j)))
+                            saturacion_sin_porcentaje = saturacion_sin_porcentaje(1:len_trim(saturacion_sin_porcentaje)-1)  ! Eliminar el último carácter (%)
+                            read(saturacion_sin_porcentaje, *) real_saturacion  ! Convertir a número real
+                            
+                            suma_saturacion = suma_saturacion + real_saturacion
+                            num_paises_continente = num_paises_continente + 1
+                        end if
+                    end do
+                    
+                    ! Calculamos el promedio de saturación
+                    if (num_paises_continente > 0) then
+                        promedio_saturacion = suma_saturacion / num_paises_continente
+                    else
+                        promedio_saturacion = 0.0  ! Si no hay países, el promedio es 0
+                    end if
+                    
+                    ! Determinamos el color del continente basado en el promedio de saturación
+                    if (promedio_saturacion >= 0 .and. promedio_saturacion <= 15) then
+                        C_string = '#FFFFFF'  ! Blanco
+                    elseif (promedio_saturacion > 15 .and. promedio_saturacion <= 30) then
+                        C_string = '#0000FF'  ! Azul
+                    elseif (promedio_saturacion > 30 .and. promedio_saturacion <= 45) then
+                        C_string = '#00FF00'  ! Verde
+                    elseif (promedio_saturacion > 45 .and. promedio_saturacion <= 60) then
+                        C_string = '#FFFF00'  ! Amarillo
+                    elseif (promedio_saturacion > 60 .and. promedio_saturacion <= 75) then
+                        C_string = '#FF9900'  ! Anaranjado
+                    elseif (promedio_saturacion > 75 .and. promedio_saturacion <= 100) then
+                        C_string = '#FF0000'  ! Rojo
+                    end if
+
+                    write(p_string, '(F8.2)') promedio_saturacion
+                    write(10, '(A)') 'n' // trim(adjustl(i_string)) // ' [label="' // trim(continentes(contador_continente)) // '\n' // trim(adjustl(p_string)) //'%'// '", fillcolor="' // trim(adjustl(C_string)) // '"];'
+                else
+                    contador_pais = contador_pais + 1
+                end if    
             end do
+
+
+
+            
             ! Nodos hojas (países)
             j=0
             do i = 1, num_paises
@@ -850,13 +915,15 @@ program analizador_lexico
                     
                 end if    
             end do
+
             ! Enlaces entre nodos
             do i = 1, num_continentes
                 write(i_string, '(I0)') i
                 write(10, '(A)') 'n0 -> n' // trim(i_string) // ';'
             end do
             !write(10, '(A)') 'n0 -> n2;'
-
+            
+            !enlazar los demas nodos
             j=0
             contador_continente = 0
             do i = 1, num_paises
