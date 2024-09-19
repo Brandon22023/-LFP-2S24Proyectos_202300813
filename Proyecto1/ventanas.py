@@ -4,6 +4,8 @@ from tkinter import messagebox
 import os 
 import subprocess
 from PIL import Image, ImageTk
+
+
 def Abrir():
     
     Abrir = filedialog.askopenfilename(initialdir = "C:\\Users\\Marro\\Documents\\yon\\CUARTO SEMESTRE\\LAB LENGUAJES FORMALES\\-LFP-2S24Proyectos_202300813",title = "Elige un archivo",filetypes = (("archvios org","*.org"),("todos los archivos","*.*")))
@@ -49,6 +51,7 @@ def mostrar_grafica():
         LUGAR_GRAFICA.config(text="No se ha encontrado la imagen de la gráfica.")
 
 def enviar_datos():
+
     
     data = entrada.get("1.0", END).strip()
     print(f"Contenido enviado a Fortran:\n{data}")
@@ -59,9 +62,38 @@ def enviar_datos():
         stderr=subprocess.PIPE,  # Capturar también los errores   
         text= True # que la salida se maneje como texto 
     )
+    salida_fortran = resultado.stdout.strip()
+
+    pais_menor_porc = None
+    poblacion_grafica = None
+    ruta_bandera_grafica = None
+    
+     # Procesar la salida para obtener los valores
+    for line in salida_fortran.splitlines():
+        if "pais_menor_porc" in line:
+            pais_menor_porc = line.split(":")[-1].strip()
+        elif "poblacion_grafica" in line:
+            poblacion_grafica = line.split(":")[-1].strip()
+        elif "bandera_grafica" in line:
+            ruta_bandera_grafica = line.split(":")[-1].strip()
+    
+    # Actualizar los labels con los valores obtenidos
+    if pais_menor_porc:
+        label3.config(text=pais_menor_porc)
+    if poblacion_grafica:
+        label4.config(text=poblacion_grafica)
+    
+    ventana.update_idletasks()
     LUGAR_GRAFICA.delete(1.0, END)  #se limpia previo al cargar el archivo
     LUGAR_GRAFICA.insert(END, resultado.stdout)    # Insertamos el contenido del archivo en el TEXT
+
+    # Llamar a la función para cargar la imagen
+    if ruta_bandera_grafica:
+        cargar_imagen(ruta_bandera_grafica)
     
+
+def verificar_ruta(ruta):
+    return os.path.isfile(ruta)
 
 def Guardar():
     file_path = filedialog.asksaveasfilename(defaultextension=".txt", 
@@ -104,7 +136,22 @@ def ventana_datos():
     label1.place(x=20, y=20, width=500, height=180) #define la posición del lugar de texto
     ventana_datos.mainloop()
 
+def cargar_imagen(ruta_imagen):
+    if verificar_ruta(ruta_imagen):
+        try:
+            imagen = Image.open(ruta_imagen)
+            imagen = imagen.resize((280, 200))  # Ajustar el tamaño si es necesario
+            imagen_tk = ImageTk.PhotoImage(imagen)
+            LUGAR_GRAFICA_pais.config(image=imagen_tk)
+            LUGAR_GRAFICA_pais.image = imagen_tk  # Mantener una referencia a la imagen
+        except Exception as e:
+            print(f"Error al cargar la imagen: {e}")
+    else:
+        print(f"No se encontró el archivo en la ruta: {ruta_imagen}")
 
+def mostrar_grafica_y_imagen():
+    mostrar_grafica()  # Asumiendo que esta función ya está implementada
+    enviar_datos()     # Llamar a enviar_datos para actualizar la imagen y datos
 #creación de la ventana 
 ventana = Tk() #creacion de la ventana o en si la raiz de todo
 ventana.title("Proyecto 1_Brandon Marroquin_202300813") #titulo de la ventana
@@ -114,23 +161,34 @@ ventana.resizable(False, False)#definir el tamaño de la ventana pero fija para 
 boton1= Button(ventana, text="Analisis",command=enviar_datos, relief="groove", borderwidth=5,cursor="hand2")
 boton1.place(x=630, y=300, width=100, height=50) #define la posición del boton
 
-btn_mostrar = Button(ventana, text="Mostrar Gráfica", command=mostrar_grafica, relief="groove", borderwidth=5,cursor="hand2")
+btn_mostrar = Button(ventana, text="Mostrar Gráfica", command=mostrar_grafica_y_imagen, relief="groove", borderwidth=5,cursor="hand2")
 btn_mostrar.place(x=630, y=420, width=100, height=50) #define la ubicación del boton()
 #label de texto
 entrada= Text(ventana, relief="groove", borderwidth=5) #lugar de texto
 entrada.place(x=20, y=30, width=550, height=650) #define la posición del lugar de texto
 #label de grafica
-LUGAR_GRAFICA= Text(ventana, bg="white", relief="groove", borderwidth=5) #un label para la grafica
+LUGAR_GRAFICA= Label(ventana, bg="white", relief="groove", borderwidth=5) #un label para la grafica
 LUGAR_GRAFICA.place(x=800, y=30, width=500, height=400) #define la posición del lugar de texto
 #label de imagen del pais
 LUGAR_GRAFICA_pais= Label(ventana, bg="white", relief="groove", borderwidth=5) #lugar para la imagen
 LUGAR_GRAFICA_pais.place(x=1020, y=470, width=280, height=200) #define la posición del lugar de texto
+
+# Ruta correcta a la imagen
+ruta_imagen = os.path.join("C:", "bandera", "gt.png")
+cargar_imagen(ruta_imagen)
 #label de pais
-label1= Label(ventana, text="País seleccionado: "+ "", relief="groove", borderwidth=5, anchor="w") #lugar de texto
-label1.place(x=800, y=500, width=200, height=30) #define la posición del lugar de texto
+label1= Label(ventana, text="País seleccionado: ", relief="groove", borderwidth=5, anchor="w") #lugar de texto
+label1.place(x=800, y=500, width=120, height=30) #define la posición del lugar de texto
+    
+pais_menor_porc=""
+label3= Label(ventana, text=pais_menor_porc, relief="groove", borderwidth=5, anchor="w") #lugar de texto
+label3.place(x=918, y=500, width=100, height=30) #define la posición del lugar de texto
 #label de población
-label2= Label(ventana, text="Población: "+ "", relief="groove", borderwidth=5, anchor="w") 
-label2.place(x=800, y=550, width=200, height=30) #define la posición del lugar de texto
+label2= Label(ventana, text="Población: ", relief="groove", borderwidth=5, anchor="w") 
+label2.place(x=800, y=550, width=80, height=30) #define la posición del lugar de texto
+poblacion_grafica= ""
+label4= Label(ventana, text=poblacion_grafica, relief="groove", borderwidth=5, anchor="w") 
+label4.place(x=878, y=550, width=100, height=30) #define la posición del lugar de texto
 
 #Menu
 #SE DEFINE EL MENU

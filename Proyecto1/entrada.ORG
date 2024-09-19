@@ -33,7 +33,7 @@ grafica: {
                         poblacion: 17263239;
                         nombre: "Guatemala";
                         saturacion:40%;
-                        bandera: "C:\guate.jpg"
+                        bandera: "C:\bandera\gt.png"
                 }
                 pais: {
                         saturacion:60%;

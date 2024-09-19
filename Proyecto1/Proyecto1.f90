@@ -5,9 +5,20 @@ module datos_globales
     integer :: num_saturacion
     integer :: contador_continente
     integer :: contador_pais
+    integer :: contador_poblacion
+    integer :: contador_bandera
+    integer :: contador_promedio_continente
+    integer :: contador_promedio_cantidad
+    integer :: contador_paises_continente
     character(len=20) :: continentes(20) ! Arreglo de 20 continentes con longitud de 20 caracteres
     character(len=20) :: paises(100) ! Arreglo de 100 paises con longitud de 20 caracteres
     character(len=20) :: saturacion(100)
+    character(len=20) :: Seleccionar_pais(100)
+    character(len=50) :: poblacion(100)
+    character(len=1000) :: bandera(100)
+    character(len=1000) :: paises_continente(100)
+    character(len=20) :: promedio_continente(100)
+    real(kind=4) :: promedio_cantidad(100)
 end module datos_globales
 program analizador_lexico
     use datos_globales
@@ -735,14 +746,16 @@ program analizador_lexico
             use datos_globales
             implicit none
             integer :: i,k,l, real_saturacion
-            character(len=100) :: i_string
+            character(len=100) :: i_string, pMnombre, pais_menor_porc, poblacion_grafica, bandera_grafica
             character(len=100) :: j_string  ! Tamaño ajustable según sea necesario
             character(len=100) :: C_string  ! Tamaño ajustable según sea necesario
             character(len=100) :: p_string  ! Tamaño ajustable según sea necesario
             character(len=100) :: Contador_continente_string  ! Tamaño ajustable según sea necesario
             character(len=20) :: saturacion_sin_porcentaje
-            real(kind=8) :: suma_saturacion, promedio_saturacion
-            integer :: num_paises_continente
+            real(kind=8) :: suma_saturacion, promedio_saturacion, promedio_menor
+            integer :: num_paises_continente,real_saturacion_menor
+            integer :: posicion_menor, posicion_menor_paiscompleto
+            
             ! Abrimos el archivo para escribir el código DOT
             open(unit=10, file='grafo.dot', status='replace')
 
@@ -759,7 +772,7 @@ program analizador_lexico
                     if (num_continentes < 10) then  ! Aseguramos que no sobrepase el tamaño del arreglo continentes
                         num_continentes = num_continentes + 1
                         continentes(num_continentes) = token_list(i + 3)
-                        print *, num_continentes, 'Continente extraido:', trim(continentes(num_continentes))
+                        !print *, num_continentes, 'Continente extraido:', trim(continentes(num_continentes))
                     else
                         print *, "Se ha alcanzado el máximo número de continentes."
                         exit  ! Salimos del bucle si ya tenemos el máximo de continentes
@@ -771,11 +784,17 @@ program analizador_lexico
                 print *, i, trim(continentes(i))
             end do
             num_paises = 0
+            contador_pais = 0
+            contador_paises_continente= 0
             do i = 1, num_tokens
                 if (trim(token_list(i)) == 'continente') then  ! Detectamos un continente
                     num_paises = num_paises + 1
                     paises(num_paises) = token_list(i)  ! Asumimos que token_list(i+2) es el nombre del continente
-                    print *, num_paises, ' Continente extraido:', trim(paises(num_paises))
+                    contador_paises_continente = contador_paises_continente + 1
+                    paises_continente(contador_paises_continente) = token_list(i)
+                    contador_paises_continente = contador_paises_continente + 1
+                    paises_continente(contador_paises_continente) = token_list(i+3)
+                    !print *, num_paises, ' Continente extraido:', trim(paises(num_paises))
 
                     ! Procesamos los países dentro de este continente
                     do j = i+3, num_tokens  ! Avanzamos para empezar a buscar países dentro del continente
@@ -784,8 +803,12 @@ program analizador_lexico
                             do k = j+1, num_tokens
                                 if (trim(token_list(k)) == 'nombre') then
                                     num_paises = num_paises + 1
+                                    contador_pais = contador_pais + 1
                                     paises(num_paises) = token_list(k+2)  ! Asumimos que token_list(k+2) es el nombre del país
-                                    print *, num_paises, ' Pais extraido:', trim(paises(num_paises))
+                                    Seleccionar_pais(contador_pais) = token_list(k+2)
+                                    contador_paises_continente = contador_paises_continente + 1
+                                    paises_continente(contador_paises_continente) = token_list(k+2)
+                                    !print *, num_paises, ' Pais extraido:', trim(paises(num_paises))
                                     exit  ! Salimos del bucle interno al encontrar el nombre del país
                                 end if
                             end do
@@ -796,34 +819,80 @@ program analizador_lexico
                 end if
             end do
 
+
             do i = 1, num_paises
                 print *, i, trim(paises(i))
             end do
 
+            print*, "son solo paises"
+            do i = 1, contador_pais
+               print*, i, trim(Seleccionar_pais(i))
+            end do
+
+            print*, "continente, nombre y pais"
+            do i = 1, contador_paises_continente
+               print*, i, trim(paises_continente(i))
+            end do
+
             num_saturacion = 0
+            contador_poblacion = 0
+            contador_bandera = 0
+            
             do i = 1, num_tokens
                 if (trim(token_list(i)) == 'saturacion') then  ! Comparamos cadenas eliminando espacios en blanco
                     if (num_saturacion < 100) then  ! Aseguramos que no sobrepase el tamaño del arreglo continentes
                         num_saturacion = num_saturacion + 1
                         saturacion(num_saturacion) = token_list(i + 1)
-                        print *, num_saturacion, 'Saturacion extraida:', trim(saturacion(num_saturacion))
+                        !print *, num_saturacion, 'Saturacion extraida:', trim(saturacion(num_saturacion))
                     else
                         print *, "Se ha alcanzado el máximo número de saturaciones."
                         exit  ! Salimos del bucle si ya tenemos el máximo de continentes
                     end if
+                elseif (trim(token_list(i)) == 'poblacion') then
+                    if (contador_poblacion < 100) then
+                        contador_poblacion = contador_poblacion + 1
+                        poblacion(contador_poblacion) = token_list(i + 1)
+                        !print *, contador_poblacion, 'contador extraida:', trim(poblacion(contador_poblacion))
+                    else
+                        print *, "Se ha alcanzado el máximo número de poblaciones."
+                        exit  ! Salimos del bucle si ya tenemos el máximo de continentes
+                    end if
+
+                elseif (trim(token_list(i)) == 'bandera') then
+                    if (contador_bandera < 100) then
+                        contador_bandera = contador_bandera + 1
+                        bandera(contador_bandera) = token_list(i + 2)
+                        !print *, contador_bandera, 'bandera extraida:', trim(bandera(contador_bandera)
+                    else
+                        print *, "Se ha alcanzado el máximo número de banderas."
+                        exit  ! Salimos del bucle si ya tenemos el máximo de banderas
+                    end if
+
                 end if
             end do
-
+            print*, "son solo saturaciones"
             do i = 1, num_saturacion
                 print *, i, trim(saturacion(i))
             end do
+            print*, "son solo poblaciones"
+            do i = 1, contador_poblacion
+                print *, i, trim(poblacion(i))
+            end do
+            print*, "son solo banderas"
+            do i = 1, contador_bandera
+                print *, i, trim(bandera(i))
+            end do
+            
 
 
 
             ! Nodo continentes
             j = 0
             contador_continente = 0
-            contador_pais = 0
+            contador_promedio_cantidad = 0
+            contador_promedio_continente = 0
+            posicion_menor = 0
+            posicion_menor_paiscompleto = 1
             do i = 1, num_paises
                 if (trim(paises(i)) == 'continente') then
                     ! Procesamos el continente
@@ -873,15 +942,82 @@ program analizador_lexico
                     end if
 
                     write(p_string, '(F8.2)') promedio_saturacion
+                    contador_promedio_continente = contador_promedio_continente + 1
+                    promedio_continente(contador_promedio_continente) = trim(continentes(contador_continente))
+                    contador_promedio_cantidad = contador_promedio_cantidad + 1
+                    promedio_cantidad(contador_promedio_cantidad) = promedio_saturacion
                     write(10, '(A)') 'n' // trim(adjustl(i_string)) // ' [label="' // trim(continentes(contador_continente)) // '\n' // trim(adjustl(p_string)) //'%'// '", fillcolor="' // trim(adjustl(C_string)) // '"];'
+
+
                 else
-                    contador_pais = contador_pais + 1
+
                 end if    
             end do
+            ! Determinar el continente con el menor promedio
+            print*, "continentes sacados del promedio: "
+            do i = 1, contador_promedio_continente
+                print *, i, trim(promedio_continente(i))
+            end do
+            print*, "cantidad sacados del promedio: "
+            do i = 1, contador_promedio_cantidad
+                print *, i, promedio_cantidad(i)
+            end do
 
+            ! Inicialización de variables
+            promedio_menor = promedio_cantidad(1)
+            posicion_menor = 1
 
+            ! Buscar el menor valor y su posición usando un bucle y `if`
+            do i = 1, contador_promedio_cantidad
+                if (promedio_cantidad(i) < promedio_menor) then
+                    promedio_menor = promedio_cantidad(i)
+                    posicion_menor = i
+                end if
+            end do
+            print *,"posicion", posicion_menor, "MENOR: ", promedio_menor
+            pMnombre = trim(promedio_continente(posicion_menor))
+            print*, "continente menor: ", trim(pMnombre)
+            ! Inicializar variables para buscar el país con el menor porcentaje
+            real_saturacion_menor = 100
+            j = 0
 
+            ! Buscar el país con el menor porcentaje dentro del continente menor
+            do i = 1, num_paises
+                if (trim(paises(i)) /= 'continente') then
+                    ! Verificar si el país pertenece al continente menor
+                    if (trim(paises_continente(i)) == trim(pMnombre)) then
+                        j = j + 1
+                        ! Eliminar el símbolo de porcentaje y convertir el valor a real
+                        saturacion_sin_porcentaje = trim(adjustl(saturacion(j)))
+                        saturacion_sin_porcentaje = saturacion_sin_porcentaje(1:len_trim(saturacion_sin_porcentaje)-1)  ! Eliminar el último carácter (%)
+                        read(saturacion_sin_porcentaje, *) real_saturacion  ! Convertir a número real
+                        ! Verificar si el porcentaje es el menor encontrado
+                        if (real_saturacion < real_saturacion_menor) then
+                            real_saturacion_menor = real_saturacion
+                            pais_menor_porc = trim(paises(i))
+                        end if
+                    end if
+                end if
+            end do
+            ! Imprimir el país con el menor porcentaje
+            print *, "pais_menor_porc: ", trim(pais_menor_porc)
+
+             !busacar la posición del continente menor en la lista completa de paises
+            do i = 1, contador_pais
+                if (trim(Seleccionar_pais(i)) == trim(pais_menor_porc)) then
+                    exit
+                else
+                    posicion_menor_paiscompleto = posicion_menor_paiscompleto + 1
+                end if
+                
+            end do
+            print*, "posicion del pais menor: ", posicion_menor_paiscompleto
+            poblacion_grafica = trim(adjustl(poblacion(posicion_menor_paiscompleto)))
+            print *, "poblacion_grafica: ", trim(poblacion_grafica)
+            bandera_grafica = trim(bandera(posicion_menor_paiscompleto))
+            print *, "bandera_grafica: ", trim(bandera_grafica)
             
+            !print *, "porcentaje: ", real_saturacion_menor
             ! Nodos hojas (países)
             j=0
             do i = 1, num_paises
