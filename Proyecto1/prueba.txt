@@ -1,6 +1,0 @@
-grafica: {
-        nombre:"nombre de grafico";
-        continente {
-        nombre: "Asia";
-        }
-}

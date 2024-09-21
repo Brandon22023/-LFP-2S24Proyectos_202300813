@@ -1,0 +1,108 @@
+Grafica:{
+Nombre: "5rchiv0 d3 3ntr4d4 #1 ";
+	Continente:{
+		Nombre: "Europa";
+			Pais:{
+				 Nombre: "Belgica"; 
+				 Poblacion: 11132269; 
+				 Saturacion: 23%; 
+				 Bandera: "C:\Bandera\be.png";
+			}
+			Pais:{
+				 Nombre: "Dinamarca"; 
+				 Poblacion: 5627235; 
+				 Saturacion: 75%; 
+				 Bandera: "C:\Bandera\dk.png";
+			}
+			Pais:{
+				 Nombre: "Alemania"; 
+				 Poblacion: 80619000; 
+				 Saturacion: 93%; 
+				 Bandera: "C:\Bandera\de.png";
+			}
+			Pais:{
+				 Nombre: "Bulgaria"; 
+				 Poblacion: 7282041; 
+				 Saturacion: 17%; 
+				 Bandera: "C:\Bandera\bg.png";
+			}
+			Pais:{
+				 Nombre: "Bosnia y Herzegovina"; 
+				 Poblacion: 3791622; 
+				 Saturacion: 47%; 
+				 Bandera: "C:\Bandera\ba.png";
+			}
+			Pais:{
+				 Nombre: "Austria"; 
+				 Poblacion: 8504850; 
+				 Saturacion: 2%; 
+				 Bandera: "C:\Bandera\at.png";
+			}
+	}
+	Continente:{
+		Nombre: "Asia";
+			Pais:{
+				 Nombre: "Armenia"; 
+				 Poblacion: 3017400; 
+				 Saturacion: 15%; 
+				 Bandera: "C:\Bandera\am.png";
+			}
+			Pais:{
+				 Nombre: "China"; 
+				 Poblacion: 1363350000; 
+				 Saturacion: 28%; 
+				 Bandera: "C:\Bandera\cn.png";
+			}
+			Pais:{
+				 Nombre: "Camboya"; 
+				 Poblacion: 15135000; 
+				 Saturacion: 2%; 
+				 Bandera: "C:\Bandera\kh.png";
+			}
+			Pais:{
+				 Nombre: "Corea del Sur"; 
+				 Poblacion: 50219669; 
+				 Saturacion: 76%; 
+				 Bandera: "C:\Bandera\kr.png";
+			}
+			Pais:{
+				 Nombre: "Chipre"; 
+				 Poblacion: 865878; 
+				 Saturacion: 56%; 
+				 Bandera: "C:\Bandera\cy.png";
+			}
+	}
+	Continente:{
+		Nombre: "Oceania";
+			Pais:{
+				 Nombre: "Islas Salomon"; 
+				 Poblacion: 581344; 
+				 Saturacion: 89%; 
+				 Bandera: "C:\Bandera\sb.png";
+			}
+			Pais:{
+				 Nombre: "Indonesia"; 
+				 Poblacion: 249866000; 
+				 Saturacion: 50%; 
+				 Bandera: "C:\Bandera\id.png";
+			}
+			Pais:{
+				 Nombre: "Islas Marshall"; 
+				 Poblacion: 56086; 
+				 Saturacion: 33%; 
+				 Bandera: "C:\Bandera\mh.png";
+			}
+			Pais:{
+				 Nombre: "Nauru"; 
+				 Poblacion: 9945; 
+				 Saturacion: 66%; 
+				 Bandera: "C:\Bandera\nr.png";
+			}
+			Pais:{
+				 Nombre: "Kiribati"; 
+				 Poblacion: 106461; 
+				 Saturacion: 25%; 
+				 Bandera: "C:\Bandera\ki.png";
+			}
+	}
+}

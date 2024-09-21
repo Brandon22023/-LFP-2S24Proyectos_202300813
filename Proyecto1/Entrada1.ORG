@@ -14,7 +14,7 @@ grafica:{
 				 saturacion: 7%; 
 				 bandera: "C:\Bandera\zw.png";
 			}
-			Pais:{
+			pais:{
 				 nombre: "Tunez"; 
 				 poblacion: 10886500; 
 				 saturacion: 50%; 

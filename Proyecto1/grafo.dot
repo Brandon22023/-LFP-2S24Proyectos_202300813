@@ -1,0 +1,26 @@
+digraph Grafo {
+node [shape=box, style=filled];
+n0 [label= "5rchiv0d33ntr4d4#1", shape=diamond];
+n1 [label="africa\n27%", fillcolor="#0000FF"];
+n2 [label="americadelnorte\n41%", fillcolor="#00FF00"];
+n3 [label="AmericaDelSur\n51%", fillcolor="#FFFF00"];
+n4 [label="Argelia\n32%", fillcolor="#00FF00"];
+n5 [label="Zimbabue\n7%", fillcolor="#FFFFFF"];
+n6 [label="Tunez\n50%", fillcolor="#FFFF00"];
+n7 [label="Egipto\n21%", fillcolor="#0000FF"];
+n8 [label="Jamaica\n70%", fillcolor="#FF9900"];
+n9 [label="Belice\n13%", fillcolor="#FFFFFF"];
+n10 [label="Brasil\n19%", fillcolor="#0000FF"];
+n11 [label="Paraguay\n83%", fillcolor="#FF0000"];
+n0 -> n1;
+n0 -> n2;
+n0 -> n3;
+n1 -> n4;
+n1 -> n5;
+n1 -> n6;
+n1 -> n7;
+n2 -> n8;
+n2 -> n9;
+n3 -> n10;
+n3 -> n11;
+}

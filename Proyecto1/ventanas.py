@@ -21,6 +21,8 @@ def Abrir():
 def mostrar_grafica():
     os.system('dot -Tpng grafo.dot -o grafo.png')
     ruta_imagen = "grafo.png"  # Ruta de la imagen generada por el programa Fortran
+     # Limpiar primero el contenido del Label
+    LUGAR_GRAFICA.config(image='', text='')
     if os.path.exists(ruta_imagen):
         img = Image.open(ruta_imagen)
         
@@ -75,7 +77,7 @@ def enviar_datos():
         elif "poblacion_grafica" in line:
             poblacion_grafica = line.split(":")[-1].strip()
         elif "bandera_grafica" in line:
-            ruta_bandera_grafica = line.split(":")[-1].strip()
+            ruta_bandera_grafica = line.split(";")[-1].strip()
     
     # Actualizar los labels con los valores obtenidos
     if pais_menor_porc:
@@ -84,16 +86,20 @@ def enviar_datos():
         label4.config(text=poblacion_grafica)
     
     ventana.update_idletasks()
-    LUGAR_GRAFICA.delete(1.0, END)  #se limpia previo al cargar el archivo
-    LUGAR_GRAFICA.insert(END, resultado.stdout)    # Insertamos el contenido del archivo en el TEXT
+    #LUGAR_GRAFICA.delete(1.0, END)  #se limpia previo al cargar el archivo
+    #LUGAR_GRAFICA.config(image='', text='')  # Limpiar la imagen y el texto si deseas limpiar ambos
+    #LUGAR_GRAFICA.insert(END, resultado.stdout)    # Insertamos el contenido del archivo en el TEXT
 
-    # Llamar a la función para cargar la imagen
     if ruta_bandera_grafica:
         cargar_imagen(ruta_bandera_grafica)
+    else:
+        print("No se encontro la bandera en la ruta especificada")
     
 
-def verificar_ruta(ruta):
-    return os.path.isfile(ruta)
+def verificar_ruta(ruta_bandera_grafica):
+    ruta_ajustada = os.path.normpath(ruta_bandera_grafica)
+    print(f"Verificando ruta: {ruta_ajustada}")
+    return os.path.isfile(ruta_ajustada)
 
 def Guardar():
     file_path = filedialog.asksaveasfilename(defaultextension=".txt", 
@@ -136,18 +142,23 @@ def ventana_datos():
     label1.place(x=20, y=20, width=500, height=180) #define la posición del lugar de texto
     ventana_datos.mainloop()
 
-def cargar_imagen(ruta_imagen):
-    if verificar_ruta(ruta_imagen):
+def cargar_imagen(ruta_ajustada):
+    print(ruta_ajustada)
+    print("ruta_bandera_grafica:", ruta_ajustada)
+    #ruta_bandera_grafica = "C:\\Users\\Marro\\Documents\\yon\\CUARTO SEMESTRE\\LAB LENGUAJES FORMALES\\-LFP-2S24Proyectos_202300813\\Proyecto1\\banderas\\gt.png"
+    if verificar_ruta(ruta_ajustada):
         try:
-            imagen = Image.open(ruta_imagen)
+            LUGAR_GRAFICA_pais.config(text="")
+            imagen = Image.open(ruta_ajustada)
             imagen = imagen.resize((280, 200))  # Ajustar el tamaño si es necesario
             imagen_tk = ImageTk.PhotoImage(imagen)
+            
             LUGAR_GRAFICA_pais.config(image=imagen_tk)
             LUGAR_GRAFICA_pais.image = imagen_tk  # Mantener una referencia a la imagen
         except Exception as e:
             print(f"Error al cargar la imagen: {e}")
     else:
-        print(f"No se encontró el archivo en la ruta: {ruta_imagen}")
+        LUGAR_GRAFICA_pais.config(text="No se encontro la bandera en la ruta especificada")
 
 def mostrar_grafica_y_imagen():
     mostrar_grafica()  # Asumiendo que esta función ya está implementada
@@ -173,15 +184,12 @@ LUGAR_GRAFICA.place(x=800, y=30, width=500, height=400) #define la posición del
 LUGAR_GRAFICA_pais= Label(ventana, bg="white", relief="groove", borderwidth=5) #lugar para la imagen
 LUGAR_GRAFICA_pais.place(x=1020, y=470, width=280, height=200) #define la posición del lugar de texto
 
-# Ruta correcta a la imagen
-ruta_imagen = os.path.join("C:", "bandera", "gt.png")
-cargar_imagen(ruta_imagen)
 #label de pais
 label1= Label(ventana, text="País seleccionado: ", relief="groove", borderwidth=5, anchor="w") #lugar de texto
 label1.place(x=800, y=500, width=120, height=30) #define la posición del lugar de texto
     
-pais_menor_porc=""
-label3= Label(ventana, text=pais_menor_porc, relief="groove", borderwidth=5, anchor="w") #lugar de texto
+
+label3= Label(ventana, relief="groove", borderwidth=5, anchor="w") #lugar de texto
 label3.place(x=918, y=500, width=100, height=30) #define la posición del lugar de texto
 #label de población
 label2= Label(ventana, text="Población: ", relief="groove", borderwidth=5, anchor="w") 

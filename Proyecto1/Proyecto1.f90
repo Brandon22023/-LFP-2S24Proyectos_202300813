@@ -1019,7 +1019,7 @@ program analizador_lexico
             poblacion_grafica = trim(adjustl(poblacion(posicion_menor_paiscompleto)))
             print *, "poblacion_grafica: ", trim(poblacion_grafica)
             bandera_grafica = trim(bandera(posicion_menor_paiscompleto))
-            print *, "bandera_grafica: ", trim(bandera_grafica)
+            print *, "bandera_grafica; ", trim(bandera_grafica)
             
             !print *, "porcentaje: ", real_saturacion_menor
             ! Nodos hojas (países)
