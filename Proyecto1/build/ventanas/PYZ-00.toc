@@ -1272,6 +1272,7 @@
   ('tkinter.filedialog',
    'C:\\Python312\\Lib\\tkinter\\filedialog.py',
    'PYMODULE'),
+  ('tkinter.font', 'C:\\Python312\\Lib\\tkinter\\font.py', 'PYMODULE'),
   ('tkinter.messagebox',
    'C:\\Python312\\Lib\\tkinter\\messagebox.py',
    'PYMODULE'),

@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
+from tkinter import font, Menu
 import os 
 import subprocess
 from PIL import Image, ImageTk
@@ -166,7 +167,9 @@ def cargar_imagen(ruta_ajustada):
             print(f"Error al cargar la imagen: {e}")
     else:
         LUGAR_GRAFICA_pais.config(text="No se encontro la bandera en la ruta especificada")
-
+color_boton = "#3fe3d2"
+color_label = "#b9f9f2"
+color_fondo= "#bef8d6"
 def mostrar_grafica_y_imagen():
     mostrar_grafica()  # Asumiendo que esta función ya está implementada
     enviar_datos()     # Llamar a enviar_datos para actualizar la imagen y datos
@@ -176,13 +179,14 @@ ventana.title("Proyecto 1_Brandon Marroquin_202300813") #titulo de la ventana
 ventana.config(width=1350, height=750)#definir el tamaño de la ventana 
 ventana.resizable(False, False)#definir el tamaño de la ventana pero fija para eso se declara false
 
-boton1= Button(ventana, text="Analisis",command=enviar_datos, relief="groove", borderwidth=5,cursor="hand2")
+boton1= Button(ventana, text="Analisis", font=("Times New Roman", 16),command=enviar_datos, relief="groove", borderwidth=5,cursor="hand2",fg="white", bg=color_boton)
 boton1.place(x=630, y=300, width=100, height=50) #define la posición del boton
 
-btn_mostrar = Button(ventana, text="Mostrar Gráfica", command=mostrar_grafica_y_imagen, relief="groove", borderwidth=5,cursor="hand2")
-btn_mostrar.place(x=630, y=420, width=100, height=50) #define la ubicación del boton()
+
+btn_mostrar = Button(ventana, text="Mostrar Gráfica", font=("Times New Roman", 12), command=mostrar_grafica_y_imagen, relief="groove", borderwidth=5,cursor="hand2", fg="white", bg=color_boton)
+btn_mostrar.place(x=630, y=420, width=120, height=50) #define la ubicación del boton()
 #label de texto
-entrada= Text(ventana, relief="groove", borderwidth=5) #lugar de texto
+entrada= Text(ventana, relief="groove",font=("Times New Roman", 12), borderwidth=5, bg=color_label) #lugar de texto
 entrada.place(x=20, y=30, width=550, height=650) #define la posición del lugar de texto
 #label de grafica
 LUGAR_GRAFICA= Label(ventana, bg="white", relief="groove", borderwidth=5) #un label para la grafica
@@ -192,24 +196,28 @@ LUGAR_GRAFICA_pais= Label(ventana, bg="white", relief="groove", borderwidth=5) #
 LUGAR_GRAFICA_pais.place(x=1020, y=470, width=280, height=200) #define la posición del lugar de texto
 
 #label de pais
-label1= Label(ventana, text="País seleccionado: ", relief="groove", borderwidth=5, anchor="w") #lugar de texto
+label1= Label(ventana, text="País seleccionado: ", font=("Times New Roman", 12), relief="groove", borderwidth=5, anchor="w") #lugar de texto
 label1.place(x=800, y=500, width=120, height=30) #define la posición del lugar de texto
     
 
-label3= Label(ventana, relief="groove", borderwidth=5, anchor="w") #lugar de texto
+label3= Label(ventana, relief="groove", font=("Times New Roman", 12), borderwidth=5, anchor="w") #lugar de texto
 label3.place(x=918, y=500, width=100, height=30) #define la posición del lugar de texto
 #label de población
-label2= Label(ventana, text="Población: ", relief="groove", borderwidth=5, anchor="w") 
+label2= Label(ventana, text="Población: ", font=("Times New Roman", 12), relief="groove", borderwidth=5, anchor="w") 
 label2.place(x=800, y=550, width=80, height=30) #define la posición del lugar de texto
 poblacion_grafica= ""
-label4= Label(ventana, text=poblacion_grafica, relief="groove", borderwidth=5, anchor="w") 
+label4= Label(ventana, text=poblacion_grafica, relief="groove", font=("Times New Roman", 12), borderwidth=5, anchor="w") 
 label4.place(x=878, y=550, width=100, height=30) #define la posición del lugar de texto
 
 #Menu
 #SE DEFINE EL MENU
 menu1 = Menu(ventana)
-ventana.config(menu = menu1)
-ventana.config(bg="white")
+ventana.config(menu = menu1, bg= color_fondo)
+#ventana.config(bg="write")
+
+fuente_personalizada = font.Font(family="Times New Roman", size=12)
+# Aplicar fuente a los menús
+ventana.option_add("*Menu.Font", fuente_personalizada)
 #añado los menus
 filename = Menu(menu1, tearoff = 0)
 filename2 = Menu(filename, tearoff = 0)
@@ -220,9 +228,6 @@ menu1.add_cascade(label = "Salir", command=ventana.destroy) #menu llamado Salir
 filename.add_command(label = "Abrir", command = Abrir) #sub menu llamado Abrir para el menu menu
 filename.add_command(label = "Guardar", command = Guardar) #sub menu llamado Guardar para el menu menu
 filename.add_command(label = "Guardar como...", command = GuardarComo) #sub menu llamado Guardar como para el menu menu
-
-
-
 
 ventana.mainloop()#siempre sera la ultima linea de codigo debido a que es un bucle que esta dibujando la ventana constantemente
 #fin de la ventana
