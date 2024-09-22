@@ -255,4 +255,14 @@ Este análisis detalla cómo cada parte del código contribuye a la funcionalida
 
 
 # Acontinuación la logica del analizador de una manera más clara
-![imagen](./img/automata_mas.png)
+ El arbol del codigo es el siguiente:
+
+![imagen](./img/arbol.png)
+
+las tablas del arbol tanto de follow como de estado de lo anterior son las siguientes:
+
+![imagen](./img/tablas.png)
+
+y por ultimo tenemos el automata: 
+
+![imagen](./img/automata.png)

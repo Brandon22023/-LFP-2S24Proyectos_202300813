@@ -62,7 +62,7 @@ Es indispensable contar con la última versión de Python, así como la instalac
 
 ![paso 3](./img/paso3.png )
 
-4. Apachamos en el boton que dice analisis y veremos como se crea un archivo.dot ademas de que las partes de la población y pais seleccionado se llenaron, la poblacion significa la cantidad de habitantes que tiene el pais con menor porcentaje de saturación y teniendo un continente con promedio bajo siendo el menor de todos, ademas "pais seleccionado" signifca el pais que tiene estos caracteres "el nombre"
+4. Apachamos en el boton que dice analisis y veremos como se crea un archivo.dot ademas de que las partes de la población y pais seleccionado se llenaron, la poblacion significa la cantidad de habitantes que tiene el pais con menor porcentaje de saturación y teniendo un continente con promedio bajo siendo el menor de todos, ademas "pais seleccionado" signifca el pais que tiene estos caracteres "el nombre", ademas de que veremos en la parte de abajo en la esquina inferior derecha la bandera del pais seleccionado
 
 ![paso 4](./img/paso4.png )
 
