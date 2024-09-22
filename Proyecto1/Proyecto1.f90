@@ -10,6 +10,8 @@ module datos_globales
     integer :: contador_promedio_continente
     integer :: contador_promedio_cantidad
     integer :: contador_paises_continente
+    integer :: CN !NUEVOS
+    integer :: CP,P_PB!NUEVOS
     character(len=20) :: continentes(20) ! Arreglo de 20 continentes con longitud de 20 caracteres
     character(len=20) :: paises(100) ! Arreglo de 100 paises con longitud de 20 caracteres
     character(len=20) :: saturacion(100)
@@ -17,8 +19,9 @@ module datos_globales
     character(len=50) :: poblacion(100)
     character(len=1000) :: bandera(100)
     character(len=1000) :: paises_continente(100)
-    character(len=20) :: promedio_continente(100)
+    character(len=20) :: promedio_continente(100), P_CP(100),PPB(100) !NUEVOS
     real(kind=4) :: promedio_cantidad(100)
+    real(kind=4) :: RP_SINP(100)
 end module datos_globales
 program analizador_lexico
     use datos_globales
@@ -748,17 +751,18 @@ program analizador_lexico
         subroutine generar_dot()
             use datos_globales
             implicit none
-            integer :: i,k,l, real_saturacion
+            integer :: i,k,l, real_saturacion, error_code, RP
             character(len=100) :: i_string, pMnombre, pais_menor_porc, poblacion_grafica, bandera_grafica
             character(len=100) :: j_string  ! Tamaño ajustable según sea necesario
             character(len=100) :: C_string  ! Tamaño ajustable según sea necesario
             character(len=100) :: p_string  ! Tamaño ajustable según sea necesario
             character(len=100) :: Contador_continente_string  ! Tamaño ajustable según sea necesario
             character(len=20) :: saturacion_sin_porcentaje
+            character(len=20) :: S_P ! SIN PORCENTAJE
             integer :: suma_saturacion, promedio_saturacion, promedio_menor
             
-            integer :: num_paises_continente,real_saturacion_menor
-            integer :: posicion_menor, posicion_menor_paiscompleto
+            integer :: num_paises_continente,real_saturacion_menor,posicion_menor_porc
+            integer :: posicion_menor, posicion_menor_paiscompleto, RP_SINP_menor
             
             ! Abrimos el archivo para escribir el código DOT
             open(unit=10, file='grafo.dot', status='replace')
@@ -981,49 +985,11 @@ program analizador_lexico
             print *,"posicion", posicion_menor, "MENOR: ", promedio_menor
             pMnombre = trim(promedio_continente(posicion_menor))
             print*, "continente menor: ", trim(pMnombre)
-            ! Inicializar variables para buscar el país con el menor porcentaje
-            real_saturacion_menor = 100
-            j = 0
-
-            ! Buscar el país con el menor porcentaje dentro del continente menor
-            do i = 1, num_paises
-                if (trim(paises(i)) /= 'continente') then
-                    ! Verificar si el país pertenece al continente menor
-                    if (trim(paises_continente(i)) == trim(pMnombre)) then
-                        j = j + 1
-                        ! Eliminar el símbolo de porcentaje y convertir el valor a real
-                        saturacion_sin_porcentaje = trim(adjustl(saturacion(j)))
-                        saturacion_sin_porcentaje = saturacion_sin_porcentaje(1:len_trim(saturacion_sin_porcentaje)-1)  ! Eliminar el último carácter (%)
-                        read(saturacion_sin_porcentaje, *) real_saturacion  ! Convertir a número real
-                        ! Verificar si el porcentaje es el menor encontrado
-                        if (real_saturacion < real_saturacion_menor) then
-                            real_saturacion_menor = real_saturacion
-                            pais_menor_porc = trim(paises(i))
-                        end if
-                    end if
-                end if
-            end do
-            ! Imprimir el país con el menor porcentaje
-            print *, "pais_menor_porc: ", trim(pais_menor_porc)
-
-             !busacar la posición del continente menor en la lista completa de paises
-            do i = 1, contador_pais
-                if (trim(Seleccionar_pais(i)) == trim(pais_menor_porc)) then
-                    exit
-                else
-                    posicion_menor_paiscompleto = posicion_menor_paiscompleto + 1
-                end if
-                
-            end do
-            print*, "posicion del pais menor: ", posicion_menor_paiscompleto
-            poblacion_grafica = trim(adjustl(poblacion(posicion_menor_paiscompleto)))
-            print *, "poblacion_grafica: ", trim(poblacion_grafica)
-            bandera_grafica = trim(bandera(posicion_menor_paiscompleto))
-            print *, "bandera_grafica; ", trim(bandera_grafica)
-            
-            !print *, "porcentaje: ", real_saturacion_menor
             ! Nodos hojas (países)
             j=0
+            CN = 0
+            CP= 0
+            P_PB = 0
             do i = 1, num_paises
                 if (trim(paises(i)) /= 'continente') then
                     ! Determinamos el color basado en el valor de saturacion(j)
@@ -1051,10 +1017,87 @@ program analizador_lexico
 
                     write(j_string, '(I0)') j+num_continentes
                     write(10, '(A)') 'n' // trim(adjustl(j_string))// ' [label="' // trim(paises(i)) // '\n' // trim(saturacion(j)) // '", fillcolor="' // trim(adjustl(C_string)) // '"];'
+                    IF (CN == posicion_menor) THEN
+                       CP = CP + 1
+                       P_CP(CP) = trim(paises(i))
+                       P_PB = P_PB +1
+                       PPB(P_PB) = trim(Saturacion(j))
+                    end if
                 else 
+                    CN = CN + 1
                     
                 end if    
             end do
+            print *, "CN: ", CN
+            
+            do i=1, CP
+                print *, i, trim(P_CP(i))
+            end do
+            do i=1, P_PB
+                print *, i, trim(PPB(i))
+            end do
+            
+            ! Buscar el menor valor y su posición usando un bucle y `if`
+            j=0
+            do i = 1, P_PB
+                S_P = trim(adjustl(PPB(i)))
+                    S_P = S_P(1:len_trim(S_P)-1)  ! Eliminar el último carácter (%)
+                    read(S_P, *) RP  ! Convertir a número real
+                RP_SINP(i) = RP
+                print *, i, RP_SINP(i)
+            end do
+            ! Inicialización de variables
+            RP_SINP_menor = 1000
+            posicion_menor_porc = 1
+
+            do i = 1, P_PB
+                if (RP_SINP(i) < RP_SINP_menor) then
+                    RP_SINP_menor = RP_SINP(i)
+                    posicion_menor_porc = i
+                end if
+            end do
+            print *,"posicion", posicion_menor_porc, "MENOR: ", RP_SINP_menor
+
+            pais_menor_porc = trim(P_CP(posicion_menor_porc))
+
+            
+
+
+            !------------------------------------------------------------------------------------------------
+            
+            ! Imprimir el país con el menor porcentaje
+            print *, "pais_menor_porc: ", trim(pais_menor_porc)
+
+             !busacar la posición del PAIS menor en la lista completa de paises
+            do i = 1, contador_pais
+                if (trim(Seleccionar_pais(i)) == trim(pais_menor_porc)) then
+                    exit
+                else
+                    posicion_menor_paiscompleto = posicion_menor_paiscompleto + 1
+                end if
+                
+            end do
+            print*, "posicion del pais menor: ", posicion_menor_paiscompleto
+            poblacion_grafica = trim(adjustl(poblacion(posicion_menor_paiscompleto)))
+            print *, "poblacion_grafica: ", trim(poblacion_grafica)
+            bandera_grafica = trim(bandera(posicion_menor_paiscompleto))
+            print *, "bandera_grafica; ", trim(bandera_grafica)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            !------------------------------------------------------------------------------
 
             ! Enlaces entre nodos
             do i = 1, num_continentes

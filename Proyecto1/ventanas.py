@@ -6,8 +6,10 @@ import subprocess
 from PIL import Image, ImageTk
 
 
+Abrir = None
+
 def Abrir():
-    
+    global Abrir
     Abrir = filedialog.askopenfilename(initialdir = "C:\\Users\\Marro\\Documents\\yon\\CUARTO SEMESTRE\\LAB LENGUAJES FORMALES\\-LFP-2S24Proyectos_202300813",title = "Elige un archivo",filetypes = (("archvios org","*.org"),("todos los archivos","*.*")))
     if Abrir: #lugar donde se guardo el directorio
         try:
@@ -50,6 +52,7 @@ def mostrar_grafica():
         LUGAR_GRAFICA.config(image=img_tk)
         LUGAR_GRAFICA.image = img_tk  # Mantener referencia de la imagen para evitar que se recoja por el garbage collector
     else:
+        LUGAR_GRAFICA.config(image='', text='')
         LUGAR_GRAFICA.config(text="no se puede generar la grafica debido a que se encontraron errores")
 
 def enviar_datos():
@@ -91,9 +94,11 @@ def enviar_datos():
     #LUGAR_GRAFICA.insert(END, resultado.stdout)    # Insertamos el contenido del archivo en el TEXT
 
     if ruta_bandera_grafica:
+        LUGAR_GRAFICA_pais.config(image='', text='')
         cargar_imagen(ruta_bandera_grafica)
     else:
-        print("No se encontro la bandera en la ruta especificada")
+        LUGAR_GRAFICA_pais.config(image='', text='')
+        LUGAR_GRAFICA_pais.config(text="No se encontro la bandera en la ruta especificada")
     
 
 def verificar_ruta(ruta_bandera_grafica):
@@ -101,27 +106,29 @@ def verificar_ruta(ruta_bandera_grafica):
     print(f"Verificando ruta: {ruta_ajustada}")
     return os.path.isfile(ruta_ajustada)
 
-def Guardar():
-    file_path = filedialog.asksaveasfilename(defaultextension=".txt", 
-                                             filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
-
-    if file_path:  # Si el usuario selecciona un archivo
-        # Comprobamos si el archivo ya existe
-        if os.path.exists(file_path):
-            # Preguntamos al usuario si desea sobrescribirlo
-            respuesta = messagebox.askyesno("Sobrescribir archivo", "El archivo ya existe. ¿Deseas sobrescribirlo?")
-            if not respuesta:  # Si el usuario elige no sobrescribir, salir de la función
-                return
-        
-        # Si el archivo no existe o el usuario aceptó sobrescribirlo, guardamos el archivo
-        try:
-            with open(file_path, 'w') as file:
-                file.write(entrada.get(1.0, END))  # Obtenemos el contenido del Text widget
-            messagebox.showinfo("Éxito", "El archivo ha sido guardado con éxito.")
-        except Exception as e:
-            messagebox.showerror("Error", f"Hubo un error al guardar el archivo: {e}")
+def Guardar(file_path= None):
+    global Abrir
+    if Abrir:  # Si ya hay un archivo abierto
+            try:
+                with open(Abrir, 'w') as archivo:
+                    archivo.write(entrada.get(1.0, END))  # Guardamos el contenido del Text widget
+                messagebox.showinfo("Éxito", "Los cambios han sido guardados en el archivo existente.")
+            except Exception as e:
+                messagebox.showerror("Error", f"Hubo un error al guardar el archivo: {e}")
+    else:
+            # Si no hay un archivo abierto, se pide al usuario que seleccione uno
+            Abrir = filedialog.asksaveasfilename(defaultextension=".txt", 
+                                                        filetypes=[("ARCHIVO", "*.ORG"),("Text files", "*.txt"), ("All files", "*.*")])
+            if Abrir:  # Si el usuario selecciona un archivo
+                try:
+                    with open(Abrir, 'w') as archivo:
+                        archivo.write(entrada.get(1.0, END))  # Guardamos el contenido del Text widget
+                    messagebox.showinfo("Éxito", "El archivo ha sido guardado con éxito.")
+                except Exception as e:
+                    messagebox.showerror("Error", f"Hubo un error al guardar el archivo: {e}")
+                
 def GuardarComo():
-    file_path = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
+    file_path = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("ARCHIVO", "*.ORG"), ("Text files", "*.txt"), ("All files", "*.*")])
     if file_path:
         with open(file_path, 'w') as file:
             file.write(entrada.get(1.0, END))
