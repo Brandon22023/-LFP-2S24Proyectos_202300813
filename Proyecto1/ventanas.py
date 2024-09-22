@@ -100,6 +100,12 @@ def enviar_datos():
     else:
         LUGAR_GRAFICA_pais.config(image='', text='')
         LUGAR_GRAFICA_pais.config(text="No se encontro la bandera en la ruta especificada")
+    mostrar_grafica()
+
+
+    os.remove("grafo.dot")
+    os.remove("grafo.png")
+    #os.delete("C:\\Users\\Marro\\Documents\\yon\\CUARTO SEMESTRE\\LAB LENGUAJES FORMALES\\-LFP-2S24Proyectos_202300813\\Proyecto1\\grafo.png")
     
 
 def verificar_ruta(ruta_bandera_grafica):
@@ -183,8 +189,8 @@ boton1= Button(ventana, text="Analisis", font=("Times New Roman", 16),command=en
 boton1.place(x=630, y=300, width=100, height=50) #define la posición del boton
 
 
-btn_mostrar = Button(ventana, text="Mostrar Gráfica", font=("Times New Roman", 12), command=mostrar_grafica_y_imagen, relief="groove", borderwidth=5,cursor="hand2", fg="white", bg=color_boton)
-btn_mostrar.place(x=630, y=420, width=120, height=50) #define la ubicación del boton()
+#btn_mostrar = Button(ventana, text="Mostrar Gráfica", font=("Times New Roman", 12), command=mostrar_grafica_y_imagen, relief="groove", borderwidth=5,cursor="hand2", fg="white", bg=color_boton)
+#btn_mostrar.place(x=630, y=420, width=120, height=50) #define la ubicación del boton()
 #label de texto
 entrada= Text(ventana, relief="groove",font=("Times New Roman", 12), borderwidth=5, bg=color_label) #lugar de texto
 entrada.place(x=20, y=30, width=550, height=650) #define la posición del lugar de texto
