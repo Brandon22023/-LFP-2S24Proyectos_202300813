@@ -123,7 +123,7 @@ ventana.resizable(False, False)#definir el tamaño de la ventana pero fija para 
 #btn_mostrar.place(x=630, y=420, width=120, height=50) #define la ubicación del boton()
 #label de texto
 entrada= Text(ventana, relief="groove",font=("Times New Roman", 12), borderwidth=5, bg=color_label) #lugar de texto
-entrada.place(x=20, y=30, width=550, height=650) #define la posición del lugar de texto
+entrada.place(x=20, y=15, width=550, height=415) #define la posición del lugar de texto
 #label de grafica
 LUGAR_GRAFICA= Text(ventana, bg="white", relief="groove", borderwidth=5) #un label para la grafica
 LUGAR_GRAFICA.place(x=800, y=30, width=500, height=400) #define la posición del lugar de texto
