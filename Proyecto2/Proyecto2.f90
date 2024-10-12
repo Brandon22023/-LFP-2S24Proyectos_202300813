@@ -100,9 +100,9 @@ program analizador_lexico
         char = contenido(puntero:puntero)
         !print *, char, " linea", linea, "columna", columna
         !print *, 'Código ASCII:', ichar(char), ' Línea:', linea, ' Columna:', columna
-        !print *,  char, ' Linea:', linea, ' Columna:', columna
+        print *,  char, ' Linea:', linea, ' Columna:', columna
         !print *, char, ' Línea:', linea, ' Columna:', columna
-        print *,"TKN:", trim(tkn), "  ", estado
+        !print *,"TKN:", trim(tkn), "  ", estado
         !ichar es para el codigo ascii
         if (ichar(char) == 10) then
             ! Salto de línea (LF)
@@ -153,6 +153,7 @@ program analizador_lexico
                         ! Si el carácter no es una letra minuscula, se cuenta como error
                         numErrores = numErrores + 1
                         errores(numErrores) = ErrorInfo(char, "Error no pertenece al lenguaje M", columna, linea)
+                        print *, 'Error no pertenece al lenguaje M:', char, ' Linea:', linea, ' Columna:', columna
                         columna = columna + 1
                         estado = 1
                     
@@ -203,6 +204,7 @@ program analizador_lexico
                                 ! Error de token
                                 numErrores = numErrores + 1
                                 errores(numErrores) = ErrorInfo(tkn, "Error de token", columna, linea)
+                                print *, 'Error de token:', tkn, ' Linea:', linea, ' Columna:', columna
                                 if (num_tokens <= max_tokens) then
                                     !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
                                     token_list(num_tokens) = trim(tkn)
@@ -277,6 +279,7 @@ program analizador_lexico
                     ! Error de token
                         numErrores = numErrores + 1
                         errores(numErrores) = ErrorInfo(char, "caracter no pertecene", columna, linea)
+                        print *, 'Error de token:', char, ' Linea:', linea, ' Columna:', columna
                         columna = columna + 1
                         estado = 1
                     
@@ -323,6 +326,7 @@ program analizador_lexico
                     ! Error de token
                         numErrores = numErrores + 1
                         errores(numErrores) = ErrorInfo(char, "caracter no pertecene", columna, linea)
+                        print *, 'Error de token:', char, ' Linea:', linea, ' Columna:', columna
                         columna = columna + 1
                         estado = 1
                     
@@ -365,6 +369,8 @@ program analizador_lexico
                                 ! Error de token
                                 numErrores = numErrores + 1
                                 errores(numErrores) = ErrorInfo(tkn, "Error de token", columna, linea)
+
+                                print *, 'Error de token:', tkn, ' Linea:', linea, ' Columna:', columna
                                 if (num_tokens <= max_tokens) then
                                     !print *, 'Token acumulado antes de agregar:', trim(tkn), 'Longitud:', len_trim(tkn)
                                     token_list(num_tokens) = trim(tkn)
@@ -438,6 +444,7 @@ program analizador_lexico
                     ! Error de token
                         numErrores = numErrores + 1
                         errores(numErrores) = ErrorInfo(char, "caracter no pertecene", columna, linea)
+                        PRINT *, 'Error de token:', char, ' Linea:', linea, ' Columna:', columna
                         columna = columna + 1
                         estado = 1
                     
@@ -494,6 +501,7 @@ program analizador_lexico
                     ! Error de token
                         numErrores = numErrores + 1
                         errores(numErrores) = ErrorInfo(char, "caracter no pertecene", columna, linea)
+                        PRINT *, 'Error de token:', char, ' Linea:', linea, ' Columna:', columna
                         columna = columna + 1
                         estado = 1
                     
@@ -603,6 +611,7 @@ program analizador_lexico
                     ! Error de token
                         numErrores = numErrores + 1
                         errores(numErrores) = ErrorInfo(char, "caracter no pertecene", columna, linea)
+                        PRINT *, 'Error de token:', char, ' Linea:', linea, ' Columna:', columna
                         columna = columna + 1
                         estado = 5
                     
@@ -623,11 +632,7 @@ program analizador_lexico
     else
         !print *, "No hay errores en el código, por lo que no es posible generar el html de tokens."
     end if
-    if (numErrores > 0) then
-       print *, "aun no se puede mostrar algo"
-    else
-        print *, "No hay errores en el código."
-    end if
+    
 
     
 

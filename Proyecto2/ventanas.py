@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
-from tkinter import font, Menu
+from tkinter import font, Menu, ttk
 import os 
 import subprocess
 
@@ -106,6 +106,15 @@ def NUEVO():
 def tokens():
     print("aqui se llamaran los tokens pero aun no please espere")
 
+# Función para agregar datos a la tabla
+def agregar_datos_a_tabla(datos):
+    # Limpiar tabla antes de agregar nuevos datos
+    for item in tabla.get_children():
+        tabla.delete(item)
+        
+    # Agregar datos a la tabla
+    for fila in datos:
+        tabla.insert("", "end", values=fila)
 
 color_boton = "#3fe3d2"
 color_label = "#b9f9f2"
@@ -129,6 +138,14 @@ LUGAR_GRAFICA= Text(ventana, bg="white", relief="groove", borderwidth=5) #un lab
 LUGAR_GRAFICA.place(x=800, y=30, width=500, height=400) #define la posición del lugar de texto
 
 
+# Tabla
+tabla = ttk.Treeview(ventana, columns=("Columna 1", "Columna 2", "Columna 3", "Columna 4", "Columna 5"), show="headings")
+tabla.heading("Columna 1", text="Tipo")
+tabla.heading("Columna 2", text="Linea")
+tabla.heading("Columna 3", text="Columna")
+tabla.heading("Columna 4", text="Token")
+tabla.heading("Columna 5", text="Descripcion")
+tabla.place(x=20, y=450, width=1280, height=250)  # Define la posición y el tamaño de la tabla
 #Menu
 #SE DEFINE EL MENU
 menu1 = Menu(ventana)
@@ -150,6 +167,10 @@ filename.add_command(label = "Abrir", command = Abrir) #sub menu llamado Abrir p
 filename.add_command(label = "Guardar", command = Guardar) #sub menu llamado Guardar para el menu menu
 filename.add_command(label = "Guardar como...", command = GuardarComo) #sub menu llamado Guardar como para el menu menu
 filename.add_command(label = "salir", command = ventana.destroy) #nos termina cerrando la ventana
+
+# Agregar algunos datos de ejemplo a la tabla
+ejemplo_datos = [("Lexico", "64", "35", "mayusculas", "se esperaba mayuscula"), ("sintactico", "70", "11", "variable declarativa", "no declarada en controles")]
+agregar_datos_a_tabla(ejemplo_datos)
 
 ventana.mainloop()#siempre sera la ultima linea de codigo debido a que es un bucle que esta dibujando la ventana constantemente
 #fin de la ventana
