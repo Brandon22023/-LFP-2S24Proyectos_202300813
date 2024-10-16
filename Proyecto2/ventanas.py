@@ -11,7 +11,7 @@ Abrir = None
 
 def Abrir():
     global Abrir
-    Abrir = filedialog.askopenfilename(initialdir = "C:\\Users\\Marro\\Documents\\yon\\CUARTO SEMESTRE\\LAB LENGUAJES FORMALES\\-LFP-2S24Proyectos_202300813",title = "Elige un archivo",filetypes = (("archvios txt","*.txt"),("todos los archivos","*.*")))
+    Abrir = filedialog.askopenfilename(initialdir = "C:\\Users\\Marro\\Documents\\yon\\CUARTO SEMESTRE\\LAB LENGUAJES FORMALES\\-LFP-2S24Proyectos_202300813",title = "Elige un archivo",filetypes = (("archvios LFP","*.LFP"),("todos los archivos","*.*")))
     if Abrir: #lugar donde se guardo el directorio
         try:
             with open(Abrir, "r") as archivo:
@@ -135,7 +135,7 @@ entrada= Text(ventana, relief="groove",font=("Times New Roman", 12), borderwidth
 entrada.place(x=20, y=15, width=550, height=415) #define la posición del lugar de texto
 #label de grafica
 LUGAR_GRAFICA= Text(ventana, bg="white", relief="groove", borderwidth=5) #un label para la grafica
-LUGAR_GRAFICA.place(x=800, y=30, width=500, height=400) #define la posición del lugar de texto
+LUGAR_GRAFICA.place(x=600, y=30, width=700, height=400) #define la posición del lugar de texto
 
 
 # Tabla
