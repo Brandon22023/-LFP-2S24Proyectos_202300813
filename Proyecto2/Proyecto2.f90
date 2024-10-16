@@ -29,7 +29,7 @@ program analizador_lexico
 
     do while(puntero <= len)
         char = contenido(puntero:puntero)
-        print *, char, "  line  ", fila, "  column  ", columna, "  estado  ", estado
+        !print *, char, "  line  ", fila, "  column  ", columna, "  estado  ", estado
         select case (estado)
             case (0)
                 
@@ -90,7 +90,7 @@ program analizador_lexico
             
                 else
                     ! Reporta un error si el carácter no es válido
-                    ! CALL agregar_error(char, 'Error Lexico', fila, columna)
+                    !CALL agregar_error("Lexico", fila, columna, char, "error de token" )
                     columna = columna + 1
                     puntero = puntero + 1 
 
@@ -123,8 +123,11 @@ program analizador_lexico
                 
                 elseif ( char == '!') then
                     call agregar_token(char, 'tk_exp', fila, columna) 
-
+                else 
+                    !call agregar_error("Lexico", fila, columna, char, "error de token" )
+                    
                 end if
+                
                 puntero = puntero + 1
                 estado = 0
 
@@ -205,7 +208,7 @@ program analizador_lexico
 
                 else
                     ! call agregar_error(aux_tkn, 'Error lexico', fila, columna)
-
+                    !CALL agregar_error("Lexico", fila, columna, char, "error de token" )
                     aux_tkn = ""
                     estado = 0
                 
@@ -231,7 +234,7 @@ program analizador_lexico
                 elseif ( char == '"') then
                     estado = 5
                 else
-                    ! call agregar_error(aux_tkn, 'Error lexico', fila, columna)
+                    !CALL agregar_error("Lexico", fila, columna, char, "error de token" )
 
                     aux_tkn = ""
                     estado = 0
@@ -240,13 +243,14 @@ program analizador_lexico
         end select
     end do
     
-    !call parser
     
-    !call imprimir_errores
+    call parser
+    call imprimir_errores
     
     call imprimir_tokens
-    call generar_html_tokens
-    !call imprimir_etiquetas
+    !call generar_html_tokens
+    call imprimir_etiquetas
+    
 
     
 
