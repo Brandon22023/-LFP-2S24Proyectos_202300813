@@ -44,6 +44,8 @@ def enviar_datos():
     print(f"Contenido recibido de Fortran:\n{resultado.stdout}")  # Para verificar lo recibido en consola
     LUGAR_GRAFICA.delete(1.0, END)  # Limpia el área de texto anterior
     LUGAR_GRAFICA.insert(END, resultado.stdout)  # Inserta la salida recibida de Fortran
+    # Llamar a la función para agregar los datos desde el archivo .txt a la tabla
+    agregar_datos_desde_archivo()
 
   
     
@@ -106,15 +108,30 @@ def NUEVO():
 def tokens():
     print("aqui se llamaran los tokens pero aun no please espere")
 
+
 # Función para agregar datos a la tabla
 def agregar_datos_a_tabla(datos):
-    # Limpiar tabla antes de agregar nuevos datos
+    for fila in datos:
+        tabla.insert("", "end", values=fila)  # Insertar cada fila en la tabla
+# Función para agregar datos a la tabla
+def agregar_datos_desde_archivo():
+    errors_ruta = "C:\\Users\\Marro\\Documents\\yon\\CUARTO SEMESTRE\\LAB LENGUAJES FORMALES\\-LFP-2S24Proyectos_202300813\\Proyecto2\\TODOS_LOS_ERRORES.txt"
+    # Limpiar la tabla antes de agregar nuevos datos
     for item in tabla.get_children():
         tabla.delete(item)
-        
-    # Agregar datos a la tabla
-    for fila in datos:
-        tabla.insert("", "end", values=fila)
+    try:
+        # Abrir el archivo y leer todas las líneas
+        with open(errors_ruta, "r") as archivo:
+            for linea in archivo:
+                datos = linea.strip().split(",")  # Separar los datos por coma
+                if len(datos) == 5:  # Verificar que haya exactamente 5 columnas
+                    tabla.insert("", "end", values=datos)  # Insertar la fila en la tabla
+                else:
+                    print(f"Línea con formato incorrecto: {linea}")  # Si la línea no tiene 5 columnas, notificar
+    except FileNotFoundError:
+        messagebox.showerror("Error", "El archivo no fue encontrado.")
+    except Exception as e:
+        messagebox.showerror("Error", f"No se pudo leer el archivo: {e}")
 
 color_boton = "#3fe3d2"
 color_label = "#b9f9f2"
@@ -146,6 +163,8 @@ tabla.heading("Columna 3", text="Columna")
 tabla.heading("Columna 4", text="Token")
 tabla.heading("Columna 5", text="Descripcion")
 tabla.place(x=20, y=450, width=1280, height=250)  # Define la posición y el tamaño de la tabla
+
+
 #Menu
 #SE DEFINE EL MENU
 menu1 = Menu(ventana)
@@ -168,9 +187,7 @@ filename.add_command(label = "Guardar", command = Guardar) #sub menu llamado Gua
 filename.add_command(label = "Guardar como...", command = GuardarComo) #sub menu llamado Guardar como para el menu menu
 filename.add_command(label = "salir", command = ventana.destroy) #nos termina cerrando la ventana
 
-# Agregar algunos datos de ejemplo a la tabla
-ejemplo_datos = [("Lexico", "64", "35", "mayusculas", "se esperaba mayuscula"), ("sintactico", "70", "11", "variable declarativa", "no declarada en controles")]
-agregar_datos_a_tabla(ejemplo_datos)
+
 
 ventana.mainloop()#siempre sera la ultima linea de codigo debido a que es un bucle que esta dibujando la ventana constantemente
 #fin de la ventana

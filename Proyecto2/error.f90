@@ -93,7 +93,7 @@ contains
         end if
 
         ! Escribir la cabecera del archivo TXT
-        write(unidad, '(A)') "Error Sintactico, Fila, Columna, Ultimo Token, Token Esperado"
+        !write(unidad, '(A)') "Error Sintactico, Fila, Columna, Ultimo Token, Token Esperado"
 
         if (.NOT. ALLOCATED(error_array)) then
             write(unidad, '(A)') "No hay errores"
@@ -104,8 +104,8 @@ contains
                 write(str_columna, '(I0)') error_array(i)%columna
 
                 ! Combinar todos los valores del error en una sola cadena
-                line_error = "Error Sintactico, " // trim(str_fila) // ", " // trim(str_columna) // ", " // &
-                            trim(error_array(i)%ultimo_token) // ", " // trim(error_array(i)%token_esperado)
+                line_error = "Sintactico, " // trim(str_fila) // ", " // trim(str_columna) // ", " // &
+                            trim(error_array(i)%ultimo_token) // ", " // "token esperado " // trim(error_array(i)%token_esperado)
 
                 ! Escribir la cadena completa en una línea
                 write(unidad, '(A)') trim(line_error)
