@@ -57,13 +57,64 @@ contains
                     write(str_fila, '(I0)') error_array(i)%fila
                     write(str_columna, '(I0)') error_array(i)%columna
                     print *, 'Error Sintactico: '
-                    print *, 'Ultimo Token: ', trim(error_array(i)%ultimo_token)
-                    print *, 'Token Esperado: ', trim(error_array(i)%token_esperado)
                     print *, 'Fila: ', trim(str_fila)
                     print *, 'Columna: ', trim(str_columna)
+                    print *, 'Ultimo Token: ', trim(error_array(i)%ultimo_token)
+                    print *, 'Token Esperado: ', trim(error_array(i)%token_esperado)
+                    
                 END DO
         end if
 
     end subroutine imprimir_errores
+    ! Subrutina para escribir errores en un archivo CSV
+! Subrutina para escribir errores en un archivo CSV
+    ! Subrutina para escribir errores en un archivo CSV
+    ! Subrutina para escribir errores en un archivo CSV
+! Subrutina para escribir errores en un archivo CSV
+    ! Subrutina para escribir errores en un archivo CSV
+! Subrutina para escribir errores en un archivo TXT
+    ! Subrutina para escribir errores en un archivo TXT
+    subroutine escribir_errores_txt()
+        integer :: i
+        integer :: unidad = 10  ! Asignamos una unidad explícita
+        integer :: iostat
+        character(len=20) :: str_fila, str_columna
+        character(len=100) :: nombre_archivo
+        character(len=200) :: line_error
+
+        ! Definir el nombre del archivo
+        nombre_archivo = "TODOS_LOS_ERRORES.txt"
+
+        ! Abrir el archivo para escribir
+        open(unit=unidad, file=nombre_archivo, status='replace', action='write', iostat=iostat)
+        if (iostat /= 0) then
+            print *, "Error al abrir el archivo para escribir. Código de error: ", iostat
+            return
+        end if
+
+        ! Escribir la cabecera del archivo TXT
+        write(unidad, '(A)') "Error Sintactico, Fila, Columna, Ultimo Token, Token Esperado"
+
+        if (.NOT. ALLOCATED(error_array)) then
+            write(unidad, '(A)') "No hay errores"
+        else
+            DO i = 1, size(error_array)
+                ! Convertir fila y columna a string
+                write(str_fila, '(I0)') error_array(i)%fila
+                write(str_columna, '(I0)') error_array(i)%columna
+
+                ! Combinar todos los valores del error en una sola cadena
+                line_error = "Error Sintactico, " // trim(str_fila) // ", " // trim(str_columna) // ", " // &
+                            trim(error_array(i)%ultimo_token) // ", " // trim(error_array(i)%token_esperado)
+
+                ! Escribir la cadena completa en una línea
+                write(unidad, '(A)') trim(line_error)
+            END DO
+        end if
+
+        ! Cerrar el archivo
+        close(unidad)
+    end subroutine escribir_errores_txt
+
     
 END MODULE error        

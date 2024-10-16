@@ -246,10 +246,11 @@ program analizador_lexico
     
     call parser
     call imprimir_errores
-    
-    call imprimir_tokens
+    call escribir_errores_txt
+    !call imprimir_tokens
     !call generar_html_tokens
     call imprimir_etiquetas
+    
     
 
     
