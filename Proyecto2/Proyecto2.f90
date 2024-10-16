@@ -29,6 +29,7 @@ program analizador_lexico
 
     do while(puntero <= len)
         char = contenido(puntero:puntero)
+        print *, char, "  line  ", fila, "  column  ", columna, "  estado  ", estado
         select case (estado)
             case (0)
                 
@@ -41,7 +42,32 @@ program analizador_lexico
                 
                 elseif (char >= '0' .and. char <= '9' ) then
                     estado = 3
-
+                
+                elseif (char == '/' .and. contenido(puntero+1:puntero+1) == '/') then
+                    ! Ignora el resto de la línea
+                    do while (puntero <= len .and. ichar(contenido(puntero:puntero)) /= 10)  ! Salta hasta encontrar el salto de línea
+                        puntero = puntero + 1
+                    end do
+                    columna = 0
+                    fila = fila + 1
+                    puntero = puntero + 1
+                
+                ! Detecta el inicio de un comentario de bloque "/*"
+                elseif (char == '/' .and. contenido(puntero+1:puntero+1) == '*') then
+                    ! Ignora todo hasta encontrar el cierre "*/"
+                    puntero = puntero + 2
+                    do while (puntero <= len)
+                        if (contenido(puntero:puntero) == '*' .and. contenido(puntero+1:puntero+1) == '/') then
+                            puntero = puntero + 2
+                            exit ! Sal del bucle cuando encuentres "*/"
+                        endif
+                        ! Actualiza las filas y columnas si encuentras saltos de línea
+                        if (ichar(contenido(puntero:puntero)) == 10) then
+                            columna = 0
+                            fila = fila + 1
+                        endif
+                        puntero = puntero + 1
+                    end do
                 elseif (char == '"') then
                     aux_tkn = trim(aux_tkn) // char
                     columna = columna + 1
@@ -214,9 +240,9 @@ program analizador_lexico
         end select
     end do
     
-    call parser
+    !call parser
     
-    call imprimir_errores
+    !call imprimir_errores
     
     call imprimir_tokens
     call generar_html_tokens
