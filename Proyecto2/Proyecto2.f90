@@ -5,6 +5,7 @@ program analizador_lexico
     use Boton
     use clave
     use texto
+    use error_lexico
 
     implicit none
     integer :: len, fila, columna, estado, puntero
@@ -95,7 +96,7 @@ program analizador_lexico
                 else
                     ! Reporta un error si el carácter no es válido
                     !CALL agregar_error("Lexico", fila, columna, char, "error de token" )
-                    !call agregar_error(aux_tkn, 'Error lexico', fila, columna)
+                    call agregar_error_lexico(char, 'Token invalido', fila, columna)
                     columna = columna + 1
                     puntero = puntero + 1 
 
@@ -129,9 +130,10 @@ program analizador_lexico
                 elseif ( char == '!') then
                     call agregar_token(char, 'tk_exp', fila, columna) 
                 else 
-                    call agregar_error(char, 'Error lexico', fila, columna)
+                    call agregar_error_lexico(char, 'Token invalido', fila, columna)
                     
                 end if
+                
                 
                 puntero = puntero + 1
                 estado = 0
@@ -256,6 +258,9 @@ program analizador_lexico
     call parser
     call imprimir_errores
     call escribir_errores_txt
+    call imprimir_errores_lexico
+    call escribir_errores_lexico_txt
+
     call imprimir_tokens
     call generar_html_tokens
     call imprimir_etiquetas
