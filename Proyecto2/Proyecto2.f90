@@ -253,7 +253,6 @@ program analizador_lexico
     call imprimir_etiquetas
     call imprimir_contenedores
     
-    
 
     
 

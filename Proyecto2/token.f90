@@ -125,8 +125,21 @@ contains
         if (.NOT. ALLOCATED(token_array)) then
             print *, "No hay tokens"
         else
-
+              
+            if (token_array(1)%tipo .ne. "tk_menor") then
+                call agregar_error(token_array(1)%lexema, 'tk_menor', token_array(1)%fila, token_array(1)%columna)
+            ! elseif (token_array(2)%tipo .ne. "tk_exp") then
+            !     call agregar_error(token_array(2)%lexema, 'tk_exp', token_array(2)%fila, token_array(2)%columna)
+            ! elseif (token_array(3)%tipo .ne. "tk_guion") then
+            !     call agregar_error(token_array(3)%lexema, 'tk_guion', token_array(3)%fila, token_array(3)%columna)
+            ! elseif (token_array(4)%tipo .ne. "tk_guion") then
+            !     call agregar_error(token_array(4)%lexema, 'tk_guion', token_array(4)%fila, token_array(4)%columna)
+            ! elseif (token_array(5)%tipo .ne. "tk_id") then
+            !     call agregar_error(token_array(5)%lexema, 'tk_id', token_array(5)%fila, token_array(5)%columna)
+            end if
+             
             DO i = 1, size(token_array)
+                
 
                 if (token_array(i)%tipo== "tk_menor") then
                     if (token_array(i+1)%tipo .ne. "tk_exp") then
@@ -175,178 +188,6 @@ contains
                     else
                         call agregar_error(token_array(i+1)%lexema, 'tk_id', token_array(i+1)%fila, token_array(i+1)%columna )
                     end if
-                end if
-
-                ! Validar si después de un 'tk_id' no viene un 'tk_punto'
-                if (token_array(i)%tipo == 'tk_id' .and. token_array(i+2)%tipo == 'tk_setAncho' .and. token_array(i+3)%tipo == 'tk_par_izq') then
-                    if (token_array(i+1)%tipo .ne. 'tk_punto') then
-                        ! Si después del 'tk_id' no hay un 'tk_punto', se marca un error
-                        call agregar_error(token_array(i+1)%lexema, 'tk_punto', token_array(i+1)%fila, token_array(i+1)%columna)
-                    end if
-                elseif (token_array(i)%tipo == 'tk_id' .and. token_array(i+2)%tipo == 'tk_setAlto' .and. token_array(i+3)%tipo == 'tk_par_izq') then
-                    if (token_array(i+1)%tipo .ne. 'tk_punto') then
-                        call agregar_error(token_array(i+1)%lexema, 'tk_punto', token_array(i+1)%fila, token_array(i+1)%columna)
-                    end if
-                elseif (token_array(i)%tipo == 'tk_id' .and. token_array(i+2)%tipo == 'tk_setTexto' .and. token_array(i+3)%tipo == 'tk_par_izq') then
-                    if (token_array(i+1)%tipo .ne. 'tk_punto') then
-                        call agregar_error(token_array(i+1)%lexema, 'tk_punto', token_array(i+1)%fila, token_array(i+1)%columna)
-                    end if
-                elseif (token_array(i)%tipo == 'tk_id' .and. token_array(i+2)%tipo == 'tk_setColorLetra' .and. token_array(i+3)%tipo == 'tk_par_izq') then
-                    if (token_array(i+1)%tipo .ne. 'tk_punto') then
-                        call agregar_error(token_array(i+1)%lexema, 'tk_punto', token_array(i+1)%fila, token_array(i+1)%columna)
-                    end if
-                elseif (token_array(i)%tipo == 'tk_id' .and. token_array(i+2)%tipo == 'tk_setPosicion' .and. token_array(i+3)%tipo == 'tk_par_izq') then
-                    if (token_array(i+1)%tipo .ne. 'tk_punto') then
-                        call agregar_error(token_array(i+1)%lexema, 'tk_punto', token_array(i+1)%fila, token_array(i+1)%columna)
-                    end if
-                end if
-
-                ! Validar si después de un 'tk_id' no viene un 'tk_punto'
-                if (token_array(i)%tipo == 'tk_id' .and. token_array(i+1)%tipo == 'tk_setAncho' .and. token_array(i+2)%tipo == 'tk_par_izq' .or. token_array(i)%tipo == 'tk_id' .and. token_array(i+1)%tipo == 'tk_par_izq' .and. token_array(i+2)%tipo == 'tk_num' ) then
-                    if (token_array(i+1)%tipo .ne. 'tk_punto') then
-                        ! Si después del 'tk_id' no hay un 'tk_punto', se marca un error
-                        call agregar_error(token_array(i+1)%lexema, 'tk_punto', token_array(i+1)%fila, token_array(i+1)%columna)
-                    end if
-                elseif (token_array(i)%tipo == 'tk_id' .and. token_array(i+1)%tipo == 'tk_setAlto' .and. token_array(i+2)%tipo == 'tk_par_izq' .or. token_array(i)%tipo == 'tk_id' .and. token_array(i+1)%tipo == 'tk_par_izq' .and. token_array(i+2)%tipo == 'tk_num') then
-                    if (token_array(i+1)%tipo .ne. 'tk_punto') then
-                        call agregar_error(token_array(i+1)%lexema, 'tk_punto', token_array(i+1)%fila, token_array(i+1)%columna)
-                    end if
-                elseif (token_array(i)%tipo == 'tk_id' .and. token_array(i+1)%tipo == 'tk_setTexto' .and. token_array(i+2)%tipo == 'tk_par_izq' .or. token_array(i)%tipo == 'tk_id' .and. token_array(i+1)%tipo == 'tk_par_izq' .and. token_array(i+2)%tipo == 'tk_num') then
-                    if (token_array(i+1)%tipo .ne. 'tk_punto') then
-                        call agregar_error(token_array(i+1)%lexema, 'tk_punto', token_array(i+1)%fila, token_array(i+1)%columna)
-                    end if
-                elseif (token_array(i)%tipo == 'tk_id' .and. token_array(i+1)%tipo == 'tk_setColorLetra' .and. token_array(i+2)%tipo == 'tk_par_izq' .or. token_array(i)%tipo == 'tk_id' .and. token_array(i+1)%tipo == 'tk_par_izq' .and. token_array(i+2)%tipo == 'tk_num') then
-                    if (token_array(i+1)%tipo .ne. 'tk_punto') then
-                        call agregar_error(token_array(i+1)%lexema, 'tk_punto', token_array(i+1)%fila, token_array(i+1)%columna)
-                    end if
-                elseif (token_array(i)%tipo == 'tk_id' .and. token_array(i+1)%tipo == 'tk_setPosicion' .and. token_array(i+2)%tipo == 'tk_par_izq'.or. token_array(i)%tipo == 'tk_id' .and. token_array(i+1)%tipo == 'tk_par_izq' .and. token_array(i+2)%tipo == 'tk_num') then
-                    if (token_array(i+1)%tipo .ne. 'tk_punto') then
-                        call agregar_error(token_array(i+1)%lexema, 'tk_punto', token_array(i+1)%fila, token_array(i+1)%columna)
-                    end if
-                end if
-
-                if (token_array(i)%tipo == 'tk_id' .and. token_array(i+1)%tipo == 'tk_punto' ) then
-
-                    if(token_array(i+2)%tipo == 'tk_setAncho') then
-                        if (token_array(i+3)%tipo .ne. 'tk_par_izq') then
-                            call agregar_error(token_array(i+3)%lexema, 'tk_par_izq', token_array(i+3)%fila,token_array(i+3)%columna )
-
-                        elseif (token_array(i+4)%tipo .ne. 'tk_num') then
-                            call agregar_error(token_array(i+4)%lexema, 'tk_num', token_array(i+4)%fila,token_array(i+4)%columna )
-                        
-                        elseif (token_array(i+5)%tipo .ne. 'tk_par_der') then
-                            call agregar_error(token_array(i+5)%lexema, 'tk_par_der', token_array(i+5)%fila,token_array(i+5)%columna )
-
-                        elseif (token_array(i+6)%tipo .ne. 'tk_pyc') then
-                            call agregar_error(token_array(i+6)%lexema, 'tk_pyc', token_array(i+6)%fila,token_array(i+6)%columna )
-                        
-                        else
-                            call etiqueta_set_ancho(token_array(i)%lexema,token_array(i+4)%lexema)
-                            
-                        end if
-
-
-                    end if
-
-                    if(token_array(i+2)%tipo == 'tk_setAlto') then
-                        if (token_array(i+3)%tipo .ne. 'tk_par_izq') then
-                            call agregar_error(token_array(i+3)%lexema, 'tk_par_izq', token_array(i+3)%fila,token_array(i+3)%columna )
-
-                        elseif (token_array(i+4)%tipo .ne. 'tk_num') then
-                            call agregar_error(token_array(i+4)%lexema, 'tk_num', token_array(i+4)%fila,token_array(i+4)%columna )
-                        
-                        elseif (token_array(i+5)%tipo .ne. 'tk_par_der') then
-                            call agregar_error(token_array(i+5)%lexema, 'tk_par_der', token_array(i+5)%fila,token_array(i+5)%columna )
-
-                        elseif (token_array(i+6)%tipo .ne. 'tk_pyc') then
-                            call agregar_error(token_array(i+6)%lexema, 'tk_pyc', token_array(i+6)%fila,token_array(i+6)%columna )
-                        
-                        else
-                            call etiqueta_set_alto(token_array(i)%lexema,token_array(i+4)%lexema)
-                            
-                        end if
-
-                    end if
-
-
-                    if(token_array(i+2)%tipo == 'tk_setTexto') then
-                        if (token_array(i+3)%tipo .ne. 'tk_par_izq') then
-                            call agregar_error(token_array(i+3)%lexema, 'tk_par_izq', token_array(i+3)%fila,token_array(i+3)%columna )
-
-                        elseif (token_array(i+4)%tipo .ne. 'tk_literal') then
-                            call agregar_error(token_array(i+4)%lexema, 'tk_literal', token_array(i+4)%fila,token_array(i+4)%columna )
-                        
-                        elseif (token_array(i+5)%tipo .ne. 'tk_par_der') then
-                            call agregar_error(token_array(i+5)%lexema, 'tk_par_der', token_array(i+5)%fila,token_array(i+5)%columna )
-
-                        elseif (token_array(i+6)%tipo .ne. 'tk_pyc') then
-                            call agregar_error(token_array(i+6)%lexema, 'tk_pyc', token_array(i+6)%fila,token_array(i+6)%columna )
-                        
-                        else
-                            call etiqueta_set_texto(token_array(i)%lexema,token_array(i+4)%lexema)
-                            
-                        end if
-
-                    end if
-
-                    if(token_array(i+2)%tipo == 'tk_setColorLetra') then
-                        if (token_array(i+3)%tipo .ne. 'tk_par_izq') then
-                            call agregar_error(token_array(i+3)%lexema, 'tk_par_izq', token_array(i+3)%fila,token_array(i+3)%columna )
-
-                        elseif (token_array(i+4)%tipo .ne. 'tk_num') then
-                            call agregar_error(token_array(i+4)%lexema, 'tk_num', token_array(i+4)%fila,token_array(i+4)%columna )
-                        
-                        elseif (token_array(i+5)%tipo .ne. 'tk_coma') then
-                            call agregar_error(token_array(i+5)%lexema, 'tk_coma', token_array(i+5)%fila,token_array(i+5)%columna )
-
-                        elseif (token_array(i+6)%tipo .ne. 'tk_num') then
-                            call agregar_error(token_array(i+6)%lexema, 'tk_num', token_array(i+6)%fila,token_array(i+6)%columna )
-
-                        elseif (token_array(i+7)%tipo .ne. 'tk_coma') then
-                            call agregar_error(token_array(i+7)%lexema, 'tk_coma', token_array(i+7)%fila,token_array(i+7)%columna )
-
-                        elseif (token_array(i+8)%tipo .ne. 'tk_num') then
-                            call agregar_error(token_array(i+8)%lexema, 'tk_num', token_array(i+8)%fila,token_array(i+8)%columna )
-
-                        elseif (token_array(i+9)%tipo .ne. 'tk_par_der') then
-                            call agregar_error(token_array(i+9)%lexema, 'tk_par_der', token_array(i+9)%fila,token_array(i+9)%columna )
-
-                        elseif (token_array(i+10)%tipo .ne. 'tk_pyc') then
-                            call agregar_error(token_array(i+10)%lexema, 'tk_pyc', token_array(i+10)%fila,token_array(i+10)%columna )
-                        
-                        else
-                            call etiqueta_set_color_texto(token_array(i)%lexema,token_array(i+4)%lexema, token_array(i+6)%lexema, token_array(i+8)%lexema )
-                            
-                        end if
-
-                    end if
-
-                    if(token_array(i+2)%tipo == 'tk_setPosicion') then
-                        if (token_array(i+3)%tipo .ne. 'tk_par_izq') then
-                            call agregar_error(token_array(i+3)%lexema, 'tk_par_izq', token_array(i+3)%fila,token_array(i+3)%columna )
-
-                        elseif (token_array(i+4)%tipo .ne. 'tk_num') then
-                            call agregar_error(token_array(i+4)%lexema, 'tk_num', token_array(i+4)%fila,token_array(i+4)%columna )
-                        
-                        elseif (token_array(i+5)%tipo .ne. 'tk_coma') then
-                            call agregar_error(token_array(i+5)%lexema, 'tk_coma', token_array(i+5)%fila,token_array(i+5)%columna )
-
-                        elseif (token_array(i+6)%tipo .ne. 'tk_num') then
-                            call agregar_error(token_array(i+6)%lexema, 'tk_num', token_array(i+6)%fila,token_array(i+6)%columna )
-
-                        elseif (token_array(i+7)%tipo .ne. 'tk_par_der') then
-                            call agregar_error(token_array(i+7)%lexema, 'tk_par_der', token_array(i+7)%fila,token_array(i+7)%columna )
-
-                        elseif (token_array(i+8)%tipo .ne. 'tk_pyc') then
-                            call agregar_error(token_array(i+8)%lexema, 'tk_pyc', token_array(i+8)%fila,token_array(i+8)%columna )
-                        
-                        else
-                            call etiqueta_set_posicion(token_array(i)%lexema,token_array(i+4)%lexema,token_array(i+6)%lexema)
-                            
-                        end if
-
-                    end if
-
                 end if
 
                 if (token_array(i)%tipo == 'tk_contenedor') then
@@ -421,11 +262,10 @@ contains
                             call agregar_error(token_array(i+6)%lexema, 'tk_pyc', token_array(i+6)%fila,token_array(i+6)%columna )
                         
                         else
+                            call etiqueta_set_ancho(token_array(i)%lexema,token_array(i+4)%lexema)
                             call contenedor_set_ancho(token_array(i)%lexema,token_array(i+4)%lexema)
                             
                         end if
-
-
                     end if
 
                     if(token_array(i+2)%tipo == 'tk_setAlto') then
@@ -442,11 +282,189 @@ contains
                             call agregar_error(token_array(i+6)%lexema, 'tk_pyc', token_array(i+6)%fila,token_array(i+6)%columna )
                         
                         else
+                            call etiqueta_set_alto(token_array(i)%lexema,token_array(i+4)%lexema)
                             call contenedor_set_alto(token_array(i)%lexema,token_array(i+4)%lexema)
                             
                         end if
 
                     end if
+
+
+                    if(token_array(i+2)%tipo == 'tk_setTexto') then
+                        if (token_array(i+3)%tipo .ne. 'tk_par_izq') then
+                            call agregar_error(token_array(i+3)%lexema, 'tk_par_izq', token_array(i+3)%fila,token_array(i+3)%columna )
+
+                        elseif (token_array(i+4)%tipo .ne. 'tk_literal') then
+                            call agregar_error(token_array(i+4)%lexema, 'tk_literal', token_array(i+4)%fila,token_array(i+4)%columna )
+                        
+                        elseif (token_array(i+5)%tipo .ne. 'tk_par_der') then
+                            call agregar_error(token_array(i+5)%lexema, 'tk_par_der', token_array(i+5)%fila,token_array(i+5)%columna )
+
+                        elseif (token_array(i+6)%tipo .ne. 'tk_pyc') then
+                            call agregar_error(token_array(i+6)%lexema, 'tk_pyc', token_array(i+6)%fila,token_array(i+6)%columna )
+                        
+                        else
+                            call etiqueta_set_texto(token_array(i)%lexema,token_array(i+4)%lexema)
+                            
+                            
+                        end if
+
+                    end if
+
+                    if(token_array(i+2)%tipo == 'tk_setColorLetra') then
+                        if (token_array(i+3)%tipo .ne. 'tk_par_izq') then
+                            call agregar_error(token_array(i+3)%lexema, 'tk_par_izq', token_array(i+3)%fila,token_array(i+3)%columna )
+
+                        elseif (token_array(i+4)%tipo .ne. 'tk_num') then
+                            call agregar_error(token_array(i+4)%lexema, 'tk_num', token_array(i+4)%fila,token_array(i+4)%columna )
+                        
+                        elseif (token_array(i+5)%tipo .ne. 'tk_coma') then
+                            call agregar_error(token_array(i+5)%lexema, 'tk_coma', token_array(i+5)%fila,token_array(i+5)%columna )
+
+                        elseif (token_array(i+6)%tipo .ne. 'tk_num') then
+                            call agregar_error(token_array(i+6)%lexema, 'tk_num', token_array(i+6)%fila,token_array(i+6)%columna )
+
+                        elseif (token_array(i+7)%tipo .ne. 'tk_coma') then
+                            call agregar_error(token_array(i+7)%lexema, 'tk_coma', token_array(i+7)%fila,token_array(i+7)%columna )
+
+                        elseif (token_array(i+8)%tipo .ne. 'tk_num') then
+                            call agregar_error(token_array(i+8)%lexema, 'tk_num', token_array(i+8)%fila,token_array(i+8)%columna )
+
+                        elseif (token_array(i+9)%tipo .ne. 'tk_par_der') then
+                            call agregar_error(token_array(i+9)%lexema, 'tk_par_der', token_array(i+9)%fila,token_array(i+9)%columna )
+
+                        elseif (token_array(i+10)%tipo .ne. 'tk_pyc') then
+                            call agregar_error(token_array(i+10)%lexema, 'tk_pyc', token_array(i+10)%fila,token_array(i+10)%columna )
+                        
+                        else
+                            call etiqueta_set_color_texto(token_array(i)%lexema,token_array(i+4)%lexema, token_array(i+6)%lexema, token_array(i+8)%lexema)
+                            
+                            
+                        end if
+
+                    end if
+
+                    if(token_array(i+2)%tipo == 'tk_setPosicion') then
+                        if (token_array(i+3)%tipo .ne. 'tk_par_izq') then
+                            call agregar_error(token_array(i+3)%lexema, 'tk_par_izq', token_array(i+3)%fila,token_array(i+3)%columna )
+
+                        elseif (token_array(i+4)%tipo .ne. 'tk_num') then
+                            call agregar_error(token_array(i+4)%lexema, 'tk_num', token_array(i+4)%fila,token_array(i+4)%columna )
+                        
+                        elseif (token_array(i+5)%tipo .ne. 'tk_coma') then
+                            call agregar_error(token_array(i+5)%lexema, 'tk_coma', token_array(i+5)%fila,token_array(i+5)%columna )
+
+                        elseif (token_array(i+6)%tipo .ne. 'tk_num') then
+                            call agregar_error(token_array(i+6)%lexema, 'tk_num', token_array(i+6)%fila,token_array(i+6)%columna )
+
+                        elseif (token_array(i+7)%tipo .ne. 'tk_par_der') then
+                            call agregar_error(token_array(i+7)%lexema, 'tk_par_der', token_array(i+7)%fila,token_array(i+7)%columna )
+
+                        elseif (token_array(i+8)%tipo .ne. 'tk_pyc') then
+                            call agregar_error(token_array(i+8)%lexema, 'tk_pyc', token_array(i+8)%fila,token_array(i+8)%columna )
+                        
+                        else
+                            call etiqueta_set_posicion(token_array(i)%lexema,token_array(i+4)%lexema,token_array(i+6)%lexema)
+                            call contenedor_set_posicion(token_array(i)%lexema,token_array(i+4)%lexema,token_array(i+6)%lexema)
+                            
+                        end if
+
+                    end if
+
+                end if
+
+                
+
+                 ! Validar si después de un 'tk_id' no viene un 'tk_punto'
+                ! if (token_array(i)%tipo == 'tk_id' .and. token_array(i+2)%tipo == 'tk_setAncho' .and. token_array(i+3)%tipo == 'tk_par_izq') then
+                !     if (token_array(i+1)%tipo .ne. 'tk_punto') then
+                         ! Si después del 'tk_id' no hay un 'tk_punto', se marca un error
+                !         call agregar_error(token_array(i+1)%lexema, 'tk_punto', token_array(i+1)%fila, token_array(i+1)%columna)
+                !     end if
+                ! elseif (token_array(i)%tipo == 'tk_id' .and. token_array(i+2)%tipo == 'tk_setAlto' .and. token_array(i+3)%tipo == 'tk_par_izq') then
+                !     if (token_array(i+1)%tipo .ne. 'tk_punto') then
+                !         call agregar_error(token_array(i+1)%lexema, 'tk_punto', token_array(i+1)%fila, token_array(i+1)%columna)
+                !     end if
+                ! elseif (token_array(i)%tipo == 'tk_id' .and. token_array(i+2)%tipo == 'tk_setTexto' .and. token_array(i+3)%tipo == 'tk_par_izq') then
+                !     if (token_array(i+1)%tipo .ne. 'tk_punto') then
+                !         call agregar_error(token_array(i+1)%lexema, 'tk_punto', token_array(i+1)%fila, token_array(i+1)%columna)
+                !     end if
+                ! elseif (token_array(i)%tipo == 'tk_id' .and. token_array(i+2)%tipo == 'tk_setColorLetra' .and. token_array(i+3)%tipo == 'tk_par_izq') then
+                !     if (token_array(i+1)%tipo .ne. 'tk_punto') then
+                !         call agregar_error(token_array(i+1)%lexema, 'tk_punto', token_array(i+1)%fila, token_array(i+1)%columna)
+                !     end if
+                ! elseif (token_array(i)%tipo == 'tk_id' .and. token_array(i+2)%tipo == 'tk_setPosicion' .and. token_array(i+3)%tipo == 'tk_par_izq') then
+                !     if (token_array(i+1)%tipo .ne. 'tk_punto') then
+                !         call agregar_error(token_array(i+1)%lexema, 'tk_punto', token_array(i+1)%fila, token_array(i+1)%columna)
+                !     end if
+                ! end if
+
+                 ! Validar si después de un 'tk_id' no viene un 'tk_punto'
+                ! if (token_array(i)%tipo == 'tk_id' .and. token_array(i+1)%tipo == 'tk_setAncho' .and. token_array(i+2)%tipo == 'tk_par_izq' .or. token_array(i)%tipo == 'tk_id' .and. token_array(i+1)%tipo == 'tk_par_izq' .and. token_array(i+2)%tipo == 'tk_num' ) then
+                !     if (token_array(i+1)%tipo .ne. 'tk_punto') then
+                        ! Si después del 'tk_id' no hay un 'tk_punto', se marca un error
+                !         call agregar_error(token_array(i+1)%lexema, 'tk_punto', token_array(i+1)%fila, token_array(i+1)%columna)
+                !     end if
+                ! elseif (token_array(i)%tipo == 'tk_id' .and. token_array(i+1)%tipo == 'tk_setAlto' .and. token_array(i+2)%tipo == 'tk_par_izq' .or. token_array(i)%tipo == 'tk_id' .and. token_array(i+1)%tipo == 'tk_par_izq' .and. token_array(i+2)%tipo == 'tk_num') then
+                !     if (token_array(i+1)%tipo .ne. 'tk_punto') then
+                !         call agregar_error(token_array(i+1)%lexema, 'tk_punto', token_array(i+1)%fila, token_array(i+1)%columna)
+                !     end if
+                ! elseif (token_array(i)%tipo == 'tk_id' .and. token_array(i+1)%tipo == 'tk_setTexto' .and. token_array(i+2)%tipo == 'tk_par_izq' .or. token_array(i)%tipo == 'tk_id' .and. token_array(i+1)%tipo == 'tk_par_izq' .and. token_array(i+2)%tipo == 'tk_num') then
+                !     if (token_array(i+1)%tipo .ne. 'tk_punto') then
+                !         call agregar_error(token_array(i+1)%lexema, 'tk_punto', token_array(i+1)%fila, token_array(i+1)%columna)
+                !     end if
+                ! elseif (token_array(i)%tipo == 'tk_id' .and. token_array(i+1)%tipo == 'tk_setColorLetra' .and. token_array(i+2)%tipo == 'tk_par_izq' .or. token_array(i)%tipo == 'tk_id' .and. token_array(i+1)%tipo == 'tk_par_izq' .and. token_array(i+2)%tipo == 'tk_num') then
+                !     if (token_array(i+1)%tipo .ne. 'tk_punto') then
+                !         call agregar_error(token_array(i+1)%lexema, 'tk_punto', token_array(i+1)%fila, token_array(i+1)%columna)
+                !     end if
+                ! elseif (token_array(i)%tipo == 'tk_id' .and. token_array(i+1)%tipo == 'tk_setPosicion' .and. token_array(i+2)%tipo == 'tk_par_izq'.or. token_array(i)%tipo == 'tk_id' .and. token_array(i+1)%tipo == 'tk_par_izq' .and. token_array(i+2)%tipo == 'tk_num') then
+                !     if (token_array(i+1)%tipo .ne. 'tk_punto') then
+                !         call agregar_error(token_array(i+1)%lexema, 'tk_punto', token_array(i+1)%fila, token_array(i+1)%columna)
+                !     end if
+                ! end if
+
+                ! if (token_array(i)%tipo == 'tk_id' .and. token_array(i+1)%tipo == 'tk_punto' ) then
+
+                !     if(token_array(i+2)%tipo == 'tk_setAncho') then
+                !         if (token_array(i+3)%tipo .ne. 'tk_par_izq') then
+                !             call agregar_error(token_array(i+3)%lexema, 'tk_par_izq', token_array(i+3)%fila,token_array(i+3)%columna )
+
+                !         elseif (token_array(i+4)%tipo .ne. 'tk_num') then
+                !             call agregar_error(token_array(i+4)%lexema, 'tk_num', token_array(i+4)%fila,token_array(i+4)%columna )
+                        
+                !         elseif (token_array(i+5)%tipo .ne. 'tk_par_der') then
+                !             call agregar_error(token_array(i+5)%lexema, 'tk_par_der', token_array(i+5)%fila,token_array(i+5)%columna )
+
+                !         elseif (token_array(i+6)%tipo .ne. 'tk_pyc') then
+                !             call agregar_error(token_array(i+6)%lexema, 'tk_pyc', token_array(i+6)%fila,token_array(i+6)%columna )
+                        
+                !         else
+                !             call contenedor_set_ancho(token_array(i)%lexema,token_array(i+4)%lexema)
+                            
+                !         end if
+
+
+                !     end if
+
+                !     if(token_array(i+2)%tipo == 'tk_setAlto') then
+                !         if (token_array(i+3)%tipo .ne. 'tk_par_izq') then
+                !             call agregar_error(token_array(i+3)%lexema, 'tk_par_izq', token_array(i+3)%fila,token_array(i+3)%columna )
+
+                !         elseif (token_array(i+4)%tipo .ne. 'tk_num') then
+                !             call agregar_error(token_array(i+4)%lexema, 'tk_num', token_array(i+4)%fila,token_array(i+4)%columna )
+                        
+                !         elseif (token_array(i+5)%tipo .ne. 'tk_par_der') then
+                !             call agregar_error(token_array(i+5)%lexema, 'tk_par_der', token_array(i+5)%fila,token_array(i+5)%columna )
+
+                !         elseif (token_array(i+6)%tipo .ne. 'tk_pyc') then
+                !             call agregar_error(token_array(i+6)%lexema, 'tk_pyc', token_array(i+6)%fila,token_array(i+6)%columna )
+                        
+                !         else
+                !             call contenedor_set_alto(token_array(i)%lexema,token_array(i+4)%lexema)
+                            
+                !         end if
+
+                !     end if
 
                     if(token_array(i+2)%tipo == 'tk_setColorFondo') then
                         if (token_array(i+3)%tipo .ne. 'tk_par_izq') then
@@ -480,33 +498,33 @@ contains
 
                     end if
 
-                    if(token_array(i+2)%tipo == 'tk_setPosicion') then
-                        if (token_array(i+3)%tipo .ne. 'tk_par_izq') then
-                            call agregar_error(token_array(i+3)%lexema, 'tk_par_izq', token_array(i+3)%fila,token_array(i+3)%columna )
+                !     if(token_array(i+2)%tipo == 'tk_setPosicion') then
+                !         if (token_array(i+3)%tipo .ne. 'tk_par_izq') then
+                !             call agregar_error(token_array(i+3)%lexema, 'tk_par_izq', token_array(i+3)%fila,token_array(i+3)%columna )
 
-                        elseif (token_array(i+4)%tipo .ne. 'tk_num') then
-                            call agregar_error(token_array(i+4)%lexema, 'tk_num', token_array(i+4)%fila,token_array(i+4)%columna )
+                !         elseif (token_array(i+4)%tipo .ne. 'tk_num') then
+                !             call agregar_error(token_array(i+4)%lexema, 'tk_num', token_array(i+4)%fila,token_array(i+4)%columna )
                         
-                        elseif (token_array(i+5)%tipo .ne. 'tk_coma') then
-                            call agregar_error(token_array(i+5)%lexema, 'tk_coma', token_array(i+5)%fila,token_array(i+5)%columna )
+                !         elseif (token_array(i+5)%tipo .ne. 'tk_coma') then
+                !             call agregar_error(token_array(i+5)%lexema, 'tk_coma', token_array(i+5)%fila,token_array(i+5)%columna )
 
-                        elseif (token_array(i+6)%tipo .ne. 'tk_num') then
-                            call agregar_error(token_array(i+6)%lexema, 'tk_num', token_array(i+6)%fila,token_array(i+6)%columna )
+                !         elseif (token_array(i+6)%tipo .ne. 'tk_num') then
+                !             call agregar_error(token_array(i+6)%lexema, 'tk_num', token_array(i+6)%fila,token_array(i+6)%columna )
 
-                        elseif (token_array(i+7)%tipo .ne. 'tk_par_der') then
-                            call agregar_error(token_array(i+7)%lexema, 'tk_par_der', token_array(i+7)%fila,token_array(i+7)%columna )
+                !         elseif (token_array(i+7)%tipo .ne. 'tk_par_der') then
+                !             call agregar_error(token_array(i+7)%lexema, 'tk_par_der', token_array(i+7)%fila,token_array(i+7)%columna )
 
-                        elseif (token_array(i+8)%tipo .ne. 'tk_pyc') then
-                            call agregar_error(token_array(i+8)%lexema, 'tk_pyc', token_array(i+8)%fila,token_array(i+8)%columna )
+                !         elseif (token_array(i+8)%tipo .ne. 'tk_pyc') then
+                !             call agregar_error(token_array(i+8)%lexema, 'tk_pyc', token_array(i+8)%fila,token_array(i+8)%columna )
                         
-                        else
-                            call contenedor_set_posicion(token_array(i)%lexema,token_array(i+4)%lexema,token_array(i+6)%lexema)
+                !         else
+                !             call contenedor_set_posicion(token_array(i)%lexema,token_array(i+4)%lexema,token_array(i+6)%lexema)
                             
-                        end if
+                !         end if
 
-                    end if
+                !     end if
 
-                end if
+                ! end if
 
                 
             END DO
