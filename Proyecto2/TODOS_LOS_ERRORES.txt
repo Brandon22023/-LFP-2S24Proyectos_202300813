@@ -1,2 +1,1 @@
-Sintactico, 41, 20, "44", token esperado tk_num
-Sintactico, 42, 19, "13", token esperado tk_num
+No hay errores

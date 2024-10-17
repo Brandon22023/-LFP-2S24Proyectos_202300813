@@ -4,6 +4,7 @@ from tkinter import messagebox
 from tkinter import font, Menu, ttk
 import os 
 import subprocess
+import webbrowser
 
 
 
@@ -106,7 +107,17 @@ def NUEVO():
     entrada.delete(1.0, END)  # Limpiamos el área de texto
     messagebox.showinfo("Nuevo archivo", "El área de edición ha sido limpiada.")
 def tokens():
-    print("aqui se llamaran los tokens pero aun no please espere")
+    try:
+        ruta_toknes = 'C:\\Users\\Marro\\Documents\\yon\\CUARTO SEMESTRE\\LAB LENGUAJES FORMALES\\-LFP-2S24Proyectos_202300813\\Proyecto2\\tokens.html'
+        
+        # Verificar si el archivo existe
+        if os.path.exists(ruta_toknes):
+            # Abrir el archivo HTML en el navegador predeterminado
+            webbrowser.open(f'file://{os.path.abspath(ruta_toknes)}')
+        else:
+            print("Error: El archivo no existe.")
+    except Exception as e:
+        print(f"Error al abrir el archivo: {e}")
 
 
 # Función para agregar datos a la tabla

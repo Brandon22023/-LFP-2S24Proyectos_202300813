@@ -91,6 +91,7 @@ program analizador_lexico
                 else
                     ! Reporta un error si el carácter no es válido
                     !CALL agregar_error("Lexico", fila, columna, char, "error de token" )
+                    !call agregar_error(aux_tkn, 'Error lexico', fila, columna)
                     columna = columna + 1
                     puntero = puntero + 1 
 
@@ -124,7 +125,7 @@ program analizador_lexico
                 elseif ( char == '!') then
                     call agregar_token(char, 'tk_exp', fila, columna) 
                 else 
-                    !call agregar_error("Lexico", fila, columna, char, "error de token" )
+                    call agregar_error(char, 'Error lexico', fila, columna)
                     
                 end if
                 
@@ -207,7 +208,7 @@ program analizador_lexico
                     estado = 5
 
                 else
-                    ! call agregar_error(aux_tkn, 'Error lexico', fila, columna)
+                    !call agregar_error(aux_tkn, 'Error lexico', fila, columna)
                     !CALL agregar_error("Lexico", fila, columna, char, "error de token" )
                     aux_tkn = ""
                     estado = 0
@@ -234,7 +235,7 @@ program analizador_lexico
                 elseif ( char == '"') then
                     estado = 5
                 else
-                    !CALL agregar_error("Lexico", fila, columna, char, "error de token" )
+                    !call agregar_error(aux_tkn, 'Error lexico', fila, columna)
 
                     aux_tkn = ""
                     estado = 0
@@ -247,8 +248,8 @@ program analizador_lexico
     call parser
     call imprimir_errores
     call escribir_errores_txt
-    !call imprimir_tokens
-    !call generar_html_tokens
+    call imprimir_tokens
+    call generar_html_tokens
     call imprimir_etiquetas
     
     
