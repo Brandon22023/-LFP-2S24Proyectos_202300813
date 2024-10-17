@@ -2,6 +2,9 @@ program analizador_lexico
     use error
     use token
     use contenedor
+    use Boton
+    use clave
+    use texto
 
     implicit none
     integer :: len, fila, columna, estado, puntero
@@ -172,6 +175,10 @@ program analizador_lexico
                     
                     elseif (aux_tkn == 'add') then
                         call agregar_token(aux_tkn, 'tk_add', fila, columna)
+                    elseif (aux_tkn == 'Clave') then
+                        call agregar_token(aux_tkn, 'tk_clave', fila, columna)
+                    elseif (aux_tkn == 'Texto') then
+                        call agregar_token(aux_tkn, 'tk_texto', fila, columna)
 
                     else 
                         call agregar_token(aux_tkn, 'tk_id', fila, columna)
@@ -253,7 +260,9 @@ program analizador_lexico
     call generar_html_tokens
     call imprimir_etiquetas
     call imprimir_contenedores
-    
+    call imprimir_Botons
+    call imprimir_claves
+    call imprimir_textos
 
     
 

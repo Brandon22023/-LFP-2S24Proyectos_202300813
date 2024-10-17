@@ -2,6 +2,9 @@ MODULE token
     use error
     use etiqueta
     use contenedor
+    use Boton
+    use clave
+    use texto
     implicit none
 
     type :: Tkn
@@ -198,6 +201,30 @@ contains
                     end if
                 end if
 
+                if (token_array(i)%tipo == 'tk_boton') then
+                    if (token_array(i+1)%tipo == 'tk_id' .and. token_array(i+2)%tipo == 'tk_pyc' ) then
+                        call agregar_Boton(token_array(i+1)%lexema)
+                    else
+                        call agregar_error(token_array(i+1)%lexema, 'tk_id', token_array(i+1)%fila, token_array(i+1)%columna )
+                    end if
+                end if
+
+                if (token_array(i)%tipo == 'tk_clave') then
+                    if (token_array(i+1)%tipo == 'tk_id' .and. token_array(i+2)%tipo == 'tk_pyc' ) then
+                        call agregar_clave(token_array(i+1)%lexema)
+                    else
+                        call agregar_error(token_array(i+1)%lexema, 'tk_id', token_array(i+1)%fila, token_array(i+1)%columna )
+                    end if
+                end if
+
+                if (token_array(i)%tipo == 'tk_texto') then
+                    if (token_array(i+1)%tipo == 'tk_id' .and. token_array(i+2)%tipo == 'tk_pyc' ) then
+                        call agregar_texto(token_array(i+1)%lexema)
+                    else
+                        call agregar_error(token_array(i+1)%lexema, 'tk_id', token_array(i+1)%fila, token_array(i+1)%columna )
+                    end if
+                end if
+
                 ! Validar si después de un 'tk_id' no viene un 'tk_punto'
                 if (token_array(i)%tipo == 'tk_id' .and. token_array(i+2)%tipo == 'tk_setAncho' .and. token_array(i+3)%tipo == 'tk_par_izq') then
                     if (token_array(i+1)%tipo .ne. 'tk_punto') then
@@ -305,6 +332,9 @@ contains
                         
                         else
                             call etiqueta_set_texto(token_array(i)%lexema,token_array(i+4)%lexema)
+                            call Boton_set_texto(token_array(i)%lexema,token_array(i+4)%lexema)
+                            call clave_set_texto(token_array(i)%lexema,token_array(i+4)%lexema)
+                            call texto_set_texto(token_array(i)%lexema,token_array(i+4)%lexema)
                             
                             
                         end if
@@ -366,7 +396,10 @@ contains
                         else
                             call etiqueta_set_posicion(token_array(i)%lexema,token_array(i+4)%lexema,token_array(i+6)%lexema)
                             call contenedor_set_posicion(token_array(i)%lexema,token_array(i+4)%lexema,token_array(i+6)%lexema)
-                            
+                            call Boton_set_posicion(token_array(i)%lexema,token_array(i+4)%lexema,token_array(i+6)%lexema)
+                            call clave_set_posicion(token_array(i)%lexema,token_array(i+4)%lexema,token_array(i+6)%lexema) 
+                            call texto_set_posicion(token_array(i)%lexema,token_array(i+4)%lexema,token_array(i+6)%lexema)
+
                         end if
 
                     end if
