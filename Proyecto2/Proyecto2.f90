@@ -1,6 +1,7 @@
 program analizador_lexico
     use error
     use token
+    use contenedor
 
     implicit none
     integer :: len, fila, columna, estado, puntero

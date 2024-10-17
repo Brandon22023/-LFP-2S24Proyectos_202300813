@@ -1,3 +1,1 @@
-Sintactico, 50, 18, (, token esperado tk_punto
-Sintactico, 55, 18, (, token esperado tk_punto
-Sintactico, 56, 17, (, token esperado tk_punto
+No hay errores

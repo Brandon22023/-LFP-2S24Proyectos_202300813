@@ -12,10 +12,16 @@ MODULE contenedor
         CHARACTER(LEN = 50) :: color_fondo_b
         CHARACTER(LEN = 50) :: posicion_x
         CHARACTER(LEN = 50) :: posicion_y
+        CHARACTER(LEN = 200) :: add
     End type Tag
 
     ! Declaración de un arreglo de Tag para almacenar los contenedores
     type(Tag), ALLOCATABLE ::  contenedor_array(:)
+
+    ! type :: contenido_add
+    !     CHARACTER(LEN = 50) :: id
+    !     character(LEN = 100) :: add
+    ! end type contenido_add
     
 
 contains
@@ -39,6 +45,7 @@ contains
         nuevo_contenedor%color_fondo_b = ""
         nuevo_contenedor%posicion_x = ""
         nuevo_contenedor%posicion_y = ""
+        nuevo_contenedor%add = ""
 
 
         ! Agrego el nuevo contenedor a la lista de contenedors
@@ -74,6 +81,7 @@ contains
                 print *, 'color_fondo_b: ', trim(contenedor_array(i)%color_fondo_b)
                 print *, 'posicion_x: ', trim(contenedor_array(i)%posicion_x)
                 print *, 'posicion_y: ', trim(contenedor_array(i)%posicion_y)
+                print *, 'add: ', trim(contenedor_array(i)%add)
                 print *, '---------------------------------'
             END DO
         end if
@@ -117,23 +125,23 @@ contains
 
     end subroutine contenedor_set_ancho
 
-    ! subroutine contenedor_set_fondo(id, fondo)
-    !     CHARACTER(LEN=*), INTENT(IN) :: id
-    !     CHARACTER(LEN=*), INTENT(IN) :: fondo
-    !     integer :: i
+    subroutine contenedor_set_add(id, add)
+        CHARACTER(LEN=*), INTENT(IN) :: id
+        CHARACTER(LEN=*), INTENT(IN) :: add
+        integer :: i
 
-       ! Verifica si la memoria ha sido asignada para el arreglo
-    !     if (.NOT. ALLOCATED(contenedor_array)) then
-    !         print *, "No hay contenedors"
-    !     else
-    !         DO i = 1, size(contenedor_array)
-    !             if (trim(contenedor_array(i)%id) == id) then
-    !                 contenedor_array(i)%fondo = fondo
-    !             end if
-    !         END DO
-    !     end if
+       !Verifica si la memoria ha sido asignada para el arreglo
+        if (.NOT. ALLOCATED(contenedor_array)) then
+            print *, "No hay contenedors"
+        else
+            DO i = 1, size(contenedor_array)
+                if (trim(contenedor_array(i)%id) == id) then
+                    contenedor_array(i)%add = add
+                end if
+            END DO
+        end if
     
-    ! end subroutine contenedor_set_fondo
+    end subroutine contenedor_set_add
 
     subroutine contenedor_set_color_fondo(id, color_fondo_r, color_fondo_g, color_fondo_b)
         CHARACTER(LEN=*), INTENT(IN) :: id
