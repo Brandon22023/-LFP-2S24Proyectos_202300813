@@ -6,10 +6,10 @@ MODULE contenedor
         CHARACTER(LEN = 20) :: tipo
         CHARACTER(LEN = 20) :: alto
         CHARACTER(LEN = 20) :: ancho
-        CHARACTER(LEN = 200) :: texto
-        CHARACTER(LEN = 50) :: color_texto_r
-        CHARACTER(LEN = 50) :: color_texto_g
-        CHARACTER(LEN = 50) :: color_texto_b
+        CHARACTER(LEN = 200) :: fondo
+        CHARACTER(LEN = 50) :: color_fondo_r
+        CHARACTER(LEN = 50) :: color_fondo_g
+        CHARACTER(LEN = 50) :: color_fondo_b
         CHARACTER(LEN = 50) :: posicion_x
         CHARACTER(LEN = 50) :: posicion_y
     End type Tag
@@ -33,10 +33,10 @@ contains
         nuevo_contenedor%tipo = 'contenedor'
         nuevo_contenedor%alto = ""
         nuevo_contenedor%ancho = ""
-        nuevo_contenedor%texto = ""
-        nuevo_contenedor%color_texto_r = ""
-        nuevo_contenedor%color_texto_g = ""
-        nuevo_contenedor%color_texto_b = ""
+        nuevo_contenedor%fondo = ""
+        nuevo_contenedor%color_fondo_r = ""
+        nuevo_contenedor%color_fondo_g = ""
+        nuevo_contenedor%color_fondo_b = ""
         nuevo_contenedor%posicion_x = ""
         nuevo_contenedor%posicion_y = ""
 
@@ -69,10 +69,9 @@ contains
                 print *, 'id: ', trim(contenedor_array(i)%id)
                 print *, 'alto: ', trim(contenedor_array(i)%alto)
                 print *, 'ancho: ', trim(contenedor_array(i)%ancho)
-                print *, 'texto: ', trim(contenedor_array(i)%texto)
-                print *, 'color_texto_r: ', trim(contenedor_array(i)%color_texto_r)
-                print *, 'color_texto_g: ', trim(contenedor_array(i)%color_texto_g)
-                print *, 'color_texto_b: ', trim(contenedor_array(i)%color_texto_b)
+                print *, 'color_fondo_r: ', trim(contenedor_array(i)%color_fondo_r)
+                print *, 'color_fondo_g: ', trim(contenedor_array(i)%color_fondo_g)
+                print *, 'color_fondo_b: ', trim(contenedor_array(i)%color_fondo_b)
                 print *, 'posicion_x: ', trim(contenedor_array(i)%posicion_x)
                 print *, 'posicion_y: ', trim(contenedor_array(i)%posicion_y)
                 print *, '---------------------------------'
@@ -118,9 +117,29 @@ contains
 
     end subroutine contenedor_set_ancho
 
-    subroutine contenedor_set_texto(id, texto)
+    ! subroutine contenedor_set_fondo(id, fondo)
+    !     CHARACTER(LEN=*), INTENT(IN) :: id
+    !     CHARACTER(LEN=*), INTENT(IN) :: fondo
+    !     integer :: i
+
+       ! Verifica si la memoria ha sido asignada para el arreglo
+    !     if (.NOT. ALLOCATED(contenedor_array)) then
+    !         print *, "No hay contenedors"
+    !     else
+    !         DO i = 1, size(contenedor_array)
+    !             if (trim(contenedor_array(i)%id) == id) then
+    !                 contenedor_array(i)%fondo = fondo
+    !             end if
+    !         END DO
+    !     end if
+    
+    ! end subroutine contenedor_set_fondo
+
+    subroutine contenedor_set_color_fondo(id, color_fondo_r, color_fondo_g, color_fondo_b)
         CHARACTER(LEN=*), INTENT(IN) :: id
-        CHARACTER(LEN=*), INTENT(IN) :: texto
+        CHARACTER(LEN=*), INTENT(IN) :: color_fondo_r
+        CHARACTER(LEN=*), INTENT(IN) :: color_fondo_g
+        CHARACTER(LEN=*), INTENT(IN) :: color_fondo_b
         integer :: i
 
         ! Verifica si la memoria ha sido asignada para el arreglo
@@ -129,34 +148,14 @@ contains
         else
             DO i = 1, size(contenedor_array)
                 if (trim(contenedor_array(i)%id) == id) then
-                    contenedor_array(i)%texto = texto
+                    contenedor_array(i)%color_fondo_r = color_fondo_r
+                    contenedor_array(i)%color_fondo_g = color_fondo_g
+                    contenedor_array(i)%color_fondo_b = color_fondo_b
                 end if
             END DO
         end if
 
-    end subroutine contenedor_set_texto
-
-    subroutine contenedor_set_color_texto(id, color_texto_r, color_texto_g, color_texto_b)
-        CHARACTER(LEN=*), INTENT(IN) :: id
-        CHARACTER(LEN=*), INTENT(IN) :: color_texto_r
-        CHARACTER(LEN=*), INTENT(IN) :: color_texto_g
-        CHARACTER(LEN=*), INTENT(IN) :: color_texto_b
-        integer :: i
-
-        ! Verifica si la memoria ha sido asignada para el arreglo
-        if (.NOT. ALLOCATED(contenedor_array)) then
-            print *, "No hay contenedors"
-        else
-            DO i = 1, size(contenedor_array)
-                if (trim(contenedor_array(i)%id) == id) then
-                    contenedor_array(i)%color_texto_r = color_texto_r
-                    contenedor_array(i)%color_texto_g = color_texto_g
-                    contenedor_array(i)%color_texto_b = color_texto_b
-                end if
-            END DO
-        end if
-
-    end subroutine contenedor_set_color_texto
+    end subroutine contenedor_set_color_fondo
 
     subroutine contenedor_set_posicion(id, posicion_x, posicion_y)
         CHARACTER(LEN=*), INTENT(IN) :: id

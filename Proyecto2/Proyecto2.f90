@@ -251,6 +251,7 @@ program analizador_lexico
     call imprimir_tokens
     call generar_html_tokens
     call imprimir_etiquetas
+    call imprimir_contenedores
     
     
 
