@@ -74,7 +74,7 @@ MODULE generador_mod
                     do k = 1, size(etiqueta_array)
                         if (trim(etiqueta_array(k)%id) == trim(contenido_add_array(j)%add)) then
                             if (trim(contenido_add_array(j)%id) == "contlogin" .and. trim(contenido_add_array(j)%add) == trim(etiqueta_array(k)%id)) then
-                                WRITE(10, '(A)') '                <label id="'// trim(contenido_add_array(j)%id) //'" style="width: '// trim(etiqueta_array(k)%ancho) //'px; height: '// trim(etiqueta_array(k)%alto) //'px; color: rgb('// trim(etiqueta_array(k)%color_texto_r) //','// trim(etiqueta_array(k)%color_texto_g) //','// trim(etiqueta_array(k)%color_texto_b) //'); position: absolute; left: '// trim(etiqueta_array(k)%posicion_x) //'px; top: '// trim(etiqueta_array(k)%posicion_y) //'px;">'// trim(etiqueta_array(k)%texto) //'</label>'
+                                WRITE(10, '(A)') '                <label id="'// trim(contenido_add_array(j)%id) //'" style="width: '// trim(etiqueta_array(k)%ancho) //'px; height: '// trim(etiqueta_array(k)%alto) //'px; color: rgb('// trim(etiqueta_array(k)%color_texto_r) //','// trim(etiqueta_array(k)%color_texto_g) //','// trim(etiqueta_array(k)%color_texto_b) //'); position: absolute; left: '// trim(etiqueta_array(k)%posicion_x) //'px; top: '// trim(etiqueta_array(k)%posicion_y) //'px;">'// quitar_comillas(trim(etiqueta_array(k)%texto)) //'</label>'
                                 
                                 if (trim(etiqueta_array(k)%id) == "Nombre") then
                                     do l = 1, size(texto_array)
@@ -135,5 +135,18 @@ MODULE generador_mod
         WRITE(11, '(A)') '}'
         CLOSE(11)
     END SUBROUTINE escribir_css
+
+    function quitar_comillas(texto) result(texto_sin_comillas)
+        character(len=*), intent(in) :: texto
+        character(len=len(texto)) :: texto_sin_comillas
+
+        texto_sin_comillas = texto
+        texto_sin_comillas = adjustl(texto_sin_comillas)  ! Asegura que no haya espacios
+        if (len_trim(texto_sin_comillas) >= 2) then
+            if (texto_sin_comillas(1:1) == '"' .and. texto_sin_comillas(len_trim(texto_sin_comillas):len_trim(texto_sin_comillas)) == '"') then
+                texto_sin_comillas = texto_sin_comillas(2:len_trim(texto_sin_comillas)-1)
+            end if
+        end if
+    end function
 
 END MODULE generador_mod
