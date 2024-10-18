@@ -11,9 +11,6 @@ Contenedor ContLogo1;
 Contenedor ContBody;
 Controles -->
 <!--propiedades
-/*
-Definicion de propiedades
-*/
 contlogin.setAncho(270);
 contlogin.setAlto(150);
 contlogin.setColorFondo(47,79,79);
@@ -25,7 +22,7 @@ cmdIngresar.setTexto("Ingresar");
 
 pswClave.setTexto("");
 
-passw.setAncho(53); passw.setAlto(13 );
+passw.setAncho(53); passw.setAlto(13);
 passw.setColorLetra(128,128,128);
 passw.setTexto("Password");
 
@@ -48,9 +45,7 @@ ContBody.setColorFondo(64,224,208);
 
 propiedades -->
 <!--Colocacion
-/*
-Posicionamiento de los controles
-*/
+
 contFondo.setPosicion(25,330);
 this.add(contFondo);
 contlogin.setPosicion(586,110);

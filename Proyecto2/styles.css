@@ -1,0 +1,20 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+/* Estilos para contFondo */
+#contFondo {
+    background-color: rgb(64, 64, 64);
+}
+/* Estilos para contlogin */
+#contlogin {
+    background-color: rgb(47, 79, 79);
+}
+#Nombre, #passw {
+    color: rgb(128, 128, 128);
+}
+#cmdIngresar {
+    margin-top: 20px;
+}

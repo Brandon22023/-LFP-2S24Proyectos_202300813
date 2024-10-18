@@ -1,2 +1,1 @@
 
-Lexico, 19, 9, #, Token invalido

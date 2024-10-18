@@ -1,117 +1,82 @@
-MODULE generador_html_css
-    USE etiqueta   ! Asegúrate de que este módulo define correctamente el tipo Tag
-    USE contenedor  ! Asegúrate de que este módulo define correctamente el tipo contenedor
+MODULE generador_mod
     IMPLICIT NONE
+    CONTAINS
 
-CONTAINS
-    SUBROUTINE generar_html_css()
-        IMPLICIT NONE
+    SUBROUTINE generador_html_css
+        CHARACTER(LEN=100) :: ruta_html, ruta_css
 
-        ! Declaración de los arrays internos
-        TYPE(Tag), ALLOCATABLE :: etiqueta_array(:)
-        TYPE(contenedor), ALLOCATABLE :: contenedor_array(:)
-        INTEGER :: i, unidad_html, unidad_css
-        CHARACTER(len=256) :: filename_html, filename_css
+        ! Asigna rutas para archivos
+        ruta_html = "output.html"
+        ruta_css = "styles.css"
 
-        ! Inicialización de las etiquetas y contenedores
-        ALLOCATE(etiqueta_array(10))  ! Ajusta el tamaño según tus necesidades
-        ALLOCATE(contenedor_array(5))  ! Ajusta el tamaño según tus necesidades
+        ! Llama a las subrutinas para generar los archivos
+        CALL escribir_html(ruta_html, ruta_css)
+        CALL escribir_css(ruta_css)
 
-        ! Configura las etiquetas
-        DO i = 1, SIZE(etiqueta_array)
-            etiqueta_array(i)%id = TRIM(ADJUSTL(itoa(i)))  ! Convierte el entero a cadena
-            etiqueta_array(i)%contenido = 'Texto de ejemplo ' // TRIM(ADJUSTL(itoa(i)))
-            etiqueta_array(i)%color_fondo_r = 100
-            etiqueta_array(i)%color_fondo_g = 150
-            etiqueta_array(i)%color_fondo_b = 200
-            etiqueta_array(i)%tamano_fuente = 14 + i  ! Tamaño de fuente variable
-        END DO
+        PRINT *, "Archivos generados correctamente: ", ruta_html, " y ", ruta_css
+    END SUBROUTINE generador_html_css
 
-        ! Configura los contenedores
-        DO i = 1, SIZE(contenedor_array)
-            contenedor_array(i)%id = TRIM(ADJUSTL(itoa(i)))  ! Convierte el entero a cadena
-            contenedor_array(i)%color_fondo_r = 220
-            contenedor_array(i)%color_fondo_g = 230
-            contenedor_array(i)%color_fondo_b = 240
-            contenedor_array(i)%ancho = 300 + i * 20
-            contenedor_array(i)%alto = 200 + i * 10
-            contenedor_array(i)%posicion_x = 50 + i * 30
-            contenedor_array(i)%posicion_y = 100 + i * 40
-        END DO
+    SUBROUTINE escribir_html(ruta_html, ruta_css)
+        CHARACTER(LEN=*), INTENT(IN) :: ruta_html, ruta_css
 
-        ! Nombres de los archivos de salida
-        filename_html = "pagina.html"
-        filename_css = "styles.css"
+        OPEN(UNIT=10, FILE=ruta_html, STATUS='REPLACE')
+        WRITE(10, '(A)') '<html>'
+        WRITE(10, '(A)') '    <head>'
+        WRITE(10, '(A)') '        <link rel="stylesheet" type="text/css" href="' // ruta_css // '">'
+        WRITE(10, '(A)') '    </head>'
+        WRITE(10, '(A)') '    <body>'
+        
+        ! Fondo principal
+        WRITE(10, '(A)') '        <div id="contFondo" style="width: 800px; height: 100px; background-color: rgb(64,64,64); position: absolute; left: 25px; top: 330px;"></div>'
+        
+        ! Cuerpo principal que contiene otros elementos
+        WRITE(10, '(A)') '        <div id="ContBody" style="width: 800px; height: 300px; background-color: rgb(64,224,208); position: absolute; left: 23px; top: 21px;">'
 
-        ! Abre el archivo HTML en modo de escritura
-        OPEN(unit=unidad_html, file=filename_html, status="replace", action="write")
+        ! Login container y sus elementos
+        WRITE(10, '(A)') '            <div id="contlogin" style="width: 270px; height: 150px; background-color: rgb(47,79,79); position: absolute; left: 586px; top: 110px;">'
+        WRITE(10, '(A)') '                <label id="Nombre" style="width: 44px; height: 13px; color: rgb(128,128,128); position: absolute; left: 8px; top: 21px;">Nombre</label>'
+        WRITE(10, '(A)') '                <input type="text" id="Texto0" style="position: absolute; left: 65px; top: 20px;" />'
+        WRITE(10, '(A)') '                <label id="passw" style="width: 53px; height: 13px; color: rgb(128,128,128); position: absolute; left: 11px; top: 54px;">Password</label>'
+        WRITE(10, '(A)') '                <input type="password" id="pswClave" style="position: absolute; left: 67px; top: 48px;" />'
+        WRITE(10, '(A)') '                <button id="cmdIngresar" style="position: absolute; left: 40px; top: 100px;">Ingresar</button>'
+        WRITE(10, '(A)') '            </div>'
 
-        ! Escribe el contenido inicial del HTML
-        WRITE(unidad_html, '(A)') "<!DOCTYPE html>"
-        WRITE(unidad_html, '(A)') "<html lang=""es"">"
-        WRITE(unidad_html, '(A)') "    <head>"
-        WRITE(unidad_html, '(A)') "        <meta charset=""UTF-8"">"
-        WRITE(unidad_html, '(A)') "        <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">"
-        WRITE(unidad_html, '(A)') "        <title>Página Generada</title>"
-        WRITE(unidad_html, '(A)') "        <link rel=""stylesheet"" href=""styles.css"">"
-        WRITE(unidad_html, '(A)') "    </head>"
-        WRITE(unidad_html, '(A)') "    <body>"
+        ! Logo containers
+        WRITE(10, '(A)') '            <div id="contlogo2" style="width: 150px; height: 50px; background-color: rgb(0,128,128); position: absolute; left: 88px; top: 25px;"></div>'
+        WRITE(10, '(A)') '            <div id="ContLogo1" style="width: 50px; height: 50px; background-color: rgb(64,64,64); position: absolute; left: 36px; top: 25px;"></div>'
+        
+        ! Cierre del body
+        WRITE(10, '(A)') '        </div>'  ! Cierra ContBody
+        WRITE(10, '(A)') '    </body>'
+        WRITE(10, '(A)') '</html>'
+        CLOSE(10)
+    END SUBROUTINE escribir_html
 
-        ! Genera las etiquetas en el HTML
-        DO i = 1, SIZE(etiqueta_array)
-            WRITE(unidad_html, '(A)') "        <div class=""etiqueta"" id=""etiqueta" // TRIM(ADJUSTL(etiqueta_array(i)%id)) // "" >"
-            WRITE(unidad_html, '(A)') "            <p>" // TRIM(ADJUSTL(etiqueta_array(i)%contenido)) // "</p>"
-            WRITE(unidad_html, '(A)') "        </div>"
-        END DO
+    SUBROUTINE escribir_css(ruta)
+        CHARACTER(LEN=*), INTENT(IN) :: ruta
 
-        ! Genera los contenedores en el HTML
-        DO i = 1, SIZE(contenedor_array)
-            WRITE(unidad_html, '(A)') "        <div class=""contenedor"" id=""contenedor" // TRIM(ADJUSTL(contenedor_array(i)%id)) // "" >"
-            WRITE(unidad_html, '(A)') "        </div>"
-        END DO
+        OPEN(UNIT=11, FILE=ruta, STATUS='REPLACE')
+        WRITE(11, '(A)') '/* Estilos generales */'
+        WRITE(11, '(A)') 'body {'
+        WRITE(11, '(A)') '    font-family: Arial, sans-serif;'
+        WRITE(11, '(A)') '    margin: 0;'
+        WRITE(11, '(A)') '    padding: 0;'
+        WRITE(11, '(A)') '}'
+        WRITE(11, '(A)') '/* Estilos para contFondo */'
+        WRITE(11, '(A)') '#contFondo {'
+        WRITE(11, '(A)') '    background-color: rgb(64, 64, 64);'
+        WRITE(11, '(A)') '}'
+        WRITE(11, '(A)') '/* Estilos para contlogin */'
+        WRITE(11, '(A)') '#contlogin {'
+        WRITE(11, '(A)') '    background-color: rgb(47, 79, 79);'
+        WRITE(11, '(A)') '}'
+        WRITE(11, '(A)') '#Nombre, #passw {'
+        WRITE(11, '(A)') '    color: rgb(128, 128, 128);'
+        WRITE(11, '(A)') '}'
+        WRITE(11, '(A)') '#cmdIngresar {'
+        WRITE(11, '(A)') '    margin-top: 20px;'
+        WRITE(11, '(A)') '}'
+        CLOSE(11)
+    END SUBROUTINE escribir_css
 
-        ! Cierra el HTML
-        WRITE(unidad_html, '(A)') "    </body>"
-        WRITE(unidad_html, '(A)') "</html>"
-
-        ! Cierra el archivo HTML
-        CLOSE(unidad_html)
-
-        ! Abre el archivo CSS en modo de escritura
-        OPEN(unit=unidad_css, file=filename_css, status="replace", action="write")
-
-        ! Genera los estilos CSS para las etiquetas
-        DO i = 1, SIZE(etiqueta_array)
-            WRITE(unidad_css, '(A)') "        #etiqueta" // TRIM(ADJUSTL(etiqueta_array(i)%id)) // " {"
-            WRITE(unidad_css, '(A)') "            color: rgb("// & 
-                TRIM(ADJUSTL(etiqueta_array(i)%color_fondo_r)) // "," // & 
-                TRIM(ADJUSTL(etiqueta_array(i)%color_fondo_g)) // "," // & 
-                TRIM(ADJUSTL(etiqueta_array(i)%color_fondo_b)) // ");"
-            WRITE(unidad_css, '(A)') "            font-size: " // TRIM(ADJUSTL(etiqueta_array(i)%tamano_fuente)) // "px;"
-            WRITE(unidad_css, '(A)') "        }"
-        END DO
-
-        ! Genera los estilos CSS para los contenedores
-        DO i = 1, SIZE(contenedor_array)
-            WRITE(unidad_css, '(A)') "        #contenedor" // TRIM(ADJUSTL(contenedor_array(i)%id)) // " {"
-            WRITE(unidad_css, '(A)') "            background-color: rgb("// & 
-                TRIM(ADJUSTL(contenedor_array(i)%color_fondo_r)) // "," // & 
-                TRIM(ADJUSTL(contenedor_array(i)%color_fondo_g)) // "," // & 
-                TRIM(ADJUSTL(contenedor_array(i)%color_fondo_b)) // ");"
-            WRITE(unidad_css, '(A)') "            width: " // TRIM(ADJUSTL(contenedor_array(i)%ancho)) // "px;"
-            WRITE(unidad_css, '(A)') "            height: " // TRIM(ADJUSTL(contenedor_array(i)%alto)) // "px;"
-            WRITE(unidad_css, '(A)') "            position: absolute;"
-            WRITE(unidad_css, '(A)') "            left: " // TRIM(ADJUSTL(contenedor_array(i)%posicion_x)) // "px;"
-            WRITE(unidad_css, '(A)') "            top: " // TRIM(ADJUSTL(contenedor_array(i)%posicion_y)) // "px;"
-            WRITE(unidad_css, '(A)') "        }"
-        END DO
-
-        ! Cierra el archivo CSS
-        CLOSE(unidad_css)
-
-        ! Libera la memoria
-        DEALLOCATE(etiqueta_array)
-        DEALLOCATE(contenedor_array)
-
-    END SUBROUTINE generar_html_css
-END MODULE generador_html_css
+END MODULE generador_mod

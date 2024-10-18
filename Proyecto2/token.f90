@@ -196,6 +196,7 @@ contains
                 if (token_array(i)%tipo == 'tk_contenedor') then
                     if (token_array(i+1)%tipo == 'tk_id' .and. token_array(i+2)%tipo == 'tk_pyc' ) then
                         call agregar_contenedor(token_array(i+1)%lexema)
+                        call agregar_add(token_array(i+1)%lexema)
                     else
                         call agregar_error(token_array(i+1)%lexema, 'tk_id', token_array(i+1)%fila, token_array(i+1)%columna )
                     end if

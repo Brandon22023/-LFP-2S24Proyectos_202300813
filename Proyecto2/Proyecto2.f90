@@ -6,6 +6,7 @@ program analizador_lexico
     use clave
     use texto
     use error_lexico
+    use generador_mod
 
     implicit none
     integer :: len, fila, columna, estado, puntero
@@ -268,7 +269,7 @@ program analizador_lexico
     call imprimir_Botons
     call imprimir_claves
     call imprimir_textos
-
-    
+    call imprimir_add
+    call generador_html_css
 
 end program analizador_lexico
