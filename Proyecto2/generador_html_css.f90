@@ -1,6 +1,10 @@
 MODULE generador_mod
-    USE contenedor
-    USE add_todo
+    use etiqueta
+    use contenedor
+    use clave
+    use texto
+    use add_todo
+
     IMPLICIT NONE
     CONTAINS
 
@@ -68,15 +72,20 @@ MODULE generador_mod
                 do j = 1, size(contenido_add_array)
                     
                     do k = 1, size(etiqueta_array)
-                        if (trim(etiqueta_array(k)%id) == trim(contenido_add_array(j)%idd)) then
+                        if (trim(etiqueta_array(k)%id) == trim(contenido_add_array(j)%add)) then
                             if (trim(contenido_add_array(j)%id) == "contlogin" .and. trim(contenido_add_array(j)%add) == trim(etiqueta_array(k)%id)) then
-                                WRITE(10, '(A)') '                <label id="'// trim(contenido_add_array(j)%id) //'" style="width: 44px; height: 13px; color: rgb(128,128,128); position: absolute; left: 8px; top: 21px;">Nombre</label>'
-                                WRITE(10, '(A)') '                <input type="text" id="Texto0" style="position: absolute; left: 65px; top: 20px;" />'
-                            end if
-                            
-                            if (trim(contenido_add_array(j)%id) == "contlogin" .and. trim(contenido_add_array(j)%add) == "passw") then
-                                WRITE(10, '(A)') '                <label id="'// trim(contenido_add_array(j)%id) //'" style="width: 53px; height: 13px; color: rgb(128,128,128); position: absolute; left: 11px; top: 54px;">Password</label>'
-                                WRITE(10, '(A)') '                <input type="password" id="pswClave" style="position: absolute; left: 67px; top: 48px;" />'
+                                WRITE(10, '(A)') '                <label id="'// trim(contenido_add_array(j)%id) //'" style="width: '// trim(etiqueta_array(k)%ancho) //'px; height: '// trim(etiqueta_array(k)%alto) //'px; color: rgb('// trim(etiqueta_array(k)%color_texto_r) //','// trim(etiqueta_array(k)%color_texto_g) //','// trim(etiqueta_array(k)%color_texto_b) //'); position: absolute; left: '// trim(etiqueta_array(k)%posicion_x) //'px; top: '// trim(etiqueta_array(k)%posicion_y) //'px;">'// trim(etiqueta_array(k)%texto) //'</label>'
+                                
+                                if (trim(etiqueta_array(k)%id) == "Nombre") then
+                                    do l = 1, size(texto_array)
+                                        WRITE(10, '(A)') '                <input type="text" id="'// trim(texto_array(l)%id) //'" style="position: absolute; left: '// trim(texto_array(l)%posicion_x) //'px; top: '// trim(texto_array(l)%posicion_y) //'px;" />'
+                                    end do
+                                elseif (trim(etiqueta_array(k)%id) == "passw") then
+                                    do l =1, size(clave_array)
+                                        WRITE(10, '(A)') '                <input type="password" id="'// trim(clave_array(l)%id) //'" style="position: absolute; left: '// trim(clave_array(l)%posicion_x) //'px; top: '// trim(clave_array(l)%posicion_y) //'px;" />'
+                                    end do
+                                    
+                                end if 
                             end if
                         end if
                         
