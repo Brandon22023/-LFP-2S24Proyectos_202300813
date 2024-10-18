@@ -66,30 +66,26 @@ contains
         end if
 
     end subroutine imprimir_errores_lexico
-    subroutine escribir_errores_lexico_txt()
+        subroutine escribir_errores_lexico_txt()
         integer :: i
         integer :: unidad = 10  ! Asignamos una unidad explícita
         integer :: iostat
         character(len=20) :: str_fila, str_columna
-        character(len=100) :: nombre_archivo
         character(len=200) :: line_error
+        character(len=200) :: ruta_archivo
 
-        ! Definir el nombre del archivo
-        nombre_archivo = "TODOS_LOS_ERRORES_.txt"
+        ! Ruta del archivo en el que se agregarán los errores
+        ruta_archivo = "C:\Users\Marro\Documents\yon\CUARTO SEMESTRE\LAB LENGUAJES FORMALES\-LFP-2S24Proyectos_202300813\Proyecto2\TODOS_LOS_ERRORES.txt"
 
-        ! Abrir el archivo para escribir
-        open(unit=unidad, file=nombre_archivo, status='replace', action='write', iostat=iostat)
+        ! Abrir el archivo para escribir en modo apéndice
+        open(unit=unidad, file=trim(ruta_archivo), status='old', action='write', position='append', iostat=iostat)
         if (iostat /= 0) then
             print *, "Error al abrir el archivo para escribir. Código de error: ", iostat
             return
         end if
 
-        ! Escribir la cabecera del archivo TXT
-        !write(unidad, '(A)') "Error Sintactico, Fila, Columna, Ultimo Token, Token Esperado"
-
-        if (.NOT. ALLOCATED(error_array)) then
-            write(unidad, '(A)') "No hay errores"
-        else
+        ! Solo escribir si hay errores en error_array
+        if (ALLOCATED(error_array)) then
             DO i = 1, size(error_array)
                 ! Convertir fila y columna a string
                 write(str_fila, '(I0)') error_array(i)%fila
@@ -97,7 +93,7 @@ contains
 
                 ! Combinar todos los valores del error en una sola cadena
                 line_error = "Lexico, " // trim(str_fila) // ", " // trim(str_columna) // ", " // &
-                            trim(error_array(i)%ultimo_token) // ", " // "" // trim(error_array(i)%token_esperado)
+                            trim(error_array(i)%ultimo_token ) // ", " // trim(error_array(i)%token_esperado)
 
                 ! Escribir la cadena completa en una línea
                 write(unidad, '(A)') trim(line_error)

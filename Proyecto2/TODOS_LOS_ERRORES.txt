@@ -1,1 +1,2 @@
-Sintactico, 5, 17, cmdIngresar, token esperado tk_id
+
+Lexico, 19, 9, #, Token invalido

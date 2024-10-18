@@ -96,7 +96,7 @@ contains
         !write(unidad, '(A)') "Error Sintactico, Fila, Columna, Ultimo Token, Token Esperado"
 
         if (.NOT. ALLOCATED(error_array)) then
-            write(unidad, '(A)') "No hay errores"
+            write(unidad, '(A)')
         else
             DO i = 1, size(error_array)
                 ! Convertir fila y columna a string
@@ -117,4 +117,4 @@ contains
     end subroutine escribir_errores_txt
 
     
-END MODULE error        
+END MODULE error       

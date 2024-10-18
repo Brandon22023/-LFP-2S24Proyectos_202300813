@@ -218,7 +218,7 @@ program analizador_lexico
                     estado = 5
 
                 else
-                    !call agregar_error(aux_tkn, 'Error lexico', fila, columna)
+                    call agregar_error_lexico(char, 'Token invalido', fila, columna)
                     !CALL agregar_error("Lexico", fila, columna, char, "error de token" )
                     aux_tkn = ""
                     estado = 0
@@ -245,7 +245,7 @@ program analizador_lexico
                 elseif ( char == '"') then
                     estado = 5
                 else
-                    !call agregar_error(aux_tkn, 'Error lexico', fila, columna)
+                    call agregar_error_lexico(char, 'Token invalido', fila, columna)
 
                     aux_tkn = ""
                     estado = 0
