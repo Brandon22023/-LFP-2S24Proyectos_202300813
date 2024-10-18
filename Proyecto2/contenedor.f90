@@ -2,16 +2,16 @@ MODULE contenedor
     implicit none
 
     type :: Tag
-        CHARACTER(LEN = 50) :: id
-        CHARACTER(LEN = 20) :: tipo
-        CHARACTER(LEN = 20) :: alto
-        CHARACTER(LEN = 20) :: ancho
-        CHARACTER(LEN = 200) :: fondo
-        CHARACTER(LEN = 50) :: color_fondo_r
-        CHARACTER(LEN = 50) :: color_fondo_g
-        CHARACTER(LEN = 50) :: color_fondo_b
-        CHARACTER(LEN = 50) :: posicion_x
-        CHARACTER(LEN = 50) :: posicion_y
+        CHARACTER(LEN = 5000) :: id
+        CHARACTER(LEN = 2000) :: tipo
+        CHARACTER(LEN = 2000) :: alto
+        CHARACTER(LEN = 2000) :: ancho
+        CHARACTER(LEN = 2000) :: fondo
+        CHARACTER(LEN = 5000) :: color_fondo_r
+        CHARACTER(LEN = 5000) :: color_fondo_g
+        CHARACTER(LEN = 5000) :: color_fondo_b
+        CHARACTER(LEN = 5000) :: posicion_x
+        CHARACTER(LEN = 5000) :: posicion_y
     End type Tag
 
     ! Declaración de un arreglo de Tag para almacenar los contenedores

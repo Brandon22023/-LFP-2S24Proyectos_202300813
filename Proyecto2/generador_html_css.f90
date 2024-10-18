@@ -58,17 +58,16 @@ MODULE generador_mod
         
 
        
+        do m = 1, size(contenido_add_array)
+            if (trim(contenido_add_array(m)%id) == "ContBody" .and. trim(contenido_add_array(m)%add) == "ContBody") then
+
+        end do
         
         ! Login container y sus elementos
         WRITE(10, '(A)') '            <div id="contlogin" style="width: 270px; height: 150px; background-color: rgb(47,79,79); position: absolute; left: 586px; top: 110px;">'
         do i = 1, size(contenido_add_array)
-            ! Imprimir los valores que se están comparando
-            print *, "Comparando ID: ", trim(contenido_add_array(i)%id), " con 'this'"
-            print *, "Comparando ADD: ", trim(contenido_add_array(i)%add), " con 'contlogin'"
             ! Asegúrate de eliminar espacios en ambas comparaciones
             if (trim(contenido_add_array(i)%id) == "ContBody" .and. trim(contenido_add_array(i)%add) == "contlogin") then
-            
-
                 do j = 1, size(contenido_add_array)
                     
                     do k = 1, size(etiqueta_array)
@@ -84,7 +83,10 @@ MODULE generador_mod
                                     do l =1, size(clave_array)
                                         WRITE(10, '(A)') '                <input type="password" id="'// trim(clave_array(l)%id) //'" style="position: absolute; left: '// trim(clave_array(l)%posicion_x) //'px; top: '// trim(clave_array(l)%posicion_y) //'px;" />'
                                     end do
-                                    
+                                elseif (trim(etiqueta_array(k)%id) == "Carnet") then
+                                    do l = 1, size(texto_array)
+                                        WRITE(10, '(A)') '                <input type="text" id="'// trim(texto_array(l)%id) //'" style="position: absolute; left: '// trim(texto_array(l)%posicion_x) //'px; top: '// trim(texto_array(l)%posicion_y) //'px;" />'
+                                    end do  
                                 end if 
                             end if
                         end if

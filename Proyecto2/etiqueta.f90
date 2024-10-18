@@ -2,8 +2,8 @@ MODULE etiqueta
     implicit none
 
     type :: Tag
-        CHARACTER(LEN = 50) :: id
-        CHARACTER(LEN = 20) :: tipo
+        CHARACTER(LEN = 5000) :: id
+        CHARACTER(LEN = 2000) :: tipo
         CHARACTER(LEN = 20) :: alto
         CHARACTER(LEN = 20) :: ancho
         CHARACTER(LEN = 200) :: texto

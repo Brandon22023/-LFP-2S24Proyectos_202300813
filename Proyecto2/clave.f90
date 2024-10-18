@@ -2,11 +2,11 @@ MODULE clave
     implicit none
 
     type :: Tag
-        CHARACTER(LEN = 50) :: id
-        CHARACTER(LEN = 20) :: tipo
-        CHARACTER(LEN = 200) :: texto
-        CHARACTER(LEN = 50) :: posicion_x
-        CHARACTER(LEN = 50) :: posicion_y
+        CHARACTER(LEN = 5000) :: id
+        CHARACTER(LEN = 2000) :: tipo
+        CHARACTER(LEN = 2000) :: texto
+        CHARACTER(LEN = 5000) :: posicion_x
+        CHARACTER(LEN = 5000) :: posicion_y
     End type Tag
 
     ! Declaración de un arreglo de Tag para almacenar los claves

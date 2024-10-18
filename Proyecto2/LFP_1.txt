@@ -1,0 +1,93 @@
+<!--Controles
+Contenedor contlogin;
+Contenedor contFondo;
+Boton cmdIngresar;
+Clave pswClave;
+Etiqueta passw;
+Etiqueta Nombre;
+Etiqueta Carnet;
+Texto Texto0;
+Texto TextoCarnet;
+Contenedor contlogo2;
+Contenedor ContLogo1;
+Contenedor ContBody;
+Controles -->
+<!--propiedades
+/*
+Definicion de propiedades
+*/
+contlogin.setAncho(270);
+contlogin.setAlto(180);
+contlogin.setColorFondo(221, 230, 255);  // Azul pastel claro
+
+contFondo.setAncho(800);
+contFondo.setAlto(100);
+contFondo.setColorFondo(255,239,213);  // Melón pastel
+
+cmdIngresar.setTexto("Ingresar");
+
+pswClave.setTexto("");
+
+passw.setAncho(53);
+passw.setAlto(13);
+passw.setColorLetra(160,160,160);  // Gris pastel
+passw.setTexto("Password");
+
+Nombre.setAncho(44);
+Nombre.setAlto(13);
+Nombre.setColorLetra(160,160,160);  // Gris pastel
+Nombre.setTexto("Nombre");
+
+Carnet.setAncho(44);
+Carnet.setAlto(13);
+Carnet.setColorLetra(160,160,160);  // Gris pastel
+Carnet.setTexto("Carnet");
+
+Texto0.setTexto("");
+TextoCarnet.setTexto("");
+
+contlogo2.setAncho(150);
+contlogo2.setAlto(50);
+contlogo2.setColorFondo(255,218,185);  // Durazno pastel
+
+ContLogo1.setAncho(50);
+ContLogo1.setAlto(50);
+ContLogo1.setColorFondo(255,182,193);  // Rosa pastel
+
+ContBody.setAncho(800);
+ContBody.setAlto(300);
+ContBody.setColorFondo(240,255,240);  // Verde menta pastel
+
+propiedades -->
+<!--Colocacion
+/*
+Posicionamiento de los controles
+*/
+contFondo.setPosicion(25,330);
+this.add(contFondo);
+contlogin.setPosicion(300,110);
+ContBody.add(contlogin);
+passw.setPosicion(11,54);
+contlogin.add(passw);
+cmdIngresar.setPosicion(40,130);  // Ajustado para dar espacio al nuevo campo Carnet
+pswClave.setPosicion(65,48);
+contlogin.add(pswClave);
+
+Nombre.setPosicion(8,21);
+contlogin.add(Nombre);
+Texto0.setPosicion(65,20);
+contlogin.add(Texto0);
+
+Carnet.setPosicion(8,75);  // Posicionando Carnet debajo de los otros campos
+TextoCarnet.setPosicion(65,74);
+contlogin.add(Carnet);
+contlogin.add(TextoCarnet);
+
+contlogin.add(cmdIngresar);
+contlogo2.setPosicion(88,25);
+ContBody.add(contlogo2);
+ContLogo1.setPosicion(36,25);
+ContBody.add(ContLogo1);
+ContBody.setPosicion(23,21);
+this.add(ContBody);
+Colocacion -->
