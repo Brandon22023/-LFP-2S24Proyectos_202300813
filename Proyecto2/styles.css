@@ -1,9 +1,4 @@
 /* Estilos generales */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
 /* Estilos para contFondo */
 #contFondo {
     background-color: rgb(64, 64, 64);
@@ -14,6 +9,7 @@ body {
 }
 #Nombre {
     color: rgb(128, 128, 128);
+}
 #passw {
     color: rgb(128, 128, 128);
 }
