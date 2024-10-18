@@ -7,10 +7,11 @@ program analizador_lexico
     use texto
     use error_lexico
     use generador_mod
+    use add_todo
 
     implicit none
     integer :: len, fila, columna, estado, puntero
-    integer :: ios, unidad
+    integer :: ios, unidad, i
     character(len=100000) :: contenido, buffer
     character(len=1) :: char
     character(len=100) :: aux_tkn
@@ -254,8 +255,6 @@ program analizador_lexico
 
         end select
     end do
-    
-    
     call parser
     call imprimir_errores
     call escribir_errores_txt

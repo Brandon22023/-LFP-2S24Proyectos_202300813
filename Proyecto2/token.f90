@@ -5,6 +5,7 @@ MODULE token
     use Boton
     use clave
     use texto
+    use add_todo
     implicit none
 
     type :: Tkn
@@ -81,7 +82,7 @@ contains
         character(len=100000) :: html_content
         character(len=100) :: str_tipo, str_columna, str_fila, char_token
         integer :: file_unit, ios, i
-
+    
         ! Verifica si la memoria ha sido asignada para el arreglo de tokens
         if (.NOT. ALLOCATED(token_array)) then
             print *, "No hay tokens disponibles para generar HTML."
@@ -121,6 +122,7 @@ contains
     end subroutine generar_html_tokens
 
     subroutine parser()
+        use contenedor
 
         integer :: i
 
@@ -196,7 +198,9 @@ contains
                 if (token_array(i)%tipo == 'tk_contenedor') then
                     if (token_array(i+1)%tipo == 'tk_id' .and. token_array(i+2)%tipo == 'tk_pyc' ) then
                         call agregar_contenedor(token_array(i+1)%lexema)
-                        call agregar_add(token_array(i+1)%lexema)
+        
+                        ! num_add = num_add + 1
+                        ! add(num_add) =token_array(i+1)%lexema
                     else
                         call agregar_error(token_array(i+1)%lexema, 'tk_id', token_array(i+1)%fila, token_array(i+1)%columna )
                     end if
@@ -454,6 +458,14 @@ contains
                         
                         else
                             call contenedor_set_add(token_array(i)%lexema,token_array(i+4)%lexema)
+                            ! num_add = num_add + 1
+                            ! print *, num_add, " add_id ", token_array(i)%lexema
+                            ! add(num_add) =token_array(i)%lexema
+                            ! num_add = num_add + 1
+                            ! print *, num_add, " add ", token_array(i+4)%lexema
+                            ! add(num_add) =token_array(i+4)%lexema
+                        
+                            
                             
                         end if
 
@@ -467,8 +479,7 @@ contains
 
 
 
-    end subroutine parser
-    
+    end subroutine parser    
 
 END MODULE token
 
