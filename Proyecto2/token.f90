@@ -458,19 +458,15 @@ contains
                         
                         else
                             call contenedor_set_add(token_array(i)%lexema,token_array(i+4)%lexema)
-                            ! num_add = num_add + 1
-                            ! print *, num_add, " add_id ", token_array(i)%lexema
-                            ! add(num_add) =token_array(i)%lexema
-                            ! num_add = num_add + 1
-                            ! print *, num_add, " add ", token_array(i+4)%lexema
-                            ! add(num_add) =token_array(i+4)%lexema
                         
                             
                             
                         end if
 
                     end if
-
+                end if
+                if (token_array(i)%tipo == 'tk_this' .and. token_array(i+1)%tipo == 'tk_punto' .and. token_array(i+2)%tipo == 'tk_add'.and. token_array(i+3)%tipo == 'tk_par_izq') then
+                    call contenedor_set_add(token_array(i)%lexema,token_array(i+4)%lexema)
                 end if
 
                     

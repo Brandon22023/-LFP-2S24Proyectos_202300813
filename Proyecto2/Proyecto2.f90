@@ -268,7 +268,7 @@ program analizador_lexico
     call imprimir_Botons
     call imprimir_claves
     call imprimir_textos
-    call imprimir_add
+    !call imprimir_add
     call generador_html_css
 
 end program analizador_lexico

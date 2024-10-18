@@ -12,7 +12,9 @@ body {
 #contlogin {
     background-color: rgb(47, 79, 79);
 }
-#Nombre, #passw {
+#Nombre {
+    color: rgb(128, 128, 128);
+#passw {
     color: rgb(128, 128, 128);
 }
 #cmdIngresar {

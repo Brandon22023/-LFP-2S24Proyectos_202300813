@@ -1,8 +1,12 @@
 MODULE generador_mod
+    USE contenedor
+    USE add_todo
     IMPLICIT NONE
     CONTAINS
 
     SUBROUTINE generador_html_css
+        integer :: i
+
         CHARACTER(LEN=100) :: ruta_html, ruta_css
 
         ! Asigna rutas para archivos
@@ -14,10 +18,25 @@ MODULE generador_mod
         CALL escribir_css(ruta_css)
 
         PRINT *, "Archivos generados correctamente: ", ruta_html, " y ", ruta_css
+
+        
+
+        ! Verifica si la memoria ha sido asignada para el arreglo
+        if (.NOT. ALLOCATED(contenido_add_array)) then
+            print *, "No hay add"
+        else
+            print *, "add encontrados: ", size(contenido_add_array)
+            DO i = 1, size(contenido_add_array)
+                print *, 'id: ', trim(contenido_add_array(i)%id)
+                print *, 'add: ', trim(contenido_add_array(i)%add)
+                print *, '---------------------------------'
+            END DO
+        end if
     END SUBROUTINE generador_html_css
 
     SUBROUTINE escribir_html(ruta_html, ruta_css)
         CHARACTER(LEN=*), INTENT(IN) :: ruta_html, ruta_css
+        integer :: i
 
         OPEN(UNIT=10, FILE=ruta_html, STATUS='REPLACE')
         WRITE(10, '(A)') '<html>'
@@ -31,7 +50,7 @@ MODULE generador_mod
         
         ! Cuerpo principal que contiene otros elementos
         WRITE(10, '(A)') '        <div id="ContBody" style="width: 800px; height: 300px; background-color: rgb(64,224,208); position: absolute; left: 23px; top: 21px;">'
-
+        
         ! Login container y sus elementos
         WRITE(10, '(A)') '            <div id="contlogin" style="width: 270px; height: 150px; background-color: rgb(47,79,79); position: absolute; left: 586px; top: 110px;">'
         WRITE(10, '(A)') '                <label id="Nombre" style="width: 44px; height: 13px; color: rgb(128,128,128); position: absolute; left: 8px; top: 21px;">Nombre</label>'
@@ -70,7 +89,9 @@ MODULE generador_mod
         WRITE(11, '(A)') '#contlogin {'
         WRITE(11, '(A)') '    background-color: rgb(47, 79, 79);'
         WRITE(11, '(A)') '}'
-        WRITE(11, '(A)') '#Nombre, #passw {'
+        WRITE(11, '(A)') '#Nombre {'
+        WRITE(11, '(A)') '    color: rgb(128, 128, 128);'
+        WRITE(11, '(A)') '#passw {'
         WRITE(11, '(A)') '    color: rgb(128, 128, 128);'
         WRITE(11, '(A)') '}'
         WRITE(11, '(A)') '#cmdIngresar {'
