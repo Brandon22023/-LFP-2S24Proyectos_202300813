@@ -2,8 +2,8 @@ MODULE error
     implicit none
 
     type :: Err
-        CHARACTER(LEN = 10000) :: ultimo_token
-        CHARACTER(LEN = 10000) :: token_esperado 
+        CHARACTER(LEN = 100) :: ultimo_token
+        CHARACTER(LEN = 100) :: token_esperado 
         integer :: fila
         integer:: columna
     End type Err

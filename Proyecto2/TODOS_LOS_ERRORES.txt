@@ -1,9 +1,1 @@
-Sintactico, 19, 22, 270, token esperado tk_par_izq
-Sintactico, 24, 17, setAlto, token esperado tk_punto
-Sintactico, 53, 9, ContLogo1, token esperado tk_pyc
-Sintactico, 55, 35, 193, token esperado tk_coma
-Sintactico, 58, 16, setAlto, token esperado tk_punto
-Sintactico, 92, 6, (, token esperado tk_add
-Lexico, 19, 18, #, Token invalido
-Lexico, 24, 9, %, Token invalido
-Lexico, 58, 8, #, Token invalido
+

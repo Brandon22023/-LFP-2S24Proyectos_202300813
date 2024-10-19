@@ -14,7 +14,7 @@ program analizador_lexico
     integer :: ios, unidad, i
     character(len=100000) :: contenido, buffer
     character(len=1) :: char
-    character(len=1000) :: aux_tkn
+    character(len=100) :: aux_tkn
 
     estado = 0
     puntero = 1

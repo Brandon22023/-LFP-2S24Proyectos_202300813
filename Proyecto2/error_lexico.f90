@@ -70,9 +70,9 @@ contains
         integer :: i
         integer :: unidad = 10  ! Asignamos una unidad explícita
         integer :: iostat
-        character(len=2000) :: str_fila, str_columna
-        character(len=20000) :: line_error
-        character(len=20000) :: ruta_archivo
+        character(len=20) :: str_fila, str_columna
+        character(len=200) :: line_error
+        character(len=200) :: ruta_archivo
 
         ! Ruta del archivo en el que se agregarán los errores
         ruta_archivo = "C:\Users\Marro\Documents\yon\CUARTO SEMESTRE\LAB LENGUAJES FORMALES\-LFP-2S24Proyectos_202300813\Proyecto2\TODOS_LOS_ERRORES.txt"

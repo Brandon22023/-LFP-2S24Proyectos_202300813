@@ -9,11 +9,7 @@ import webbrowser
 
 
 Abrir = None
-def mostrar_posicion(event):
-    # Obtener la posición actual del puntero
-    x, y = event.x, event.y
-    # Actualizar la etiqueta en la misma ventana con las coordenadas
-    etiqueta_posicion.config(text=f"Posición del puntero: X={x}, Y={y}")
+
 def Abrir():
     global Abrir
     Abrir = filedialog.askopenfilename(initialdir = "C:\\Users\\Marro\\Documents\\yon\\CUARTO SEMESTRE\\LAB LENGUAJES FORMALES\\-LFP-2S24Proyectos_202300813",title = "Elige un archivo",filetypes = (("archvios LFP","*.LFP"),("todos los archivos","*.*")))
@@ -47,8 +43,8 @@ def enviar_datos():
 
     # Mostrar la salida en el lugar de la gráfica
     print(f"Contenido recibido de Fortran:\n{resultado.stdout}")  # Para verificar lo recibido en consola
-    #LUGAR_GRAFICA.delete(1.0, END)  # Limpia el área de texto anterior
-    #LUGAR_GRAFICA.insert(END, resultado.stdout)  # Inserta la salida recibida de Fortran
+    LUGAR_GRAFICA.delete(1.0, END)  # Limpia el área de texto anterior
+    LUGAR_GRAFICA.insert(END, resultado.stdout)  # Inserta la salida recibida de Fortran
     # Llamar a la función para agregar los datos desde el archivo .txt a la tabla
     agregar_datos_desde_archivo()
 
@@ -87,6 +83,7 @@ def GuardarComo():
         with open(file_path, 'w') as file:
             file.write(entrada.get(1.0, END))
 def NUEVO():
+    
     global Abrir
     # Verificar si el área de edición tiene contenido
     if entrada.get(1.0, END).strip():  # Si hay contenido en el editor
@@ -158,11 +155,7 @@ ventana.title("Proyecto 2_Brandon Marroquin_202300813") #titulo de la ventana
 ventana.config(width=1350, height=750)#definir el tamaño de la ventana 
 ventana.resizable(False, False)#definir el tamaño de la ventana pero fija para eso se declara false
 
-# Crear una etiqueta para mostrar las coordenadas
-etiqueta_posicion = Label(ventana, text="Posición del puntero: X=0, Y=0", font=("Times New Roman", 10))
-etiqueta_posicion.place(x=600, y=0, width=200, height=30)
-# Detectar el movimiento del ratón en toda la ventana y actualizar la etiqueta
-ventana.bind('<Motion>', mostrar_posicion)
+
 
 #btn_mostrar = Button(ventana, text="Mostrar Gráfica", font=("Times New Roman", 12), command=mostrar_grafica_y_imagen, relief="groove", borderwidth=5,cursor="hand2", fg="white", bg=color_boton)
 #btn_mostrar.place(x=630, y=420, width=120, height=50) #define la ubicación del boton()
@@ -170,8 +163,8 @@ ventana.bind('<Motion>', mostrar_posicion)
 entrada= Text(ventana, relief="groove",font=("Times New Roman", 12), borderwidth=5, bg=color_label) #lugar de texto
 entrada.place(x=20, y=15, width=550, height=415) #define la posición del lugar de texto
 #label de grafica
-#LUGAR_GRAFICA= Text(ventana, bg="white", relief="groove", borderwidth=5) #un label para la grafica
-#LUGAR_GRAFICA.place(x=600, y=30, width=700, height=400) #define la posición del lugar de texto
+LUGAR_GRAFICA= Text(ventana, bg="white", relief="groove", borderwidth=5) #un label para la grafica
+LUGAR_GRAFICA.place(x=600, y=30, width=700, height=400) #define la posición del lugar de texto
 
 
 # Tabla
