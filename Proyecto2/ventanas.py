@@ -47,8 +47,8 @@ def enviar_datos():
 
     # Mostrar la salida en el lugar de la gráfica
     print(f"Contenido recibido de Fortran:\n{resultado.stdout}")  # Para verificar lo recibido en consola
-    LUGAR_GRAFICA.delete(1.0, END)  # Limpia el área de texto anterior
-    LUGAR_GRAFICA.insert(END, resultado.stdout)  # Inserta la salida recibida de Fortran
+    #LUGAR_GRAFICA.delete(1.0, END)  # Limpia el área de texto anterior
+    #LUGAR_GRAFICA.insert(END, resultado.stdout)  # Inserta la salida recibida de Fortran
     # Llamar a la función para agregar los datos desde el archivo .txt a la tabla
     agregar_datos_desde_archivo()
 
