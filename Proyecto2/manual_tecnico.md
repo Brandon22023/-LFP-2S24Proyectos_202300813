@@ -636,15 +636,21 @@ Este módulo se encarga de generar archivos HTML y CSS utilizando datos almacena
   - **Descripción**: Contador utilizado para iterar a través de los elementos del arreglo `token_array` al generar el HTML.
 
 
-# Acontinuación la logica del analizador de una manera más clara
+## Acontinuación la logica del analizador lexico de una manera más clara
  El arbol del codigo es el siguiente:
 
-![imagen](./img/arbol.png)
+![imagen](./IMG/arbol.PNG)
 
 las tablas del arbol tanto de follow como de estado de lo anterior son las siguientes:
 
-![imagen](./img/tablas.png)
+![imagen](./IMG/tablas.PNG)
 
 y por ultimo tenemos el automata: 
 
-![imagen](./img/automata.png)
+![imagen](./IMG/automata.PNG)
+
+# Acontinuación la logica del analizador Sintactico de una manera más clara
+
+esta esta la gramtica libre de contexto tipo 2 USANDO NOTACION BNF:
+
+![imagen](./IMG/tipo2.PNG)

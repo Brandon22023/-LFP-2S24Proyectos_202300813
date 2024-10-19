@@ -133,14 +133,6 @@ contains
               
             if (token_array(1)%tipo .ne. "tk_menor") then
                 call agregar_error(token_array(1)%lexema, 'tk_menor', token_array(1)%fila, token_array(1)%columna)
-            ! elseif (token_array(2)%tipo .ne. "tk_exp") then
-            !     call agregar_error(token_array(2)%lexema, 'tk_exp', token_array(2)%fila, token_array(2)%columna)
-            ! elseif (token_array(3)%tipo .ne. "tk_guion") then
-            !     call agregar_error(token_array(3)%lexema, 'tk_guion', token_array(3)%fila, token_array(3)%columna)
-            ! elseif (token_array(4)%tipo .ne. "tk_guion") then
-            !     call agregar_error(token_array(4)%lexema, 'tk_guion', token_array(4)%fila, token_array(4)%columna)
-            ! elseif (token_array(5)%tipo .ne. "tk_id") then
-            !     call agregar_error(token_array(5)%lexema, 'tk_id', token_array(5)%fila, token_array(5)%columna)
             end if
              
             DO i = 1, size(token_array)
