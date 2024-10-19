@@ -252,6 +252,10 @@ contains
                     if (token_array(i+1)%tipo .ne. 'tk_punto') then
                         call agregar_error(token_array(i+1)%lexema, 'tk_punto', token_array(i+1)%fila, token_array(i+1)%columna)
                     end if
+                elseif (token_array(i)%tipo == 'tk_id' .and. token_array(i+2)%tipo == 'tk_par_izq' .and. token_array(i+3)%tipo == 'tk_id') then
+                    if (token_array(i+1)%tipo .ne. 'tk_punto') then
+                        call agregar_error(token_array(i+1)%lexema, 'tk_punto', token_array(i+1)%fila, token_array(i+1)%columna)
+                    end if             
                 end if
 
                 ! Validar si después de un 'tk_id' no viene un 'tk_punto'
@@ -467,6 +471,12 @@ contains
                 end if
                 if (token_array(i)%tipo == 'tk_this' .and. token_array(i+1)%tipo == 'tk_punto' .and. token_array(i+2)%tipo == 'tk_add'.and. token_array(i+3)%tipo == 'tk_par_izq') then
                     call contenedor_set_add(token_array(i)%lexema,token_array(i+4)%lexema)
+                elseif (token_array(i)%tipo == 'tk_this' .and. token_array(i+1)%tipo .ne. 'tk_punto' .and. token_array(i+1)%tipo == 'tk_add'.and. token_array(i+2)%tipo == 'tk_par_izq') then
+                    call agregar_error(token_array(i+1)%lexema, 'tk_punto', token_array(i+1)%fila,token_array(i+1)%columna )
+                elseif (token_array(i)%tipo == 'tk_this' .and. token_array(i+1)%tipo == 'tk_punto' .and. token_array(i+2)%tipo == 'tk_id'.and. token_array(i+3)%tipo .ne. 'tk_par_izq') then
+                    call agregar_error(token_array(i+3)%lexema, 'tk_par_izq', token_array(i+3)%fila,token_array(i+3)%columna )
+                elseif (token_array(i)%tipo == 'tk_this' .and. token_array(i+1)%tipo == 'tk_punto' .and. token_array(i+2)%tipo .ne. 'tk_add'.and. token_array(i+2)%tipo == 'tk_par_izq') then
+                    call agregar_error(token_array(i+2)%lexema, 'tk_add', token_array(i+2)%fila ,token_array(i+2)%columna )
                 end if
 
                     
