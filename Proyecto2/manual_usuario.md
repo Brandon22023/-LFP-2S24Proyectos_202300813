@@ -77,12 +77,18 @@ Es indispensable contar con la última versión de Python, así como la instalac
 
 6. Ahora esto generada un html el cual sera el siguiente
 
-![paso 6](./img/paso6.png )
+![paso 6](./IMG/html.png)
 
-7. Ahora si vemos a su derecha podemos ver la pestaña que dice "acerca de" al presionarlonos saldra una ventana con la informacion de la persona creadora del programa (en este caso con mis datos)
+7. Ahora si luego de ver todo eso vamos a ver la pestaña de archivo, la cual no solo nos permite Abrir un archivo tambien nos permite  hacer lo siguiente:
 
-![paso 7](./img/paso7.png )
+- Nuevo: limpia el lugar de datos y nos pregunta si queremos guardar el archivo, esto en caso de que se nos haya olvidado de guardarlo o si queremos sobreescribirlo
 
-8. Ahora si vemos a su derecha podemos ver la pestaña que dice "salir" al presionarlonos se cerrara el programa en su totalidad
+- Abrir: nos permite abrir un archivo
 
-![paso 8](./img/paso8.png )
+- Guardar: nos permite guardar el archivo
+
+- Guardar como...: nos permite guardar el archivo con un nuevo nombre
+
+- Salir: cierra la ventana y termina la ejecucion del programa
+
+![paso 7](./IMG/paso7.png )

@@ -170,8 +170,8 @@ ventana.bind('<Motion>', mostrar_posicion)
 entrada= Text(ventana, relief="groove",font=("Times New Roman", 12), borderwidth=5, bg=color_label) #lugar de texto
 entrada.place(x=20, y=15, width=550, height=415) #define la posición del lugar de texto
 #label de grafica
-LUGAR_GRAFICA= Text(ventana, bg="white", relief="groove", borderwidth=5) #un label para la grafica
-LUGAR_GRAFICA.place(x=600, y=30, width=700, height=400) #define la posición del lugar de texto
+#LUGAR_GRAFICA= Text(ventana, bg="white", relief="groove", borderwidth=5) #un label para la grafica
+#LUGAR_GRAFICA.place(x=600, y=30, width=700, height=400) #define la posición del lugar de texto
 
 
 # Tabla
