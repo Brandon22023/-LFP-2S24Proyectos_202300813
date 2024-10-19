@@ -9,8 +9,8 @@ MODULE token
     implicit none
 
     type :: Tkn
-        CHARACTER(LEN = 100) :: lexema
-        CHARACTER(LEN = 200) :: tipo 
+        CHARACTER(LEN = 10000) :: lexema
+        CHARACTER(LEN = 20000) :: tipo 
         integer :: fila
         integer :: columna
     End type Tkn

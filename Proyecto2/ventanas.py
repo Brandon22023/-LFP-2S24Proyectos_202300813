@@ -9,7 +9,11 @@ import webbrowser
 
 
 Abrir = None
-
+def mostrar_posicion(event):
+    # Obtener la posición actual del puntero
+    x, y = event.x, event.y
+    # Actualizar la etiqueta en la misma ventana con las coordenadas
+    etiqueta_posicion.config(text=f"Posición del puntero: X={x}, Y={y}")
 def Abrir():
     global Abrir
     Abrir = filedialog.askopenfilename(initialdir = "C:\\Users\\Marro\\Documents\\yon\\CUARTO SEMESTRE\\LAB LENGUAJES FORMALES\\-LFP-2S24Proyectos_202300813",title = "Elige un archivo",filetypes = (("archvios LFP","*.LFP"),("todos los archivos","*.*")))
@@ -154,7 +158,11 @@ ventana.title("Proyecto 2_Brandon Marroquin_202300813") #titulo de la ventana
 ventana.config(width=1350, height=750)#definir el tamaño de la ventana 
 ventana.resizable(False, False)#definir el tamaño de la ventana pero fija para eso se declara false
 
-
+# Crear una etiqueta para mostrar las coordenadas
+etiqueta_posicion = Label(ventana, text="Posición del puntero: X=0, Y=0", font=("Times New Roman", 10))
+etiqueta_posicion.place(x=600, y=0, width=200, height=30)
+# Detectar el movimiento del ratón en toda la ventana y actualizar la etiqueta
+ventana.bind('<Motion>', mostrar_posicion)
 
 #btn_mostrar = Button(ventana, text="Mostrar Gráfica", font=("Times New Roman", 12), command=mostrar_grafica_y_imagen, relief="groove", borderwidth=5,cursor="hand2", fg="white", bg=color_boton)
 #btn_mostrar.place(x=630, y=420, width=120, height=50) #define la ubicación del boton()
