@@ -1,18 +1,15 @@
 /* Estilos generales */
 /* Estilos para contFondo */
 #contFondo {
-    background-color: rgb(64, 64, 64);
+    background-color: rgb(64,64,64);
 }
 /* Estilos para contlogin */
 #contlogin {
-    background-color: rgb(47, 79, 79);
-}
-#Nombre {
-    color: rgb(128, 128, 128);
+    background-color: rgb(47,79,79);
 }
 #passw {
-    color: rgb(128, 128, 128);
+    color: rgb(128,128,128);
 }
-#cmdIngresar {
-    margin-top: 20px;
+#Nombre {
+    color: rgb(128,128,128);
 }

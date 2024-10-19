@@ -40,7 +40,7 @@ MODULE generador_mod
 
     SUBROUTINE escribir_html(ruta_html, ruta_css)
         CHARACTER(LEN=*), INTENT(IN) :: ruta_html, ruta_css
-        integer :: i, j, k, l, m, n, o, p
+        integer :: i, j, k, l, m, n, o, p, a, b, c, d, e, f
         integer :: largo
 
         OPEN(UNIT=10, FILE=ruta_html, STATUS='REPLACE')
@@ -51,23 +51,44 @@ MODULE generador_mod
         WRITE(10, '(A)') '    <body>'
         
         ! Fondo principal
-        WRITE(10, '(A)') '        <div id="contFondo" style="width: 800px; height: 100px; background-color: rgb(64,64,64); position: absolute; left: 25px; top: 330px;"></div>'
+        !WRITE(10, '(A)') '        <div id="contFondo" style="width: 800px; height: 100px; background-color: rgb(64,64,64); position: absolute; left: 25px; top: 330px;"></div>'
         
         ! Cuerpo principal que contiene otros elementos
-        WRITE(10, '(A)') '        <div id="ContBody" style="width: 800px; height: 300px; background-color: rgb(64,224,208); position: absolute; left: 23px; top: 21px;">'
+        !WRITE(10, '(A)') '        <div id="ContBody" style="width: 800px; height: 300px; background-color: rgb(64,224,208); position: absolute; left: 23px; top: 21px;">'
         
-
-       
-        do m = 1, size(contenido_add_array)
-            if (trim(contenido_add_array(m)%id) == "ContBody" .and. trim(contenido_add_array(m)%add) == "ContBody") then
-
+        do m=1, size(contenido_add_array)
+            if (trim(contenido_add_array(m)%id) == "this" .and. trim(contenido_add_array(m)%add) == "contFondo") then
+                do n = 1, size(contenedor_array)
+                    if (trim(contenedor_array(n)%id) == trim(contenido_add_array(m)%add)) then
+                        WRITE(10, '(A)') '        <div id="'// trim(contenedor_array(n)%id) //'" style="width: '// trim(contenedor_array(n)%ancho) //'px; height: '// trim(contenedor_array(n)%alto) //'px; background-color: rgb('// trim(contenedor_array(n)%color_fondo_r) //','// trim(contenedor_array(n)%color_fondo_g) //','// trim(contenedor_array(n)%color_fondo_b) //'); position: absolute; left: '// trim(contenedor_array(n)%posicion_x) //'px; top: '// trim(contenedor_array(n)%posicion_y) //'px;"></div>'
+                    end if
+                end do
+            elseif(trim(contenido_add_array(m)%id) == "this" .and. trim(contenido_add_array(m)%add) == "ContBody") then
+                do n = 1, size(contenedor_array)
+                    if (trim(contenedor_array(n)%id) == trim(contenido_add_array(m)%add)) then
+                        WRITE(10, '(A)') '        <div id="'// trim(contenedor_array(n)%id) //'" style="width: '// trim(contenedor_array(n)%ancho) //'px; height: '// trim(contenedor_array(n)%alto) //'px; background-color: rgb('// trim(contenedor_array(n)%color_fondo_r) //','// trim(contenedor_array(n)%color_fondo_g) //','// trim(contenedor_array(n)%color_fondo_b) //'); position: absolute; left: '// trim(contenedor_array(n)%posicion_x) //'px; top: '// trim(contenedor_array(n)%posicion_y) //'px;"></div>'
+                    end if
+                end do
+            end if
         end do
         
-        ! Login container y sus elementos
-        WRITE(10, '(A)') '            <div id="contlogin" style="width: 270px; height: 150px; background-color: rgb(47,79,79); position: absolute; left: 586px; top: 110px;">'
+        do m=1, size(contenido_add_array)
+            if (trim(contenido_add_array(m)%id) == "ContBody" .and. trim(contenido_add_array(m)%add) == "contlogin") then
+                do n = 1, size(contenedor_array)
+                    if (trim(contenedor_array(n)%id) == trim(contenido_add_array(m)%add)) then
+                        WRITE(10, '(A)') '        <div id="'// trim(contenedor_array(n)%id) //'" style="width: '// trim(contenedor_array(n)%ancho) //'px; height: '// trim(contenedor_array(n)%alto) //'px; background-color: rgb('// trim(contenedor_array(n)%color_fondo_r) //','// trim(contenedor_array(n)%color_fondo_g) //','// trim(contenedor_array(n)%color_fondo_b) //'); position: absolute; left: '// trim(contenedor_array(n)%posicion_x) //'px; top: '// trim(contenedor_array(n)%posicion_y) //'px;">'
+                    end if
+                end do
+            end if
+        end do
+
+
+
+        !WRITE(10, '(A)') '            <div id="contlogin" style="width: 270px; height: 150px; background-color: rgb(47,79,79); position: absolute; left: 586px; top: 110px;">'
         do i = 1, size(contenido_add_array)
             ! Asegúrate de eliminar espacios en ambas comparaciones
             if (trim(contenido_add_array(i)%id) == "ContBody" .and. trim(contenido_add_array(i)%add) == "contlogin") then
+                
                 do j = 1, size(contenido_add_array)
                     
                     do k = 1, size(etiqueta_array)
@@ -101,10 +122,28 @@ MODULE generador_mod
         end do
 
         WRITE(10, '(A)') '            </div>'
-
+        
+        do p= 1, size(contenido_add_array)
+            if (trim(contenido_add_array(p)%id) == "ContBody" .and. trim(contenido_add_array(p)%add) == "contlogo2") then
+                do a= 1, size(contenedor_array)
+                    if (trim(contenedor_array(a)%id) == trim(contenido_add_array(p)%add)) then
+                        WRITE(10, '(A)') '            <div id="'// trim(contenedor_array(a)%id) //'" style="width: '// trim(contenedor_array(a)%ancho) //'px; height: '// trim(contenedor_array(a)%alto) //'px; background-color: rgb('// trim(contenedor_array(a)%color_fondo_r) //','// trim(contenedor_array(a)%color_fondo_g) //','// trim(contenedor_array(a)%color_fondo_b) //'); position: absolute; left: '// trim(contenedor_array(a)%posicion_x) //'px; top: '// trim(contenedor_array(a)%posicion_y) //'px;"></div>'
+                    end if 
+                
+                end do
+            elseif (trim(contenido_add_array(p)%id) == "ContBody" .and. trim(contenido_add_array(p)%add) == "ContLogo1") then
+                do a= 1, size(contenedor_array)
+                    if (trim(contenedor_array(a)%id) == trim(contenido_add_array(p)%add)) then
+                        WRITE(10, '(A)') '            <div id="'// trim(contenedor_array(a)%id) //'" style="width: '// trim(contenedor_array(a)%ancho) //'px; height: '// trim(contenedor_array(a)%alto) //'px; background-color: rgb('// trim(contenedor_array(a)%color_fondo_r) //','// trim(contenedor_array(a)%color_fondo_g) //','// trim(contenedor_array(a)%color_fondo_b) //'); position: absolute; left: '// trim(contenedor_array(a)%posicion_x) //'px; top: '// trim(contenedor_array(a)%posicion_y) //'px;"></div>'
+                    end if 
+                
+                end do
+            end if
+            
+        end do
         ! Logo containers
-        WRITE(10, '(A)') '            <div id="contlogo2" style="width: 150px; height: 50px; background-color: rgb(0,128,128); position: absolute; left: 88px; top: 25px;"></div>'
-        WRITE(10, '(A)') '            <div id="ContLogo1" style="width: 50px; height: 50px; background-color: rgb(64,64,64); position: absolute; left: 36px; top: 25px;"></div>'
+        !WRITE(10, '(A)') '            <div id="contlogo2" style="width: 150px; height: 50px; background-color: rgb(0,128,128); position: absolute; left: 88px; top: 25px;"></div>'
+        !WRITE(10, '(A)') '            <div id="ContLogo1" style="width: 50px; height: 50px; background-color: rgb(64,64,64); position: absolute; left: 36px; top: 25px;"></div>'
         
         ! Cierre del body
         WRITE(10, '(A)') '        </div>'  ! Cierra ContBody
@@ -115,26 +154,61 @@ MODULE generador_mod
 
     SUBROUTINE escribir_css(ruta)
         CHARACTER(LEN=*), INTENT(IN) :: ruta
+        integer :: n, b, m
 
         OPEN(UNIT=11, FILE=ruta, STATUS='REPLACE')
+
         WRITE(11, '(A)') '/* Estilos generales */'
         WRITE(11, '(A)') '/* Estilos para contFondo */'
-        WRITE(11, '(A)') '#contFondo {'
-        WRITE(11, '(A)') '    background-color: rgb(64, 64, 64);'
-        WRITE(11, '(A)') '}'
+        do m=1, size(contenido_add_array)
+            if (trim(contenido_add_array(m)%id) == "this" .and. trim(contenido_add_array(m)%add) == "contFondo") then
+                do n = 1, size(contenedor_array)
+                    if (trim(contenedor_array(n)%id) == trim(contenido_add_array(m)%add)) then
+                        WRITE(11, '(A)') '#'// trim(contenedor_array(n)%id) //' {'
+                        WRITE(11, '(A)') '    background-color: rgb('// trim(contenedor_array(n)%color_fondo_r) //','// trim(contenedor_array(n)%color_fondo_g) //','// trim(contenedor_array(n)%color_fondo_b) //');'
+                        WRITE(11, '(A)') '}'
+                    end if
+                end do
+            end if
+        end do
         WRITE(11, '(A)') '/* Estilos para contlogin */'
-        WRITE(11, '(A)') '#contlogin {'
-        WRITE(11, '(A)') '    background-color: rgb(47, 79, 79);'
-        WRITE(11, '(A)') '}'
-        WRITE(11, '(A)') '#Nombre {'
-        WRITE(11, '(A)') '    color: rgb(128, 128, 128);'
-        WRITE(11, '(A)') '}'
-        WRITE(11, '(A)') '#passw {'
-        WRITE(11, '(A)') '    color: rgb(128, 128, 128);'
-        WRITE(11, '(A)') '}'
-        WRITE(11, '(A)') '#cmdIngresar {'
-        WRITE(11, '(A)') '    margin-top: 20px;'
-        WRITE(11, '(A)') '}'
+        do m=1, size(contenido_add_array)
+            if (trim(contenido_add_array(m)%id) == "ContBody" .and. trim(contenido_add_array(m)%add) == "contlogin") then
+                do n = 1, size(contenedor_array)
+                    if (trim(contenedor_array(n)%id) == trim(contenido_add_array(m)%add)) then
+                        WRITE(11, '(A)') '#'// trim(contenedor_array(n)%id) //' {'
+                        WRITE(11, '(A)') '    background-color: rgb('// trim(contenedor_array(n)%color_fondo_r) //','// trim(contenedor_array(n)%color_fondo_g) //','// trim(contenedor_array(n)%color_fondo_b) //');'
+                        WRITE(11, '(A)') '}'
+                    end if
+                end do
+            end if
+        end do
+        ! WRITE(11, '(A)') '/* Estilos generales */'
+        ! WRITE(11, '(A)') '/* Estilos para contFondo */'
+        ! WRITE(11, '(A)') '#contFondo {'
+        ! WRITE(11, '(A)') '    background-color: rgb(64, 64, 64);'
+        ! WRITE(11, '(A)') '}'
+        ! WRITE(11, '(A)') '/* Estilos para contlogin */'
+        ! WRITE(11, '(A)') '#contlogin {'
+        ! WRITE(11, '(A)') '    background-color: rgb(47, 79, 79);'
+        ! WRITE(11, '(A)') '}'
+        do b=1, size(etiqueta_array)
+            if (trim(etiqueta_array(b)%id) == "Nombre") then
+                WRITE(11, '(A)') '#'// trim(etiqueta_array(b)%id) //' {'
+                WRITE(11, '(A)') '    color: rgb('// trim(etiqueta_array(b)%color_texto_r) //','// trim(etiqueta_array(b)%color_texto_g) //','// trim(etiqueta_array(b)%color_texto_b) //');'
+                WRITE(11, '(A)') '}'
+            else if (trim(etiqueta_array(b)%id) == "passw") then
+                WRITE(11, '(A)') '#'// trim(etiqueta_array(b)%id) //' {'
+                WRITE(11, '(A)') '    color: rgb('// trim(etiqueta_array(b)%color_texto_r) //','// trim(etiqueta_array(b)%color_texto_g) //','// trim(etiqueta_array(b)%color_texto_b) //');'
+                WRITE(11, '(A)') '}'
+            end if
+        end do
+        ! WRITE(11, '(A)') '#Nombre {'
+        ! WRITE(11, '(A)') '    color: rgb(128, 128, 128);'
+        ! WRITE(11, '(A)') '}'
+        ! WRITE(11, '(A)') '#passw {'
+        ! WRITE(11, '(A)') '    color: rgb(128, 128, 128);'
+        ! WRITE(11, '(A)') '}'
         CLOSE(11)
     END SUBROUTINE escribir_css
 
